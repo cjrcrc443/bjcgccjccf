@@ -24,28 +24,28 @@ from pyrogram.enums import ParseMode, ChatMemberStatus
 async def huhh(client: Client, message: Message):
     await message.reply_photo(
         photo=f"https://graph.org/file/b4ace5c5aec2901efed59.jpg",
-        caption=f"""**[⧉• 𝙎𝙊𝙐𝙍𝘾𝞝 𝘼𝙇𝙄𝙉𝘼 - 🧑🏻‍💻🖤 گەشەپێدەران](t.me/MGIMT)**\n••┉┉┉┉┉••🝢••┉┉┉┉┉••\n**بەخێربێی ئەزیزم{message.from_user.mention} بۆ بەشی گەشەپێدەرانی بۆت🕷️•**\n**بۆ هەبوونی هەرکێشە و پرسیارێك پەیوەندی بە گەشەپێدەر بکە لەڕێگای دووگمەکانی خوارەوە♥•**""",
+        caption=f"""**[⧉• 𝙎𝙊𝙐𝙍𝘾𝞝 𝙃𝙖𝙬𝙖𝙡 - 🧑🏻‍💻🖤 گەشەپێدەران](t.me/Haawall)**\n••┉┉┉┉┉••🝢••┉┉┉┉┉••\n**بەخێربێی ئەزیزم{message.from_user.mention} بۆ بەشی گەشەپێدەرانی بۆت🕷️•**\n**بۆ هەبوونی هەرکێشە و پرسیارێك پەیوەندی بە گەشەپێدەر بکە لەڕێگای دووگمەکانی خوارەوە♥•**""",
         reply_markup=InlineKeyboardMarkup(
             [
                 [
                     InlineKeyboardButton(
-                        "᳒ᯓ محمد ✬", url=f"https://t.me/IQ7amo"), 
+                        "ᴱᴺᴺᴰﾂ🖇️🖤ᶜⁱᵗʸ", url=f"https://t.me/Haawall"), 
                  ],[
                     
                 
                     InlineKeyboardButton(
-                        "𐇮 ﮼ﺣ‌ّــەمــە 🇧🇷 𐇮", url=f"https://t.me/VTVIT"),
+                        "𐇮 ﮼ﺣ‌ّــەمــە 🇧🇷 𐇮", url=f"https://t.me/IQ7amo"),
                 ],[
                     
                 
                     InlineKeyboardButton(
-                        "⧉• 𝙎𝙊𝙐𝙍𝘾𝞝 𝘼𝙇𝙄𝙉𝘼", url=f"https://t.me/MGIMT"),
+                        "⧉• 𝙎𝙊𝙐𝙍𝘾𝞝 𝙃𝙖𝙬𝙖𝙡", url=f"https://t.me/Hawaall"),
                 
         ],[
                     
                 
                     InlineKeyboardButton(
-                        "『𓏺کەناڵی سەرەکی』", url=f"https://t.me/EHS4SS"),
+                        "『𓏺کەناڵی سەرەکی』", url=f"https://t.me/Hawaall"),
                 ],
 
             ]
@@ -91,12 +91,12 @@ async def huhh(client: Client, message: Message):
 
 
 @app.on_message(
-    command(["@VTVIT"])
+    command(["@IQ7amo"])
  
 )
 async def yas(client, message):
     
-    usr = await client.get_chat("VTVIT")
+    usr = await client.get_chat("IQ7amo")
     name = usr.first_name
     photo = await app.download_media(usr.photo.big_file_id)
     await message.reply_photo(photo,       caption=f"**[⧉• 𝙎𝙊𝙐𝙍𝘾𝞝 𝘼𝙇𝙄𝙉𝘼 - سەرچاوەی زیرەك 🧑🏻‍💻](t.me/MGIMT)\nزانیاری گەشەپێدەری دووەمی بۆت\n↜︙𝐍𝐀𝐌𝐄 ↬:{name}\n↜︙𝐔𝐒𝐄𝐑 ↬ :@{usr.username}\n↜︙𝐈𝐃 ↬ :`{usr.id}`\n↜︙𝐁𝐈𝐎 ↬: {usr.bio}**",
@@ -135,14 +135,14 @@ async def yas(client, message):
 
 
 @app.on_message(
-  command(["سەرۆک", "@IQ7amo","گەشەپێدەر","خاوەنی بۆت","خاوەنی بوت"])
+  command(["سەرۆک", "@Hawaall","گەشەپێدەر","خاوەنی بۆت","خاوەنی بوت"])
   
 )
 async def yas(client, message):
     usr = await client.get_chat(USER_OWNER)
     name = usr.first_name
     photo = await app.download_media(usr.photo.big_file_id)
-    await message.reply_photo(photo,       caption=f"**[⧉• 𝙎𝙊𝙐𝙍𝘾𝞝 𝘼𝙇𝙄𝙉𝘼 - 🧑🏻‍💻🖤 خاوەنی بۆت](t.me/MGIMT)\nزانیاری خاوەنی بۆت\n↜︙𝐍𝐀𝐌𝐄 ↬:{name}\n↜︙𝐔𝐒𝐄𝐑 ↬ :@{usr.username}\n↜︙𝐈𝐃 ↬ :`{usr.id}`\n↜︙𝐁𝐈𝐎 ↬: {usr.bio}**",
+    await message.reply_photo(photo,       caption=f"**[⧉• 𝙎𝙊𝙐𝙍𝘾𝞝 𝙃𝙖𝙬𝙖𝙡 - 🧑🏻‍💻🖤 خاوەنی بۆت](t.me/Haawall)\nزانیاری خاوەنی بۆت\n↜︙𝐍𝐀𝐌𝐄 ↬:{name}\n↜︙𝐔𝐒𝐄𝐑 ↬ :@{usr.username}\n↜︙𝐈𝐃 ↬ :`{usr.id}`\n↜︙𝐁𝐈𝐎 ↬: {usr.bio}**",
     reply_markup=InlineKeyboardMarkup(
             [
                 [
@@ -150,7 +150,7 @@ async def yas(client, message):
                         name, url=f"https://t.me/{usr.username}")
                 ],[
                     InlineKeyboardButton(
-                        "کەناڵی گەشەپێدەر", url=f"https://t.me/EHS4SS"),                        
+                        "کەناڵی گەشەپێدەر", url=f"https://t.me/Haawall"),                        
                  ],
             ]
         ),
@@ -164,7 +164,7 @@ async def yas(client, message):
     usr = await client.get_chat(-1001665233883)
     name = usr.first_name
     photo = await app.download_media(usr.photo.big_file_id)
-    await message.reply_photo(photo,       caption=f"**[⧉• 𝙎𝙊𝙐𝙍𝘾𝞝 𝙄𝙌 - کەناڵی سەرچاوە 🧑🏻‍💻](t.me/MGIMT)**\n**جۆینی کەناڵی بۆت بکە بۆ بینینی بابەتی جیاوازتر♥**\n\n** بەستەری کەناڵ :\nhttps://t.me/{usr.username}**", 
+    await message.reply_photo(photo,       caption=f"**[⧉• 𝙎𝙊𝙐𝙍𝘾𝞝 𝙃𝙖𝙬𝙖𝙡 - کەناڵی سەرچاوە 🧑🏻‍💻](t.me/Haawall)**\n**جۆینی کەناڵی بۆت بکە بۆ بینینی بابەتی جیاوازتر♥**\n\n** بەستەری کەناڵ :\nhttps://t.me/{usr.username}**", 
     reply_markup=InlineKeyboardMarkup(
             [
                 [
@@ -183,16 +183,16 @@ async def yas(client, message):
 async def huhh(client: Client, message: Message):
     await message.reply_photo(
         photo=f"https://telegra.ph/file/7713aee1676f475d4ed21.jpg",
-        caption=f"""**[⧉• 𝙎𝙊𝙐𝙍𝘾𝞝 𝘼𝙇𝙄𝙉𝘼 - زیرەکی دەستکرد🧑🏻‍💻🖤](t.me/MGIMT)**\n\n**بەخێربێی ئەزیزم {message.from_user.mention} بۆ بەشی زیرەکی دەستکرد تایبەت بە سەرچاوەی زیرەك**\n** بۆ بەکارهێنانی بنووسە : iq + پرسیارەکەت ♥⚡**""",
+        caption=f"""**[⧉• 𝙎𝙊𝙐𝙍𝘾𝞝 𝙃𝙖𝙬𝙖𝙡 - زیرەکی دەستکرد🧑🏻‍💻🖤](t.me/Haawall)**\n\n**بەخێربێی ئەزیزم {message.from_user.mention} بۆ بەشی زیرەکی دەستکرد تایبەت بە سەرچاوەی زیرەك**\n** بۆ بەکارهێنانی بنووسە : iq + پرسیارەکەت ♥⚡**""",
         reply_markup=InlineKeyboardMarkup(
             [
                 [
                                         InlineKeyboardButton(
-                        "﮼محمد˹َّّ", url=f"https://t.me/IQ7amo"), 
+                        "﮼ᴱᴺᴺᴰﾂ🖇️🖤ᶜⁱᵗʸ", url=f"https://t.me/IQ7amo"), 
                  ],[
                 
                     InlineKeyboardButton(
-                        "⧉• 𝙎𝙊𝙐𝙍𝘾𝞝 𝘼𝙇𝙄𝙉𝘼", url=f"https://t.me/MGIMT"),
+                        "⧉• 𝙎𝙊𝙐𝙍𝘾𝞝 𝘼𝙇𝙄𝙉𝘼", url=f"https://t.me/Haawall"),
                 ],
 
             ]
