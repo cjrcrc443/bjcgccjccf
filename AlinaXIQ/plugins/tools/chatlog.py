@@ -72,6 +72,6 @@ async def on_left_chat_member(_, message: Message):
         chat_id = message.chat.id
         left = f"**✫ لێفتی گرووپ ✫\n\nناوی گرووپ : {title}**\n\n**ئایدی گرووپ :** `{chat_id}`\n\n**دەرکرا لەلایەن : {remove_by}\n\nبۆت : @{app.username} **"
         await app.send_photo(GROUP_BOT, photo=random.choice(photo), caption=left, reply_markup=InlineKeyboardMarkup([
-            [InlineKeyboardButton(f"نوێکارییەکانی ئەلینا 🍻", url=f"https://t.me/MGIMT")]
+            [InlineKeyboardButton(f"نوێکارییەکانی بۆت 🍻", url=f"https://t.me/Hawaall")]
          ]))
         await delete_served_chat(chat_id)
