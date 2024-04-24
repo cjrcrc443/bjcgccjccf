@@ -5,7 +5,7 @@ from AlinaXIQ import app
 
 #--------------------------
 
-MUST_JOIN = "EHS4SS"
+MUST_JOIN = "Haawall"
 #------------------------
 @app.on_message(filters.incoming & filters.private, group=-1)
 async def must_join_channel(app: Client, msg: Message):
