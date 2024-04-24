@@ -15,7 +15,7 @@ import random
 async def music(client: Client, message: Message):
     rl = random.randint(1, 29)
     url = f"https://t.me/ZWZZ7/{rl}"
-    await client.send_voice(message.chat.id, url, caption="**[⧉• 𝙎𝙊𝙐𝙍𝘾𝞝 𝘼𝙇𝙄𝙉𝘼 - 🧑🏻‍💻🖤 گۆرانی](t.me/MGIMT)**\n\n**••┉┉┉┉┉••🝢••┉┉┉┉┉••**\n**¦  گۆرانییەکانم➧♥️**\n**@IQMUC - کەناڵی گۆرانی**",
+    await client.send_voice(message.chat.id, url, caption="**[⧉• 𝙎𝙊𝙐𝙍𝘾𝞝 𝙃𝙖𝙬𝙖𝙡 - 🧑🏻‍💻🖤 گۆرانی](t.me/Haawall)**\n\n**••┉┉┉┉┉••🝢••┉┉┉┉┉••**\n**¦  گۆرانییەکانم➧♥️**\n**@IQMUC - کەناڵی گۆرانی**",
     reply_markup=InlineKeyboardMarkup(
             [
                 [
@@ -30,7 +30,7 @@ async def music(client: Client, message: Message):
 async def ihd(client: Client, message: Message):
     rs = random.randint(1,148)
     url = f"https://t.me/GTTUTY/{rs}"
-    await client.send_photo(message.chat.id,url,caption="**[⧉• 𝙎𝙊𝙐𝙍𝘾𝞝 𝘼𝙇𝙄𝙉𝘼 - 🧑🏻‍💻🖤 وێنەکان](t.me/MGIMT)**\n**••┉┉┉┉┉••🝢••┉┉┉┉┉••**\n\n**¦ وێنەکە دیاریکرا ♥•**",
+    await client.send_photo(message.chat.id,url,caption="**[⧉• 𝙎𝙊𝙐𝙍𝘾𝞝 𝙃𝙖𝙬𝙖𝙡 - 🧑🏻‍💻🖤 وێنەکان](t.me/Haawall)**\n**••┉┉┉┉┉••🝢••┉┉┉┉┉••**\n\n**¦ وێنەکە دیاریکرا ♥•**",
     reply_markup=InlineKeyboardMarkup(
             [
                 [
@@ -46,7 +46,7 @@ async def ihd(client: Client, message: Message):
 async def ihd(client: Client, message: Message):
     rl = random.randint(1,45)
     url = f"https://t.me/ZSZZW/{rl}"
-    await client.send_photo(message.chat.id,url,caption="**[⧉• 𝙎𝙊𝙐𝙍𝘾𝞝 𝘼𝙇𝙄𝙉𝘼 - 🧑🏻‍💻🖤 کچان](t.me/MGIMT)**\n**••┉┉┉┉┉••🝢••┉┉┉┉┉••**\n\n**¦ وێنەی کچان➧♥️\n@ZSZZW - کەناڵی وێنە**",
+    await client.send_photo(message.chat.id,url,caption="**[⧉• 𝙎𝙊𝙐𝙍𝘾𝞝 𝙃𝙖𝙬𝙖𝙡 - 🧑🏻‍💻🖤 کچان](t.me/Haawall)**\n**••┉┉┉┉┉••🝢••┉┉┉┉┉••**\n\n**¦ وێنەی کچان➧♥️\n@ZSZZW - کەناڵی وێنە**",
     reply_markup=InlineKeyboardMarkup(
             [
                 [
@@ -63,7 +63,7 @@ async def ihd(client: Client, message: Message):
 async def voice(client: Client, message: Message):
     rl = random.randint(1, 102)
     url = f"https://t.me/IQQUR/{rl}"
-    await client.send_voice(message.chat.id, url, caption="**[⧉• 𝙎𝙊𝙐𝙍𝘾𝞝 𝘼𝙇𝙄𝙉𝘼 - 🧑🏻‍💻🖤 قورئان](t.me/MGIMT)**\n**••┉┉┉┉┉••🝢••┉┉┉┉┉••**\n\n**¦ قورئانی پیرۆز➧♥️\n@IQQUR - کەناڵی قورئان**",
+    await client.send_voice(message.chat.id, url, caption="**[⧉• 𝙎𝙊𝙐𝙍𝘾𝞝 𝙃𝙖𝙬𝙖𝙡 - 🧑🏻‍💻🖤 قورئان](t.me/Haawall)**\n**••┉┉┉┉┉••🝢••┉┉┉┉┉••**\n\n**¦ قورئانی پیرۆز➧♥️\n@IQQUR - کەناڵی قورئان**",
     reply_markup=InlineKeyboardMarkup(
             [
                 [
@@ -81,7 +81,7 @@ async def video(client: Client, message: Message):
     rl = random.randint(5, 32)
     u = await client.get_messages("IQVIDE",rl)
     if u.video:
-     await client.send_video(message.chat.id, u.video.file_id, caption="**[⧉• 𝙎𝙊𝙐𝙍𝘾𝞝 𝘼𝙇𝙄𝙉𝘼 - 🧑🏻‍💻🖤 ڤیدیۆ](t.me/MGIMT)**\n**••┉┉┉┉┉••🝢••┉┉┉┉┉••**\n\n**¦ @xv7amo - کەناڵی ڤیدیۆ♥️•**",
+     await client.send_video(message.chat.id, u.video.file_id, caption="**[⧉• 𝙎𝙊𝙐𝙍𝘾𝞝 𝙃𝙖𝙬𝙖𝙡 - 🧑🏻‍💻🖤 ڤیدیۆ](t.me/Haawall)**\n**••┉┉┉┉┉••🝢••┉┉┉┉┉••**\n\n**¦ @xv7amo - کەناڵی ڤیدیۆ♥️•**",
     reply_markup=InlineKeyboardMarkup(
             [
                 [
