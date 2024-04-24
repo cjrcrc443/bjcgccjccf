@@ -22,7 +22,7 @@ async def must_join_channel(app: Client, msg: Message):
                 link = chat_info.invite_link
             try:
                 await msg.reply_photo(
-                    photo="https://graph.org/file/d43f056ca2a5e2e598fd2.jpg", caption=f"**🧑🏻‍💻︙ببوورە ئەزیزم تۆ جۆین نیت؛\n🔰︙سەرەتا پێویستە جۆینی کەناڵی بۆت ♥️؛\n👾︙بکەیت بۆ بەکارهێنانم جۆین بە ⚜️؛\n💎︙کەناڵی بۆت: @EHS4SS\n\n👾︙کاتێ جۆینت کرد ستارت بکە /start , /help 📛!**",
+                    photo="https://graph.org/file/c8d0d49f5e13290314807.jpg", caption=f"**🧑🏻‍💻︙ببوورە ئەزیزم تۆ جۆین نیت؛\n🔰︙سەرەتا پێویستە جۆینی کەناڵی بۆت ♥️؛\n👾︙بکەیت بۆ بەکارهێنانم جۆین بە ⚜️؛\n💎︙کەناڵی بۆت: @Haawall\n\n👾︙کاتێ جۆینت کرد ستارت بکە /start , /help 📛!**",
                     reply_markup=InlineKeyboardMarkup(
                         [
                             [
