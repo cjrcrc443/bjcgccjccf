@@ -136,7 +136,7 @@ async def download_video(client, CallbackQuery):
                 f"**● ꒐ کەمێك چاوەڕێ بکە {chutiya}\n\n● ꒐ دایدەگرم لە یوتوبەوە**",
                 file_stark,
             ),
-        reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton(f"نوێکارییەکانی ئەلینا 🍻", url=f"https://t.me/MGIMT")]]))
+        reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton(f"نوێکارییەکانی بۆت 🍻", url=f"https://t.me/Haawall")]]))
         
         await client.send_message(CallbackQuery.message.chat.id, f"**● ꒐ ئەزیزم {chutiya}\n\n✅ ꒐ بە سەرکەوتوویی داگرترا\n● ꒐ ڤیدیۆم ناردە چاتی تایبەتی بۆت\n● ꒐ [ئێرە دابگرە](tg://openmessage?user_id={app.id}) 🎸**", reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton(f"🎸 ئێرە دابگرە 🎸", url=f"tg://openmessage?user_id={app.id}")]]))
         await pablo.delete()
@@ -237,7 +237,7 @@ async def download_audio(client, CallbackQuery):
                 f"**● ꒐ کەمێك چاوەڕێ بکە {chutiya}\n\n● ꒐ دایدەگرم لە یوتوبەوە**",
                 file_stark,
             ),
-        reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton(f"نوێکارییەکانی ئەلینا 🍻", url=f"https://t.me/MGIMT")]]))
+        reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton(f"نوێکارییەکانی بۆت 🍻", url=f"https://t.me/Haawall")]]))
             
         await client.send_message(CallbackQuery.message.chat.id, f"**● ꒐ ئەزیزم {chutiya}\n\n✅ ꒐ بە سەرکەوتوویی داگرترا\n● ꒐ گۆرانیم ناردە چاتی تایبەتی بۆت\n● ꒐ [ئێرە دابگرە](tg://openmessage?user_id={app.id}) 🎸**", reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton(f"🎸 ئێرە دابگرە 🎸", url=f"tg://openmessage?user_id={app.id}")]]))
         
