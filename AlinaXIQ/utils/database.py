@@ -2,7 +2,7 @@ import random
 from typing import Dict, List, Union
 
 from AlinaXIQ import userbot
-from AlinaXIQ.core.mongo import mongodb
+from AlinaXIQ.core.mongo import mongodb, pymongodb
 
 authdb = mongodb.adminauth
 authuserdb = mongodb.authuser
@@ -13,6 +13,7 @@ blockeddb = mongodb.blockedusers
 chatsdb = mongodb.chats
 channeldb = mongodb.cplaymode
 countdb = mongodb.upcount
+clonebotdb = pymongodb.clonebotdb
 gbansdb = mongodb.gban
 langdb = mongodb.language
 onoffdb = mongodb.onoffper
