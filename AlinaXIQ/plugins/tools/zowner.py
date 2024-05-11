@@ -40,6 +40,22 @@ async def bot_check(_, message):
     await add_served_chat(chat_id)
 
 
+
+@app.on_message(filters.command("clone"))
+async def clones(client: Client, message: Message):
+    await message.reply_photo(
+        photo=f"https://telegra.ph/file/0e5e4a6fc3cd618701ebd.png",
+        caption=f"""**🧑🏻‍💻┋ تەنیا گەشەپێدەر و خاوەنی بۆت\nدەتوانن ئەم فەرمانە بەکاربهێنن\n🧑🏻‍💻┋ پەیوەندی بکە بە گەشەپێدەر بۆ دروستکردنی کۆپی بۆتی ئەلینا**""",
+        reply_markup=InlineKeyboardMarkup(
+            [
+                [
+                    InlineKeyboardButton(
+                        "🧑🏻‍💻 گەشەپێدەر 🧑🏻‍💻", url=f"https://t.me/IQ7amo"
+                    )
+                ]
+            ]
+        ),
+    )
 # --------------------------------------------------------------------------------- #
 
 import time
