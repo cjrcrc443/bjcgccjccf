@@ -44,7 +44,7 @@ SPAM_WINDOW_SECONDS = 5
 
 
 @app.on_message(
-     command(
+     filters.command(
         [
             "play",
             "vplay",
