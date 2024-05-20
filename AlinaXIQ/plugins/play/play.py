@@ -34,7 +34,7 @@ from AlinaXIQ.utils.logger import play_logs
 from config import BANNED_USERS, lyrical
 from time import time
 from AlinaXIQ.utils.extraction import extract_user
-
+from strings.filters import command
 # Define a dictionary to track the last message timestamp for each user
 user_last_message_time = {}
 user_command_count = {}
@@ -44,7 +44,7 @@ SPAM_WINDOW_SECONDS = 5
 
 
 @app.on_message(
-     filters.command(
+     command(
         [
             "play",
             "vplay",
@@ -54,8 +54,8 @@ SPAM_WINDOW_SECONDS = 5
             "vplayforce",
             "cplayforce",
             "cvplayforce",
-            "play",
-            "vplay", 
+            "/play",
+            "/vplay", 
             "cplay", 
             "g", 
             "پلەی", 
@@ -68,8 +68,7 @@ SPAM_WINDOW_SECONDS = 5
             "سورەتی",
             "سورەت",
             "سوڕەت",
-        ],
-        prefixes=["/", "!", "%", "", ".", "@", "#"],
+        ]
     )
     & ~filters.private
     & ~BANNED_USERS
@@ -101,7 +100,7 @@ async def play_commnd(
         if user_command_count[user_id] > SPAM_THRESHOLD:
             # Block the user if they exceed the threshold
             hu = await message.reply_text(
-                f"**🧑🏻‍💻┋ {message.from_user.mention} بۆت سپام مەکە بەڕێز\n🧑🏻‍💻┋ پێنج چرکە بوەستە**"
+                f"**{message.from_user.mention} ᴘʟᴇᴀsᴇ ᴅᴏɴᴛ ᴅᴏ sᴘᴀᴍ, ᴀɴᴅ ᴛʀʏ ᴀɢᴀɪɴ ᴀғᴛᴇʀ 5 sᴇᴄ**"
             )
             await asyncio.sleep(3)
             await hu.delete()
@@ -133,7 +132,7 @@ async def play_commnd(
         else None
     )
     if audio_telegram:
-        if audio_telegram.file_size > 99999999999999999:
+        if audio_telegram.file_size > 9999999999999999:
             return await mystic.edit_text(_["play_5"])
         duration_min = seconds_to_min(audio_telegram.duration)
         if (audio_telegram.duration) > config.DURATION_LIMIT:
@@ -159,7 +158,7 @@ async def play_commnd(
                     user_id,
                     details,
                     chat_id,
-                    user_mention,
+                    user_name,
                     message.chat.id,
                     streamtype="telegram",
                     forceplay=fplay,
@@ -203,7 +202,7 @@ async def play_commnd(
                     user_id,
                     details,
                     chat_id,
-                    user_mention,
+                    user_name,
                     message.chat.id,
                     video=True,
                     streamtype="telegram",
@@ -329,7 +328,7 @@ async def play_commnd(
                 streamtype = "playlist"
                 plist_type = "spartist"
                 img = config.SPOTIFY_ARTIST_IMG_URL
-                cap = _["play_11"].format(message.from_user.mention)
+                cap = _["play_11"].format(message.from_user.first_name)
             else:
                 return await mystic.edit_text(_["play_15"])
         elif await Apple.valid(url):
@@ -386,7 +385,7 @@ async def play_commnd(
                     user_id,
                     details,
                     chat_id,
-                    user_mention,
+                    user_name,
                     message.chat.id,
                     streamtype="soundcloud",
                     forceplay=fplay,
@@ -426,7 +425,7 @@ async def play_commnd(
                     message.from_user.id,
                     url,
                     chat_id,
-                    message.from_user.mention,
+                    message.from_user.first_name,
                     message.chat.id,
                     video=video,
                     streamtype="index",
@@ -483,7 +482,7 @@ async def play_commnd(
                 user_id,
                 details,
                 chat_id,
-                user_mention,
+                user_name,
                 message.chat.id,
                 video=video,
                 streamtype=streamtype,
@@ -571,7 +570,7 @@ async def play_music(client, CallbackQuery, _):
         chat_id, channel = await get_channeplayCB(_, cplay, CallbackQuery)
     except:
         return
-    user_mention = CallbackQuery.from_user.mention
+    user_name = CallbackQuery.from_user.first_name
     try:
         await CallbackQuery.message.delete()
         await CallbackQuery.answer()
@@ -613,7 +612,7 @@ async def play_music(client, CallbackQuery, _):
             CallbackQuery.from_user.id,
             details,
             chat_id,
-            user_mention,
+            user_name,
             CallbackQuery.message.chat.id,
             video,
             streamtype="youtube",
@@ -660,7 +659,7 @@ async def play_playlists_command(client, CallbackQuery, _):
         chat_id, channel = await get_channeplayCB(_, cplay, CallbackQuery)
     except:
         return
-    user_mention = CallbackQuery.from_user.mention
+    user_name = CallbackQuery.from_user.first_name
     await CallbackQuery.message.delete()
     try:
         await CallbackQuery.answer()
@@ -716,7 +715,7 @@ async def play_playlists_command(client, CallbackQuery, _):
             user_id,
             result,
             chat_id,
-            user_mention,
+            user_name,
             CallbackQuery.message.chat.id,
             video,
             streamtype="playlist",
@@ -795,7 +794,6 @@ from AlinaXIQ.utils.inline import (
 )
 from AlinaXIQ.utils.pastebin import AlinaBin
 from AlinaXIQ.utils.stream.queue import put_queue, put_queue_index
-from youtubesearchpython.__future__ import VideosSearch
 from AlinaXIQ.utils.thumbnails import get_thumb
 
 
@@ -805,7 +803,7 @@ async def stream(
     user_id,
     result,
     chat_id,
-    user_mention,
+    user_name,
     original_chat_id,
     video: Union[bool, str] = None,
     streamtype: Union[bool, str] = None,
@@ -843,7 +841,7 @@ async def stream(
                     f"vid_{vidid}",
                     title,
                     duration_min,
-                    user_mention,
+                    user_name,
                     vidid,
                     user_id,
                     "video" if video else "audio",
@@ -876,7 +874,7 @@ async def stream(
                     file_path if direct else f"vid_{vidid}",
                     title,
                     duration_min,
-                    user_mention,
+                    user_name,
                     vidid,
                     user_id,
                     "video" if video else "audio",
@@ -891,7 +889,7 @@ async def stream(
                         f"https://t.me/{app.username}?start=info_{vidid}",
                         title[:18],
                         duration_min,
-                        user_mention,
+                        user_name,
                     ),
                     reply_markup=InlineKeyboardMarkup(button),
                 )
@@ -936,7 +934,7 @@ async def stream(
                 file_path if direct else f"vid_{vidid}",
                 title,
                 duration_min,
-                user_mention,
+                user_name,
                 vidid,
                 user_id,
                 "video" if video else "audio",
@@ -948,7 +946,7 @@ async def stream(
                 chat_id=original_chat_id,
                 photo=img,
                 caption=_["queue_4"].format(
-                    position, title[:18], duration_min, user_mention
+                    position, title[:18], duration_min, user_name
                 ),
                 reply_markup=InlineKeyboardMarkup(button),
             )
@@ -968,7 +966,7 @@ async def stream(
                 file_path if direct else f"vid_{vidid}",
                 title,
                 duration_min,
-                user_mention,
+                user_name,
                 vidid,
                 user_id,
                 "video" if video else "audio",
@@ -983,7 +981,7 @@ async def stream(
                     f"https://t.me/{app.username}?start=info_{vidid}",
                     title[:18],
                     duration_min,
-                    user_mention,
+                    user_name,
                 ),
                 reply_markup=InlineKeyboardMarkup(button),
             )
@@ -1001,7 +999,7 @@ async def stream(
                 file_path,
                 title,
                 duration_min,
-                user_mention,
+                user_name,
                 streamtype,
                 user_id,
                 "audio",
@@ -1010,7 +1008,7 @@ async def stream(
             button = aq_markup(_, chat_id)
             await app.send_message(
                 chat_id=original_chat_id,
-                text=_["queue_4"].format(position, title[:18], duration_min, user_mention),
+                text=_["queue_4"].format(position, title[:18], duration_min, user_name),
                 reply_markup=InlineKeyboardMarkup(button),
             )
         else:
@@ -1023,7 +1021,7 @@ async def stream(
                 file_path,
                 title,
                 duration_min,
-                user_mention,
+                user_name,
                 streamtype,
                 user_id,
                 "audio",
@@ -1034,7 +1032,7 @@ async def stream(
                 original_chat_id,
                 photo=config.SOUNCLOUD_IMG_URL,
                 caption=_["stream_1"].format(
-                    config.SUPPORT_CHAT, title[:23], duration_min, user_mention
+                    config.SUPPORT_CHAT, title[:23], duration_min, user_name
                 ),
                 reply_markup=InlineKeyboardMarkup(button),
             )
@@ -1053,7 +1051,7 @@ async def stream(
                 file_path,
                 title,
                 duration_min,
-                user_mention,
+                user_name,
                 streamtype,
                 user_id,
                 "video" if video else "audio",
@@ -1062,7 +1060,7 @@ async def stream(
             button = aq_markup(_, chat_id)
             await app.send_message(
                 chat_id=original_chat_id,
-                text=_["queue_4"].format(position, title[:18], duration_min, user_mention),
+                text=_["queue_4"].format(position, title[:18], duration_min, user_name),
                 reply_markup=InlineKeyboardMarkup(button),
             )
         else:
@@ -1075,7 +1073,7 @@ async def stream(
                 file_path,
                 title,
                 duration_min,
-                user_mention,
+                user_name,
                 streamtype,
                 user_id,
                 "video" if video else "audio",
@@ -1087,7 +1085,7 @@ async def stream(
             run = await app.send_photo(
                 original_chat_id,
                 photo=config.TELEGRAM_VIDEO_URL if video else config.TELEGRAM_AUDIO_URL,
-                caption=_["stream_1"].format(link, title[:23], duration_min, user_mention),
+                caption=_["stream_1"].format(link, title[:23], duration_min, user_name),
                 reply_markup=InlineKeyboardMarkup(button),
             )
             db[chat_id][0]["mystic"] = run
@@ -1106,7 +1104,7 @@ async def stream(
                 f"live_{vidid}",
                 title,
                 duration_min,
-                user_mention,
+                user_name,
                 vidid,
                 user_id,
                 "video" if video else "audio",
@@ -1115,7 +1113,7 @@ async def stream(
             button = aq_markup(_, chat_id)
             await app.send_message(
                 chat_id=original_chat_id,
-                text=_["queue_4"].format(position, title[:18], duration_min, user_mention),
+                text=_["queue_4"].format(position, title[:18], duration_min, user_name),
                 reply_markup=InlineKeyboardMarkup(button),
             )
         else:
@@ -1137,7 +1135,7 @@ async def stream(
                 f"live_{vidid}",
                 title,
                 duration_min,
-                user_mention,
+                user_name,
                 vidid,
                 user_id,
                 "video" if video else "audio",
@@ -1152,7 +1150,7 @@ async def stream(
                     f"https://t.me/{app.username}?start=info_{vidid}",
                     title[:23],
                     duration_min,
-                    user_mention,
+                    user_name,
                 ),
                 reply_markup=InlineKeyboardMarkup(button),
             )
@@ -1169,14 +1167,14 @@ async def stream(
                 "index_url",
                 title,
                 duration_min,
-                user_mention,
+                user_name,
                 link,
                 "video" if video else "audio",
             )
             position = len(db.get(chat_id)) - 1
             button = aq_markup(_, chat_id)
             await mystic.edit_text(
-                text=_["queue_4"].format(position, title[:27], duration_min, user_mention),
+                text=_["queue_4"].format(position, title[:27], duration_min, user_name),
                 reply_markup=InlineKeyboardMarkup(button),
             )
         else:
@@ -1194,7 +1192,7 @@ async def stream(
                 "index_url",
                 title,
                 duration_min,
-                user_mention,
+                user_name,
                 link,
                 "video" if video else "audio",
                 forceplay=forceplay,
@@ -1203,7 +1201,7 @@ async def stream(
             run = await app.send_photo(
                 original_chat_id,
                 photo=config.STREAM_IMG_URL,
-                caption=_["stream_2"].format(user_mention),
+                caption=_["stream_2"].format(user_name),
                 reply_markup=InlineKeyboardMarkup(button),
             )
             db[chat_id][0]["mystic"] = run
