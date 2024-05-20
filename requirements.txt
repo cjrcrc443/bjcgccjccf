@@ -16,7 +16,7 @@ pydub
 pycountry
 heroku3
 apscheduler
-motor 
+motor==3.3.2
 numpy
 pillow==9.5.0
 psutil
@@ -26,12 +26,11 @@ qrcode
 pytz
 future==0.18.3
 search_engine_parser
-ntgcalls
-py-tgcalls==0.9.7
+py-tgcalls
+#ntgcalls==1.1.2
 pykeyboard
 pyshorteners
-pyrogram==2.0.106
-pymongo==4.6.2
+git+https://github.com/KurimuzonAkuma/pyrogram@dev
 python-dotenv
 pyyaml==6.0.1
 requests
@@ -53,6 +52,10 @@ openai==1.23.6
 pickledb
 img2pdf
 cloudscraper
+phonenumbers
 pycryptodome
 opencv-python-headless==4.9.0.80
 mpv
+MukeshAPI
+pymongo==4.6.2
+lexica-api
