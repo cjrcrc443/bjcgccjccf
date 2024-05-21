@@ -42,7 +42,7 @@ user_command_count = {}
 SPAM_THRESHOLD = 2
 SPAM_WINDOW_SECONDS = 5
 
-user_name
+
 @app.on_message(
      command(
         [
