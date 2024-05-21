@@ -35,7 +35,7 @@ SONG_DOWNLOAD_DURATION_LIMIT = int(getenv("SONG_DOWNLOAD_DURATION_LIMIT", "99999
 LOGGER_ID = int(getenv("LOGGER_ID", None))
 
 # Get this value from  on Telegram by /id
-OWNER_ID = list(map(int, getenv("OWNER_ID", "833360381 6588787990").split()))
+OWNER_ID = int(getenv("OWNER_ID", 6588787990))
 ## Fill these variables if you're deploying on heroku.
 # Your heroku app name
 HEROKU_APP_NAME = getenv("HEROKU_APP_NAME")
