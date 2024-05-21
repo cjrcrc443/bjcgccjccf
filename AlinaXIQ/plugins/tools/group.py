@@ -4,7 +4,6 @@ from AlinaXIQ import app
 from AlinaXIQ.misc import SUDOERS
 from config import OWNER_ID
 from pyrogram.types import VideoChatEnded, Message
-from pytgcalls.types.input_stream import AudioPiped, AudioVideoPiped
 from AlinaXIQ.core.call import Alina
 # vc on
 @app.on_message(filters.video_chat_started)
