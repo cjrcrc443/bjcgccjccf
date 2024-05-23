@@ -1,3 +1,4 @@
+
 aiofiles
 bard
 SpeechRecognition
@@ -27,7 +28,7 @@ pytz
 future==0.18.3
 search_engine_parser
 py-tgcalls
-#ntgcalls==1.1.2
+ntgcalls
 pykeyboard
 pyshorteners
 git+https://github.com/KurimuzonAkuma/pyrogram@dev
@@ -40,13 +41,14 @@ spotipy
 tgcrypto
 telegraph
 unidecode
-yt-dlp==2023.10.13
+uuid==1.30
+yt-dlp
 git+https://github.com/joetats/youtube_search@master
 git+https://github.com/alexmercerind/youtube-search-python@main
 gtts
 git+https://github.com/AsmSafone/SafoneAPI
 lexica-api==1.5.1
-httpx==0.25.2
+httpx[http2]
 gpytranslate
 openai==1.23.6
 pickledb
@@ -57,5 +59,4 @@ pycryptodome
 opencv-python-headless==4.9.0.80
 mpv
 MukeshAPI
-pymongo==4.6.2
 lexica-api
