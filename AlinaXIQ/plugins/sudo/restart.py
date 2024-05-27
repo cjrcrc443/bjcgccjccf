@@ -126,7 +126,7 @@ async def update_(client, message, _):
         )
     else:
         nrs = await response.edit(_final_updates_, disable_web_page_preview=True)
-    os.system("git stash &> /dev/null && git pull")
+    os.system("git stash &> /dev/null && git pull && bash start")
 
     try:
         served_chats = await get_active_chats()
@@ -198,7 +198,7 @@ async def updater_(client, message, _):
         )
     else:
         nrs = await response.edit(_final_updates_, disable_web_page_preview=True)
-    os.system("git stash &> /dev/null && git pull")
+    os.system("git stash &> /dev/null && git pull && bash start")
 
     try:
         served_chats = await get_active_chats()
