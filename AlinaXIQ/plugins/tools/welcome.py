@@ -15,19 +15,19 @@ from pyrogram.types import (
     User,
 )
 
-from YukkiMusic import app
-from YukkiMusic.misc import SUDOERS
-from YukkiMusic.utils.error import capture_err
-from YukkiMusic.utils.permissions import adminsOnly
-from YukkiMusic.utils.keyboard import ikb
-from YukkiMusic.plugins.admins.notes import extract_urls
-from YukkiMusic.utils.database import (
+from AlinaXIQ import app
+from AlinaXIQ.misc import SUDOERS
+from AlinaXIQ.utils.errors import capture_err
+from AlinaXIQ.utils.permissions import adminsOnly
+from AlinaXIQ.utils.keyboard import ikb
+from AlinaXIQ.plugins.admins.notes import extract_urls
+from AlinaXIQ.utils.database import (
     del_welcome,
     get_welcome,
     is_gbanned_user,
     set_welcome,
 )
-from YukkiMusic.utils.functions import (
+from AlinaXIQ.utils.functions import (
     check_format,
     extract_text_and_keyb,
 )
