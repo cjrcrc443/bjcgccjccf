@@ -23,7 +23,7 @@ async def quran(c,msg):
     keyboard.append([ikb("• دواتر •", callback_data = "next-1")])
     keyboard.append([ikb("نوێکارییەکانی ئەلینا", url=f"https://t.me/MGIMT")])
     video=f"https://telegra.ph/file/39ee458993b40a8a9a9b9.mp4"
-    await msg.reply_video(video=video, caption=f"**◗⋮◖ [⧉• 𝙎𝙊𝙐𝙍𝘾𝞝 𝘼𝙇𝙄𝙉𝘼 - پەخشی قورئان](t.me/MGIMT)\n⋆┄─┄─┄─┄─┄─┄─┄─┄⋆\n◗⋮◖ بەخێربێی ئەزیزم {msg.from_user.mention}\n◗⋮◖ بۆ بەشی پەخشکردنی قورئانی پیرۆز**", reply_markup = ikm(keyboard))
+    await msg.reply_video(video=video, caption=f"**◗⋮◖ [⧉• 𝙎𝙊𝙐𝙍𝘾𝞝 𝙃𝙖𝙬𝙖𝙡 - پەخشی قورئان](t.me/Haawall)\n⋆┄─┄─┄─┄─┄─┄─┄─┄⋆\n◗⋮◖ بەخێربێی ئەزیزم {msg.from_user.mention}\n◗⋮◖ بۆ بەشی پەخشکردنی قورئانی پیرۆز**", reply_markup = ikm(keyboard))
 
 @app.on_callback_query(filters.regex("next") & ~BANNED_USERS)
 async def next_quran(c,cq):
@@ -98,7 +98,7 @@ async def show_quran(c,cq):
     per_name = quran[number]["sounds"][i]["name"]
     file = requests.get(quran[number]["sounds"][i]["url"]).content
     open(f"{name}.mp3","wb").write(file)
-    await app.send_audio(cq.message.chat.id,f"{name}.mp3",f"**◗⋮◖ سوڕەتی {name}\n◗⋮◖ بە دەنگی {per_name}\n◗⋮◖ گەشەپێدەر : @IQ7amo**",reply_markup = ikm([[ikb("• پەخشکردن •", callback_data=f"done-{number}-{i}")]]))
+    await app.send_audio(cq.message.chat.id,f"{name}.mp3",f"**◗⋮◖ سوڕەتی {name}\n◗⋮◖ بە دەنگی {per_name}\n◗⋮◖ گەشەپێدەر : @Hawaall**",reply_markup = ikm([[ikb("• پەخشکردن •", callback_data=f"done-{number}-{i}")]]))
 
 
 @app.on_callback_query(filters.regex("done") & ~BANNED_USERS)
