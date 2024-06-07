@@ -29,7 +29,7 @@ async def huhh(client: Client, message: Message):
             [
                 [
                     InlineKeyboardButton(
-                        "ᴱᴺᴺᴰﾂ🖇️🖤ᶜⁱᵗʸ", url=f"https://t.me/Haawall"), 
+                        "ᴱᴺᴺᴰﾂ🖇️🖤ᶜⁱᵗʸ", url=f"https://t.me/Hawaall"), 
                  ],[
                     
                 
@@ -39,13 +39,13 @@ async def huhh(client: Client, message: Message):
                     
                 
                     InlineKeyboardButton(
-                        "⧉• 𝙎𝙊𝙐𝙍𝘾𝞝 𝙃𝙖𝙬𝙖𝙡", url=f"https://t.me/Hawaall"),
+                        "⧉• 𝙎𝙊𝙐𝙍𝘾𝞝 𝙃𝙖𝙬𝙖𝙡", url=f"https://t.me/Haawall"),
                 
         ],[
                     
                 
                     InlineKeyboardButton(
-                        "『𓏺کەناڵی سەرەکی』", url=f"https://t.me/Hawaall"),
+                        "『𓏺کەناڵی سەرەکی』", url=f"https://t.me/Haawall"),
                 ],
 
             ]
@@ -70,7 +70,7 @@ async def huhh(client: Client, message: Message):
                     
                 
                     InlineKeyboardButton(
-                        "ڕێـكـخـەری بـۆتـی گـۆرانـی", url=f"https://t.me/ʜ ᴀ ᴡ ᴀ ʟ"),
+                        "ڕێـكـخـەری بـۆتـی گـۆرانـی", url=f"https://t.me/creatmusicbot"),
                 ],[
                     
                     InlineKeyboardButton(
