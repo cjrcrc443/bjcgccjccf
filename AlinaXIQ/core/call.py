@@ -270,7 +270,7 @@ class Call(PyTgCalls):
             MediaStream(
                 file_path,
                 audio_parameters=AudioQuality.HIGH,
-                video_parameters=VideoQuality.SD_480p,
+                video_parameters=VideoQuality.HD_720p,
                 ffmpeg_parameters=f"-ss {to_seek} -to {duration}",
             )
             if mode == "video"
