@@ -2,6 +2,7 @@ import asyncio
 import os
 import re
 from typing import Union
+import config
 
 import yt_dlp
 from pyrogram.enums import MessageEntityType
@@ -321,7 +322,7 @@ class YouTubeAPI:
             fpath = f"downloads/{title}.mp3"
             return fpath
         elif video:
-            if await is_on_off(1):
+            if await is_on_off(config.YTDOWNLOADER):
                 direct = True
                 downloaded_file = await loop.run_in_executor(None, video_dl)
             else:
