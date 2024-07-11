@@ -7,32 +7,32 @@ from pyrogram import filters
 load_dotenv()
 
 # Get this value from my.telegram.org/apps
-API_ID = int(getenv("API_ID"))
-API_HASH = getenv("API_HASH")
+API_ID = int(getenv("API_ID", "12962251"))
+API_HASH = getenv("API_HASH", "b51499523800add51e4530c6f552dbc8")
 # Get your token from @BotFather on Telegram.
-BOT_TOKEN = getenv("BOT_TOKEN")
+BOT_TOKEN = getenv("BOT_TOKEN", "6749565952:AAEHc5Qto2shRhAWRiRbK_uwYoH8v5Mqx3U")
 # Add Owner Username without @ 
 OWNER_USERNAME = getenv("OWNER_USERNAME","Hawaallll")
 USER_OWNER = getenv("USER_OWNER","Hawaallll")
 # Get Your bot username
-BOT_USERNAME = getenv("BOT_USERNAME" , None)
+BOT_USERNAME = getenv("BOT_USERNAME", "HawalmusicBot")
 # Don't Add style font 
-BOT_NAME = getenv("BOT_NAME" , None)
+BOT_NAME = getenv("BOT_NAME", "ᴱᴺᴺᴰﾂ🖇️🖤ᵐᵘˢⁱᶜ")
 #get Your Assistant User name
-ASSUSERNAME = getenv("ASSUSERNAME" , None)
+ASSUSERNAME = getenv("ASSUSERNAME", "HawallBot")
 EVALOP = list(map(int, getenv("EVALOP", "833360381 1818734394 7210848076").split()))
 # Get your mongo url from cloud.mongodb.com
-MONGO_DB_URI = getenv("MONGO_DB_URI", None)
+MONGO_DB_URI = getenv("MONGO_DB_URI", "mongodb+srv://iqmcbot:vvcOaPIREn3oPQto@cluster0.cwdhy7x.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
 
-DURATION_LIMIT_MIN = int(getenv("DURATION_LIMIT", "9999999999990"))
+DURATION_LIMIT_MIN = int(getenv("DURATION_LIMIT", "99999999999999999"))
 
-SONG_DOWNLOAD_DURATION = int(getenv("SONG_DOWNLOAD_DURATION", "999999999999"))
+SONG_DOWNLOAD_DURATION = int(getenv("SONG_DOWNLOAD_DURATION", "99999999999999999"))
 SONG_DOWNLOAD_DURATION_LIMIT = int(getenv("SONG_DOWNLOAD_DURATION_LIMIT", "99999999999"))
 
 
 
 # Chat id of a group for logging bot's activities
-LOGGER_ID = int(getenv("LOGGER_ID", None))
+LOGGER_ID = int(getenv("LOGGER_ID", "-1002120302842"))
 
 # Get this value from  on Telegram by /id
 OWNER_ID = int(getenv("OWNER_ID", 7210848076))
@@ -78,7 +78,7 @@ TG_VIDEO_FILESIZE_LIMIT = int(getenv("TG_VIDEO_FILESIZE_LIMIT", 1073741824))
 
 
 # Ge@STRINGSEASO_NBOT2 session from @STRINGSEASO_NBOT
-STRING1 = getenv("STRING_SESSION", None)
+STRING1 = getenv("STRING_SESSION", "AgDFycsAHHP9X7UdmpGK954TuJcLTlTyTFS42SQQdPuH2mn9E0FVrcpu3rvn2hS-U9Zp7V3fdEX0_QJTkM5HCpL-VKPrmxwiq7FJTm0KaKEiQuuXYSaecJ8M4ytsa5X_7ISSBkZK731WNzhxLAyzbLSNyQ3TttMM86NYPRhsd7hmtxreNnxix-Igystme8Xh3tNmlmr5XQ4-G1aGzb2pgNnHPKfqlYruVm-WU1iz9s64yXtzks6bsHYLJigx08gbr3wmpvT7xOxBmS8zNPJEUR71mUdZcJzGk5va-NJ6rbfQ5xpVGpYyn93mwbXY3kg0MGngUuOuH--xpPbFNYvrrFjao2TFnAAAAAGNTVZ_AA")
 STRING2 = getenv("STRING_SESSION2", None)
 STRING3 = getenv("STRING_SESSION3", None)
 STRING4 = getenv("STRING_SESSION4", None)
