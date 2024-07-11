@@ -5,13 +5,9 @@ from pyrogram import filters
 from pyrogram.enums import ChatMembersFilter
 from pyrogram.types import CallbackQuery, Message
 import re
-from os import getenv
 from pyrogram.types import Message, InlineKeyboardMarkup, InlineKeyboardButton
-
-from dotenv import load_dotenv
 from pyrogram import filters
 
-load_dotenv()
 
 from AlinaXIQ import app
 from AlinaXIQ.core.call import Alina
@@ -21,7 +17,6 @@ from AlinaXIQ.utils.decorators import ActualAdminCB, AdminActual, language
 from AlinaXIQ.utils.formatters import alpha_to_int, get_readable_time
 from config import BANNED_USERS, adminlist, lyrical
 
-from dotenv import load_dotenv
 
 rel = {}
 
