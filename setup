@@ -82,7 +82,7 @@ installation(){
 }
 
 clear
-pprint "Welcome to AnonXMusic Setup Installer\n\n"
+pprint "Welcome to AlinaXMusic Setup Installer\n\n"
 pprint "If you see any error during Installation Process, Please refer to these files for logs: "
 pprint "\nFor node js errors , Checkout nodelog.txt"
 pprint "\nFor pypi packages errors , Checkout pypilog.txt"
@@ -102,15 +102,17 @@ pprint "\nEnter Your Values Below\n\n\n"
 pprint "API ID: "; color_reset; read api_id
 pprint "\nAPI HASH: "; color_reset; read api_hash
 pprint "\nBOT TOKEN: "; color_reset; read bot_token
-pprint "\nOWNER ID:"; color_reset; read ownid
+pprint "\nOWNER ID: "; color_reset; read ownid
 pprint "\nMONGO DB URI: "; color_reset; read mongo_db
 pprint "\nLOG GROUP ID: "; color_reset; read logger
-pprint "\nSTRING SESSION: "; color_reset; read string_session
+pprint "\nSTRING SESSION V2: "; color_reset; read string_session
+pprint "\nBOT NAME (Type [On/Off] for enable or disable auto broadcast): "; color_reset; read bot_name
+pprint "\nBOT USERNAME: "; color_reset; read bot_username
 
 pprint "\n\nProcessing your vars, wait a while !" "cgreen"
 
 if [ -f .env ]; then
-	rm .env
+    rm .env
 fi
 
 echo """API_ID = $api_id
@@ -119,8 +121,10 @@ BOT_TOKEN = $bot_token
 MONGO_DB_URI = $mongo_db
 LOGGER_ID = $logger
 STRING_SESSION = $string_session
+BOT_NAME = $bot_name
+BOT_USERNAME = $bot_username
 OWNER_ID = $ownid""" > .env
 clear
 
-pprint "\n\n\nThanks for using AnonXMusic installer, your vars have been saved successfully ! \nIf you wanna add more variables add them in your env by : vi .env"
+pprint "\n\n\nThanks for using AlinaXMusic installer, your vars have been saved successfully ! \nIf you wanna add more variables add them in your env by : vi .env"
 pprint "\n\nNow you can start the bot by : bash start\n\n"
