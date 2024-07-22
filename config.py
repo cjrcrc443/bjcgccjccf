@@ -22,7 +22,7 @@ BOT_NAME = getenv("BOT_NAME", "ᴱᴺᴺᴰﾂ🖇️🖤ᵐᵘˢⁱᶜ")
 ASSUSERNAME = getenv("ASSUSERNAME", "HawallBot")
 EVALOP = list(map(int, getenv("EVALOP", "833360381 1818734394 7210848076").split()))
 # Get your mongo url from cloud.mongodb.com
-MONGO_DB_UR = getenv("MONGO_DB_URI", "mongodb+srv://iqmcbot:vvcOaPIREn3oPQto@cluster0.cwdhy7x.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
+MONGO_DB_URI = getenv("MONGO_DB_URI", "mongodb+srv://iqmcbot:vvcOaPIREn3oPQto@cluster0.cwdhy7x.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
 
 DURATION_LIMIT_MIN = int(getenv("DURATION_LIMIT", "99999999999999999"))
 
