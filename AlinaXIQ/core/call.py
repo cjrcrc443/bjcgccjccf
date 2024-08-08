@@ -13,7 +13,7 @@ from pytgcalls.types.stream import StreamAudioEnded
 
 import config
 from strings import get_string
-from AlinaXIQ import LOGGER, YouTube, app
+from VIPMUSIC import LOGGER, YouTube, app, YTB
 from AlinaXIQ.misc import db
 from AlinaXIQ.utils.database import (
     add_active_chat,
@@ -431,12 +431,20 @@ class Call(PyTgCalls):
                         videoid,
                         mystic,
                         videoid=True,
-                        video=str(streamtype) == "video",
+                        video=True if str(streamtype) == "video" else False,
                     )
                 except:
-                    return await mystic.edit_text(
-                        _["call_6"], disable_web_page_preview=True
-                    )
+                    try:
+                        file_path, direct = await YTB.download(
+                            videoid,
+                            mystic,
+                            videoid=True,
+                            video=True if str(streamtype) == "video" else False,
+                        )
+                    except:
+                        return await mystic.edit_text(
+                            _["call_6"], disable_web_page_preview=True
+                        )
                 if video:
                     stream = MediaStream(
                         file_path,
