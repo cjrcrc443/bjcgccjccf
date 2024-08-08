@@ -10,7 +10,7 @@ from pyrogram.errors import (
 from AlinaXIQ.utils.database import get_assistant
 from pyrogram import filters
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, CallbackQuery
-from AlinaXIQ import YouTube, app
+from AlinaXIQ import YouTube, app, YTB
 from AlinaXIQ.core.call import Alina
 from AlinaXIQ.misc import SUDOERS, db
 from AlinaXIQ.utils.database import (
@@ -440,7 +440,15 @@ async def del_back_playlist(client, CallbackQuery, _):
                     video=status,
                 )
             except:
-                return await mystic.edit_text(_["call_6"])
+                try:
+                    file_path, direct = await YTB.download(
+                        videoid,
+                        mystic,
+                        videoid=True,
+                        video=status,
+                    )
+                except:
+                    return await mystic.edit_text(_["call_6"])
             try:
                 image = await YouTube.thumbnail(videoid, True)
             except:
