@@ -718,13 +718,14 @@ async def slider_queries(client, CallbackQuery, _):
 #-----------------------------------------------------STREAM----------------------------------------#
          
 import os
+import logging
 from random import randint
 from typing import Union
 
 from pyrogram.types import InlineKeyboardMarkup
 
 import config
-from AlinaXIQ import Carbon, YouTube, app
+from AlinaXIQ import Carbon, YouTube, YTB, app
 from AlinaXIQ.core.call import Alina
 from AlinaXIQ.misc import db
 from AlinaXIQ.utils.database import add_active_video_chat, is_active_chat
@@ -799,7 +800,14 @@ async def stream(
                         vidid, mystic, video=status, videoid=True
                     )
                 except:
-                    raise AssistantErr(_["play_14"])
+                    try:
+                        
+                        file_path, direct = await YTB.download(
+                            vidid, mystic, video=status, videoid=True
+                        )
+                    except Exception as e:
+                        logging.error(e)
+                        raise AssistantErr(_["play_14"])
                 await Alina.join_call(
                     chat_id,
                     original_chat_id,
@@ -863,7 +871,13 @@ async def stream(
                 vidid, mystic, videoid=True, video=status
             )
         except:
-            raise AssistantErr(_["play_14"])
+            try:
+                file_path, direct = await YTB.download(
+                    vidid, mystic, videoid=True, video=status
+                    )
+            except Exception as e:
+                logging.error(e)
+                raise AssistantErr(_["play_14"])
         if await is_active_chat(chat_id):
             await put_queue(
                 chat_id,
