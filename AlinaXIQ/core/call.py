@@ -13,7 +13,7 @@ from pytgcalls.types.stream import StreamAudioEnded
 
 import config
 from strings import get_string
-from VIPMUSIC import LOGGER, YouTube, app, YTB
+from AlinaXIQ import LOGGER, YouTube, app, YTB
 from AlinaXIQ.misc import db
 from AlinaXIQ.utils.database import (
     add_active_chat,
