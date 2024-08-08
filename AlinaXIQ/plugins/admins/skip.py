@@ -2,7 +2,7 @@ from pyrogram import filters
 from pyrogram.types import InlineKeyboardMarkup, Message
 from strings.filters import command
 import config
-from AlinaXIQ import YouTube, app
+from AlinaXIQ import YouTube, app, YTB
 from AlinaXIQ.core.call import Alina
 from AlinaXIQ.misc import db
 from AlinaXIQ.utils.database import get_loop
@@ -139,7 +139,15 @@ async def skip(cli, message: Message, _, chat_id):
                 video=status,
             )
         except:
-            return await mystic.edit_text(_["call_6"])
+            try:
+                file_path, direct = await YTB.download(
+                    videoid,
+                    mystic,
+                    videoid=True,
+                    video=status,
+                )
+            except:
+                return await mystic.edit_text(_["call_6"])
         try:
             image = await YouTube.thumbnail(videoid, True)
         except:
