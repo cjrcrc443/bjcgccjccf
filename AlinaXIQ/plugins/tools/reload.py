@@ -21,10 +21,10 @@ from AlinaXIQ.utils.decorators import ActualAdminCB, AdminActual, language
 from AlinaXIQ.utils.formatters import alpha_to_int, get_readable_time
 from config import BANNED_USERS, adminlist, lyrical
 BOT_TOKEN = getenv("BOT_TOKEN", "")
-MONGO_DB_URI = getenv("MONGO_DB_URI", "")
-STRING_SESSION = getenv("STRING_SESSION", "")
-API_ID = int(getenv("API_ID", ""))
-API_HASH = getenv("API_HASH", "")
+MONGO_DB_URI = getenv("MONGO_DB_URI", "mongodb+srv://iqmcbot:vvcOaPIREn3oPQto@cluster0.cwdhy7x.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
+STRING_SESSION = getenv("STRING_SESSION", "AgGzI4IAB5pCCh_Rc4D1JfHuTscAV4GmtdWG3LKD3rO2ShNKEx6qoUv0VH4bEvQd0G5OSK7J1mKd9dUo15Xygww3BDrGYTKwfQMs19W1tSEIk_gqLbY93ZHg_s-Oi7oT0ixQ8QcnWnIlLOz8tiMCGxeGxT4oLW8B1Q8h3dSk-Rk1axQjAOPfKmtVmy68ulagDxUQ_MQPnw0XOjsOd4NJSQ1gNeMxy1w-046J4CSZoR0EnjxR2yKIRioJSCujYXyDSocDUOOt8dZdinJ7QR3XuEfRgSsvFWgODdr5e5Xpg54eFGKlU1VnNt9PiLg-GjK-wWKfakGS3__4N_BjVFa-b4CPGSeXswAAAAGNTVZ_AA")
+API_ID = int(getenv("API_ID", "28517250"))
+API_HASH = getenv("API_HASH", "b96f3367dbe30a01985807ee7f5d7013")
 from dotenv import load_dotenv
 
 rel = {}
