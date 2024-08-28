@@ -1,48 +1,5 @@
-import asyncio
 import json
-import os
 import subprocess
-
-import requests
-from youtubesearchpython.__future__ import VideosSearch
-
-
-async def shell_cmd(cmd):
-    proc = await asyncio.create_subprocess_shell(
-        cmd,
-        stdout=asyncio.subprocess.PIPE,
-        stderr=asyncio.subprocess.PIPE,
-    )
-    out, errorz = await proc.communicate()
-    if errorz:
-        if "unavailable videos are hidden" in (errorz.decode("utf-8")).lower():
-            return out.decode("utf-8")
-        else:
-            return errorz.decode("utf-8")
-    return out.decode("utf-8")
-
-
-async def st(vidid):
-
-    yt = f"https://www.youtube.com/watch?v={vidid}"
-
-    results = VideosSearch(yt, limit=1)
-    for result in (await results.next())["result"]:
-
-        query = result["title"][:10]
-
-        url = "https://saavn.dev/api/search/songs"
-
-        querystring = {"query": query}
-        response = requests.get(url, params=querystring)
-
-        url = response.json()["data"]["results"][0]["downloadUrl"][-1].get("url")
-
-        path = os.path.join("downloads", f"{vidid}.m4a")
-
-        cmd = f" yt-dlp -o {path} {url}"
-        await shell_cmd(cmd)
-        return path
 
 
 def get_readable_time(seconds: int) -> str:
