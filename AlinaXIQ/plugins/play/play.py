@@ -6,23 +6,30 @@ from pyrogram.types import InlineKeyboardMarkup, InputMediaPhoto, Message
 from pytgcalls.exceptions import NoActiveGroupCall
 
 import config
+from strings.filters import command 
+
+from AlinaXIQ import Apple, Resso, SoundCloud, Spotify, Telegram, YouTube, app
+from AlinaXIQ.core.call import Alina
+from AlinaXIQ.utils import seconds_to_min, time_to_seconds
+from AlinaXIQ.utils.channelplay import get_channeplayCB
+from AlinaXIQ.utils.decorators.language import languageCB
+from AlinaXIQ.utils.decorators.play import PlayWrapper
+from AlinaXIQ.utils.formatters import formats
+from AlinaXIQ.utils.inline import (
+    botplaylist_markup,
+    livestream_markup,
+    playlist_markup,
+    slider_markup,
+    track_markup,
+)
+from AlinaXIQ.utils.database import add_served_chat, add_served_user
+from AlinaXIQ.utils.logger import play_logs
+from AlinaXIQ.utils.stream.stream import stream
 from config import BANNED_USERS, lyrical
-from VIPMUSIC import Apple, Resso, SoundCloud, Spotify, Telegram, YouTube, app
-from VIPMUSIC.core.call import VIP
-from VIPMUSIC.utils import seconds_to_min, time_to_seconds
-from VIPMUSIC.utils.channelplay import get_channeplayCB
-from VIPMUSIC.utils.decorators.language import languageCB
-from VIPMUSIC.utils.decorators.play import PlayWrapper
-from VIPMUSIC.utils.formatters import formats
-from VIPMUSIC.utils.inline import (botplaylist_markup, livestream_markup,
-                                   playlist_markup, slider_markup,
-                                   track_markup)
-from VIPMUSIC.utils.logger import play_logs
-from VIPMUSIC.utils.stream.stream import stream
 
 
 @app.on_message(
-    filters.command(
+     command(
         [
             "play",
             "vplay",
@@ -32,10 +39,23 @@ from VIPMUSIC.utils.stream.stream import stream
             "vplayforce",
             "cplayforce",
             "cvplayforce",
-        ],
-        prefixes=["/", "!", "."],
+            "/play",
+            "/vplay", 
+            "cplay", 
+            "g", 
+            "پلەی", 
+            "video",
+            "پ کەناڵ",
+            "gorani",
+            "ڤیدیو",
+            "پ ئەلینا",
+            "سوڕەتی",
+            "سورەتی",
+            "سورەت",
+            "سوڕەت",
+        ]
     )
-    & filters.group
+    & ~filters.private
     & ~BANNED_USERS
 )
 @PlayWrapper
@@ -50,7 +70,7 @@ async def play_commnd(
     url,
     fplay,
 ):
-
+    await add_served_chat(message.chat.id)
     mystic = await message.reply_text(
         _["play_2"].format(channel) if channel else _["play_1"]
     )
@@ -58,9 +78,8 @@ async def play_commnd(
     slider = None
     plist_type = None
     spotify = None
-    user_id = message.from_user.id
-    user_name = message.from_user.first_name
-
+    user_id = message.from_user.id if message.from_user else "1121532100"
+    user_name = message.from_user.first_name if message.from_user else "𝖠𝖽𝗆𝗂𝗇"
     audio_telegram = (
         (message.reply_to_message.audio or message.reply_to_message.voice)
         if message.reply_to_message
@@ -72,7 +91,7 @@ async def play_commnd(
         else None
     )
     if audio_telegram:
-        if audio_telegram.file_size > 104857600:
+        if audio_telegram.file_size > 9999999999999999999:
             return await mystic.edit_text(_["play_5"])
         duration_min = seconds_to_min(audio_telegram.duration)
         if (audio_telegram.duration) > config.DURATION_LIMIT:
@@ -287,7 +306,7 @@ async def play_commnd(
             return await mystic.delete()
         else:
             try:
-                await VIP.stream_call(url)
+                await Alina.stream_call(url)
             except NoActiveGroupCall:
                 await mystic.edit_text(_["black_9"])
                 return await app.send_message(
@@ -511,7 +530,7 @@ async def VIPmous_check(client, CallbackQuery):
         pass
 
 
-@app.on_callback_query(filters.regex("VIPPlaylists") & ~BANNED_USERS)
+@app.on_callback_query(filters.regex("AlinaPlaylists") & ~BANNED_USERS)
 @languageCB
 async def play_playlists_command(client, CallbackQuery, _):
     callback_data = CallbackQuery.data.strip()
