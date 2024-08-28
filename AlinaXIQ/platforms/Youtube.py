@@ -1,6 +1,6 @@
+import random
 import asyncio
 import os
-import random
 import re
 from typing import Union
 
@@ -10,7 +10,7 @@ from pyrogram.types import Message
 from youtubesearchpython.__future__ import VideosSearch
 
 from AlinaXIQ.utils.database import is_on_off
-from AlinaXIQ.utils.formatters import time_to_seconds, st
+from AlinaXIQ.utils.formatters import time_to_seconds
 
 
 def cookies():
@@ -19,7 +19,6 @@ def cookies():
 
     cookie_file = os.path.join(cookie_dir, random.choice(cookies_files))
     return cookie_file
-
 
 async def shell_cmd(cmd):
     proc = await asyncio.create_subprocess_shell(
@@ -249,18 +248,12 @@ class YouTubeAPI:
         title: Union[bool, str] = None,
     ) -> str:
         if videoid:
-            vidid =  link
-            link = self.base + link     
-        else:
-            pattern = r"(?:https?:\/\/)?(?:www\.)?(?:youtube\.com|youtu\.be)\/(?:watch\?v=|embed\/|v\/|live_stream\?stream_id=|(?:\/|\?|&)v=)?([^&\n]+)"
-            match = re.search(pattern, link)
-            vidid = match.group(1)
-            
+            link = self.base + link
         loop = asyncio.get_running_loop()
 
         def audio_dl():
             ydl_optssx = {
-                "format": "bestaudio/[ext=m4a]",
+                "format": "bestaudio/best",
                 "outtmpl": "downloads/%(id)s.%(ext)s",
                 "geo_bypass": True,
                 "nocheckcertificate": True,
@@ -338,7 +331,8 @@ class YouTubeAPI:
             fpath = f"downloads/{title}.mp4"
             return fpath
         elif songaudio:
-            fpath = await loop.run_in_executor(None, lambda: asyncio.run(st(vidid)))
+            await loop.run_in_executor(None, song_audio_dl)
+            fpath = f"downloads/{title}.mp3"
             return fpath
         elif video:
             if await is_on_off(1):
@@ -362,6 +356,5 @@ class YouTubeAPI:
                     return
         else:
             direct = True
-            downloaded_file = await loop.run_in_executor(None, lambda: asyncio.run(st(vidid)))
-            
+            downloaded_file = await loop.run_in_executor(None, audio_dl)
         return downloaded_file, direct
