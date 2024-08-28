@@ -1,7 +1,4 @@
 import asyncio
-import aiohttp
-import requests
-import httpx
 import os
 import random
 import re
@@ -13,7 +10,7 @@ from pyrogram.types import Message
 from youtubesearchpython.__future__ import VideosSearch
 
 from AlinaXIQ.utils.database import is_on_off
-from AlinaXIQ.utils.formatters import time_to_seconds, download_file
+from AlinaXIQ.utils.formatters import time_to_seconds, st
 
 
 def cookies():
@@ -252,7 +249,13 @@ class YouTubeAPI:
         title: Union[bool, str] = None,
     ) -> str:
         if videoid:
-            link = self.base + link
+            vidid =  link
+            link = self.base + link     
+        else:
+            pattern = r"(?:https?:\/\/)?(?:www\.)?(?:youtube\.com|youtu\.be)\/(?:watch\?v=|embed\/|v\/|live_stream\?stream_id=|(?:\/|\?|&)v=)?([^&\n]+)"
+            match = re.search(pattern, link)
+            vidid = match.group(1)
+            
         loop = asyncio.get_running_loop()
 
         def audio_dl():
@@ -335,8 +338,7 @@ class YouTubeAPI:
             fpath = f"downloads/{title}.mp4"
             return fpath
         elif songaudio:
-            await loop.run_in_executor(None, song_audio_dl)
-            fpath = f"downloads/{title}.mp3"
+            fpath = await loop.run_in_executor(None, lambda: asyncio.run(st(vidid)))
             return fpath
         elif video:
             if await is_on_off(1):
@@ -360,5 +362,6 @@ class YouTubeAPI:
                     return
         else:
             direct = True
-            downloaded_file = await loop.run_in_executor(None, audio_dl)
+            downloaded_file = await loop.run_in_executor(None, lambda: asyncio.run(st(vidid)))
+            
         return downloaded_file, direct
