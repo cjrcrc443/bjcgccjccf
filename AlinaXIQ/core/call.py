@@ -6,37 +6,28 @@ from typing import Union
 from pyrogram import Client
 from pyrogram.types import InlineKeyboardMarkup
 from pytgcalls import PyTgCalls, StreamType
-from pytgcalls.exceptions import (
-    AlreadyJoinedError,
-    NoActiveGroupCall,
-    TelegramServerError,
-)
+from pytgcalls.exceptions import (AlreadyJoinedError, NoActiveGroupCall,
+                                  TelegramServerError)
 from pytgcalls.types import Update
 from pytgcalls.types.input_stream import AudioPiped, AudioVideoPiped
-from pytgcalls.types.input_stream.quality import HighQualityAudio, MediumQualityVideo
+from pytgcalls.types.input_stream.quality import (HighQualityAudio,
+                                                  MediumQualityVideo)
 from pytgcalls.types.stream import StreamAudioEnded
 
 import config
+from strings import get_string
 from AlinaXIQ import LOGGER, YouTube, app
 from AlinaXIQ.misc import db
-from AlinaXIQ.utils.database import (
-    add_active_chat,
-    add_active_video_chat,
-    get_lang,
-    get_loop,
-    group_assistant,
-    is_autoend,
-    music_on,
-    remove_active_chat,
-    remove_active_video_chat,
-    set_loop,
-)
+from AlinaXIQ.utils.database import (add_active_chat, add_active_video_chat,
+                                     get_lang, get_loop, group_assistant,
+                                     is_autoend, music_on, remove_active_chat,
+                                     remove_active_video_chat, set_loop)
 from AlinaXIQ.utils.exceptions import AssistantErr
-from AlinaXIQ.utils.formatters import check_duration, seconds_to_min, speed_converter
-from AlinaXIQ.utils.inline.play import stream_markup, stream_markup2
+from AlinaXIQ.utils.formatters import (check_duration, seconds_to_min,
+                                       speed_converter)
+from AlinaXIQ.utils.inline.play import stream_markup, telegram_markup
 from AlinaXIQ.utils.stream.autoclear import auto_clean
 from AlinaXIQ.utils.thumbnails import get_thumb
-from strings import get_string
 
 autoend = {}
 counter = {}
@@ -51,7 +42,7 @@ async def _clear_(chat_id):
 class Call(PyTgCalls):
     def __init__(self):
         self.userbot1 = Client(
-            name="AlinaAss1",
+            name="VIPAss1",
             api_id=config.API_ID,
             api_hash=config.API_HASH,
             session_string=str(config.STRING1),
@@ -61,7 +52,7 @@ class Call(PyTgCalls):
             cache_duration=100,
         )
         self.userbot2 = Client(
-            name="AlinaAss2",
+            name="VIPAss2",
             api_id=config.API_ID,
             api_hash=config.API_HASH,
             session_string=str(config.STRING2),
@@ -71,7 +62,7 @@ class Call(PyTgCalls):
             cache_duration=100,
         )
         self.userbot3 = Client(
-            name="AlinaXAss3",
+            name="VIPXAss3",
             api_id=config.API_ID,
             api_hash=config.API_HASH,
             session_string=str(config.STRING3),
@@ -81,7 +72,7 @@ class Call(PyTgCalls):
             cache_duration=100,
         )
         self.userbot4 = Client(
-            name="AlinaXAss4",
+            name="VIPXAss4",
             api_id=config.API_ID,
             api_hash=config.API_HASH,
             session_string=str(config.STRING4),
@@ -91,7 +82,7 @@ class Call(PyTgCalls):
             cache_duration=100,
         )
         self.userbot5 = Client(
-            name="AlinaAss5",
+            name="VIPAss5",
             api_id=config.API_ID,
             api_hash=config.API_HASH,
             session_string=str(config.STRING5),
@@ -105,14 +96,6 @@ class Call(PyTgCalls):
         assistant = await group_assistant(self, chat_id)
         await assistant.pause_stream(chat_id)
 
-    async def mute_stream(self, chat_id: int):
-        assistant = await group_assistant(self, chat_id)
-        await assistant.mute_stream(chat_id)
-
-    async def unmute_stream(self, chat_id: int):
-        assistant = await group_assistant(self, chat_id)
-        await assistant.unmute_stream(chat_id)
-        
     async def resume_stream(self, chat_id: int):
         assistant = await group_assistant(self, chat_id)
         await assistant.resume_stream(chat_id)
@@ -400,7 +383,7 @@ class Call(PyTgCalls):
                         text=_["call_6"],
                     )
                 img = await get_thumb(videoid)
-                button = stream_markup2(_, chat_id)
+                button = telegram_markup(_, chat_id)
                 run = await app.send_photo(
                     chat_id=original_chat_id,
                     photo=img,
@@ -425,8 +408,8 @@ class Call(PyTgCalls):
                     )
                 except:
                     return await mystic.edit_text(
-                            _["call_6"], disable_web_page_preview=True
-                        )
+                        _["call_6"], disable_web_page_preview=True
+                    )
                 if video:
                     stream = AudioVideoPiped(
                         file_path,
@@ -478,7 +461,7 @@ class Call(PyTgCalls):
                         original_chat_id,
                         text=_["call_6"],
                     )
-                button = stream_markup2(_, chat_id)
+                button = telegram_markup(_, chat_id)
                 run = await app.send_photo(
                     chat_id=original_chat_id,
                     photo=config.STREAM_IMG_URL,
@@ -507,7 +490,7 @@ class Call(PyTgCalls):
                         text=_["call_6"],
                     )
                 if videoid == "telegram":
-                    button = stream_markup2(_, chat_id)
+                    button = telegram_markup(_, chat_id)
                     run = await app.send_photo(
                         chat_id=original_chat_id,
                         photo=(
@@ -523,7 +506,7 @@ class Call(PyTgCalls):
                     db[chat_id][0]["mystic"] = run
                     db[chat_id][0]["markup"] = "tg"
                 elif videoid == "soundcloud":
-                    button = stream_markup2(_, chat_id)
+                    button = telegram_markup(_, chat_id)
                     run = await app.send_photo(
                         chat_id=original_chat_id,
                         photo=config.SOUNCLOUD_IMG_URL,
