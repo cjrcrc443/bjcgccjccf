@@ -1,5 +1,6 @@
-import random
 import asyncio
+import random
+import requests
 import os
 import re
 from typing import Union
@@ -9,7 +10,6 @@ from pyrogram.enums import MessageEntityType
 from pyrogram.types import Message
 from youtubesearchpython.__future__ import VideosSearch
 
-from AlinaXIQ.utils.database import is_on_off
 from AlinaXIQ.utils.formatters import time_to_seconds
 
 
@@ -19,6 +19,7 @@ def cookies():
 
     cookie_file = os.path.join(cookie_dir, random.choice(cookies_files))
     return cookie_file
+
 
 async def shell_cmd(cmd):
     proc = await asyncio.create_subprocess_shell(
@@ -33,6 +34,31 @@ async def shell_cmd(cmd):
         else:
             return errorz.decode("utf-8")
     return out.decode("utf-8")
+
+
+async def api_download(vidid, video=False):
+    API = "https://api.cobalt.tools/api/json"
+    headers = {
+        "Accept": "application/json",
+        "Content-Type": "application/json",
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36",
+    }
+    if video:
+        path = os.path.join("downloads", f"{vidid}.mp4")
+        data = {"url": f"https://www.youtube.com/watch?v={vidid}", "vQuality": "480"}
+    else:
+        path = os.path.join("downloads", f"{vidid}.m4a")
+        data = {
+            "url": f"https://www.youtube.com/watch?v={vidid}",
+            "isAudioOnly": "True",
+            "aFormat": "mp3",
+        }
+    response = requests.post(API, headers=headers, json=data)
+    results = response.json()["url"]
+
+    cmd = f"yt-dlp '{results}' -o '{path}'"
+    a = await shell_cmd(cmd)
+    return path
 
 
 class YouTubeAPI:
@@ -248,12 +274,17 @@ class YouTubeAPI:
         title: Union[bool, str] = None,
     ) -> str:
         if videoid:
+            vidid = link
             link = self.base + link
+        else:
+            pattern = r"(?:https?:\/\/)?(?:www\.)?(?:youtube\.com|youtu\.be)\/(?:watch\?v=|embed\/|v\/|live_stream\?stream_id=|(?:\/|\?|&)v=)?([^&\n]+)"
+            match = re.search(pattern, link)
+            vidid = match.group(1)
         loop = asyncio.get_running_loop()
 
         def audio_dl():
             ydl_optssx = {
-                "format": "bestaudio/best",
+                "format": "bestaudio/[ext=m4a]",
                 "outtmpl": "downloads/%(id)s.%(ext)s",
                 "geo_bypass": True,
                 "nocheckcertificate": True,
@@ -327,15 +358,25 @@ class YouTubeAPI:
             x.download([link])
 
         if songvideo:
-            await loop.run_in_executor(None, song_video_dl)
-            fpath = f"downloads/{title}.mp4"
+            # await loop.run_in_executor(None, song_video_dl)
+            # fpath = f"downloads/{title}.mp4"
+            fpath = await loop.run_in_executor(
+                None, lambda: asyncio.run(api_download(vidid, video=True))
+            )
             return fpath
         elif songaudio:
-            await loop.run_in_executor(None, song_audio_dl)
-            fpath = f"downloads/{title}.mp3"
+            # await loop.run_in_executor(None, song_audio_dl)
+            # fpath = f"downloads/{title}.mp3"
+            fpath = await loop.run_in_executor(
+                None, lambda: asyncio.run(api_download(vidid))
+            )
             return fpath
         elif video:
-            if await is_on_off(1):
+            direct = True
+            downloaded_file = await loop.run_in_executor(
+                None, lambda: asyncio.run(api_download(vidid, video=True))
+            )
+            """if await is_on_off(config.YTDOWNLOADER):
                 direct = True
                 downloaded_file = await loop.run_in_executor(None, video_dl)
             else:
@@ -353,8 +394,11 @@ class YouTubeAPI:
                     downloaded_file = stdout.decode().split("\n")[0]
                     direct = None
                 else:
-                    return
+                    return"""
         else:
             direct = True
-            downloaded_file = await loop.run_in_executor(None, audio_dl)
+            # downloaded_file = await loop.run_in_executor(None, audio_dl)
+            downloaded_file = await loop.run_in_executor(
+                None, lambda: asyncio.run(api_download(vidid))
+            )
         return downloaded_file, direct
