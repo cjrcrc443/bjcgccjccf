@@ -1,4 +1,5 @@
 import asyncio
+import config
 import random
 import requests
 import os
@@ -10,8 +11,8 @@ from pyrogram.enums import MessageEntityType
 from pyrogram.types import Message
 from youtubesearchpython.__future__ import VideosSearch
 
+from AlinaXIQ.utils.database import is_on_off
 from AlinaXIQ.utils.formatters import time_to_seconds
-
 
 def cookies():
     cookie_dir = "AlinaXIQ/utils/cookies"
@@ -19,7 +20,6 @@ def cookies():
 
     cookie_file = os.path.join(cookie_dir, random.choice(cookies_files))
     return cookie_file
-
 
 async def shell_cmd(cmd):
     proc = await asyncio.create_subprocess_shell(
@@ -59,7 +59,6 @@ async def api_download(vidid, video=False):
     cmd = f"yt-dlp '{results}' -o '{path}'"
     a = await shell_cmd(cmd)
     return path
-
 
 class YouTubeAPI:
     def __init__(self):
