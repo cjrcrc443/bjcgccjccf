@@ -1,5 +1,6 @@
 import asyncio
 import os
+from datetime import datetime, timedelta
 from typing import Union
 
 from ntgcalls import TelegramServerError
@@ -26,6 +27,7 @@ from AlinaXIQ.utils.database import (
     add_active_video_chat,
     get_lang,
     get_loop,
+    is_autoend,
     group_assistant,
     music_on,
     remove_active_chat,
@@ -38,6 +40,8 @@ from AlinaXIQ.utils.inline.play import stream_markup
 from AlinaXIQ.utils.stream.autoclear import auto_clean
 from AlinaXIQ.utils.thumbnails import get_thumb
 
+autoend = {}
+counter = {}
 
 
 async def _clear_(chat_id):
@@ -321,6 +325,11 @@ class Call(PyTgCalls):
         await music_on(chat_id)
         if video:
             await add_active_video_chat(chat_id)
+        if await is_autoend():
+            counter[chat_id] = {}
+            users = len(await assistant.get_participants(chat_id))
+            if users == 1:
+                autoend[chat_id] = datetime.now() + timedelta(minutes=1)
 
     async def change_stream(self, client, chat_id):
         check = db.get(chat_id)
