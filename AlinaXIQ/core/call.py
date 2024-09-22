@@ -1,6 +1,5 @@
 import asyncio
 import os
-from datetime import datetime, timedelta
 from typing import Union
 
 from ntgcalls import TelegramServerError
@@ -274,8 +273,8 @@ class Call(PyTgCalls):
         assistant = await group_assistant(self, config.LOGGER_ID)
         await assistant.play(
             config.LOGGER_ID,
-            AudioVideoPiped(link),
-            stream_type=StreamType().pulse_stream,
+            MediaStream(link),
+            
         )
         await asyncio.sleep(0.2)
         await assistant.leave_call(config.LOGGER_ID)
