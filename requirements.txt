@@ -16,7 +16,7 @@ pydub
 pycountry
 heroku3
 apscheduler
-motor==3.3.2
+motor
 numpy
 pillow==9.5.0
 psutil
@@ -25,8 +25,7 @@ pyfiglet
 qrcode
 pytz
 future==0.18.3
-py-tgcalls==0.9.7
-#ntgcalls==1.1.2
+py-tgcalls==2.0.3
 pykeyboard
 pyshorteners
 python-dotenv
