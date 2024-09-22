@@ -273,7 +273,7 @@ class Call(PyTgCalls):
 
     async def stream_call(self, link):
         assistant = await group_assistant(self, config.LOGGER_ID)
-        await assistant.play(
+        await assistant.join_group_call(
             config.LOGGER_ID,
             MediaStream(link),
             
@@ -309,7 +309,7 @@ class Call(PyTgCalls):
                 else MediaStream(link, audio_parameters=AudioQuality.HIGH)
             )
         try:
-            await assistant.change_stream(
+            await assistant.join_group_call(
                 chat_id,
                 stream,
             )
