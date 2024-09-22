@@ -15,7 +15,6 @@ logging.getLogger("httpx").setLevel(logging.ERROR)
 logging.getLogger("pymongo").setLevel(logging.ERROR)
 logging.getLogger("pyrogram").setLevel(logging.ERROR)
 logging.getLogger("pytgcalls").setLevel(logging.ERROR)
-logging.getLogger("ntgcalls").setLevel(logging.ERROR)
 
 
 def LOGGER(name: str) -> logging.Logger:
