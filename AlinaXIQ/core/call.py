@@ -32,6 +32,7 @@ from AlinaXIQ.utils.database import (
     set_loop,
 )
 from AlinaXIQ.utils.exceptions import AssistantErr
+from AlinaXIQ.utils.formatters import check_duration, seconds_to_min, speed_converter
 from AlinaXIQ.utils.inline.play import stream_markup, telegram_markup
 from AlinaXIQ.utils.stream.autoclear import auto_clean
 from AlinaXIQ.utils.thumbnails import get_thumb
