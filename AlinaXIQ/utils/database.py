@@ -10,7 +10,7 @@ from AlinaXIQ.core.mongo import mongodb, pymongodb
 authdb = mongodb.adminauth
 authuserdb = mongodb.authuser
 autoenddb = mongodb.autoend
-assdb = mongodb.assistants
+db = mongodb.assistants
 blacklist_chatdb = mongodb.blacklistChat
 blockeddb = mongodb.blockedusers
 chatsdb = mongodb.chats
