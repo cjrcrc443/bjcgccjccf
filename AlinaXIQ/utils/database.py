@@ -10,7 +10,7 @@ from AlinaXIQ.core.mongo import mongodb, pymongodb
 authdb = mongodb.adminauth
 authuserdb = mongodb.authuser
 autoenddb = mongodb.autoend
-db = mongodb.assistants
+assdb = mongodb.assistants
 blacklist_chatdb = mongodb.blacklistChat
 blockeddb = mongodb.blockedusers
 chatsdb = mongodb.chats
@@ -304,44 +304,43 @@ async def delete_playlist(chat_id: int, name: str) -> bool:
     return False
 
 
+async def get_assistant_number(chat_id: int) -> str:
+    assistant = assistantdict.get(chat_id)
+    return assistant
+
+
 async def get_client(assistant: int):
-    clients = userbot.clients
-    if 1 <= assistant <= len(userbot.clients):
-        return clients[assistant - 1]
-    return None
+    if int(assistant) == 1:
+        return userbot.one
+    elif int(assistant) == 2:
+        return userbot.two
+    elif int(assistant) == 3:
+        return userbot.three
+    elif int(assistant) == 4:
+        return userbot.four
+    elif int(assistant) == 5:
+        return userbot.five
 
 
-async def save_assistant(chat_id, number):
+async def set_assistant_new(chat_id, number):
     number = int(number)
-    assistantdict[chat_id] = number
-    await db.update_one(
+    await assdb.update_one(
         {"chat_id": chat_id},
         {"$set": {"assistant": number}},
         upsert=True,
     )
-    return await get_assistant(chat_id)
 
 
 async def set_assistant(chat_id):
     from AlinaXIQ.core.userbot import assistants
 
-    dbassistant = await db.find_one({"chat_id": chat_id})
-    current_assistant = dbassistant["assistant"] if dbassistant else None
-
-    available_assistants = [assi for assi in assistants if assi != current_assistant]
-
-    if len(available_assistants) <= 1:
-        ran_assistant = random.choice(assistants)
-    else:
-        ran_assistant = random.choice(available_assistants)
-
+    ran_assistant = random.choice(assistants)
     assistantdict[chat_id] = ran_assistant
-    await db.update_one(
+    await assdb.update_one(
         {"chat_id": chat_id},
         {"$set": {"assistant": ran_assistant}},
         upsert=True,
     )
-
     userbot = await get_client(ran_assistant)
     return userbot
 
@@ -351,7 +350,7 @@ async def get_assistant(chat_id: int) -> str:
 
     assistant = assistantdict.get(chat_id)
     if not assistant:
-        dbassistant = await db.find_one({"chat_id": chat_id})
+        dbassistant = await assdb.find_one({"chat_id": chat_id})
         if not dbassistant:
             userbot = await set_assistant(chat_id)
             return userbot
@@ -378,7 +377,7 @@ async def set_calls_assistant(chat_id):
 
     ran_assistant = random.choice(assistants)
     assistantdict[chat_id] = ran_assistant
-    await db.update_one(
+    await assdb.update_one(
         {"chat_id": chat_id},
         {"$set": {"assistant": ran_assistant}},
         upsert=True,
@@ -386,18 +385,19 @@ async def set_calls_assistant(chat_id):
     return ran_assistant
 
 
-async def group_assistant(self, chat_id: int) -> PyTgCalls:
+async def group_assistant(self, chat_id: int) -> int:
     from AlinaXIQ.core.userbot import assistants
 
     assistant = assistantdict.get(chat_id)
     if not assistant:
-        dbassistant = await db.find_one({"chat_id": chat_id})
+        dbassistant = await assdb.find_one({"chat_id": chat_id})
         if not dbassistant:
             assis = await set_calls_assistant(chat_id)
         else:
             assis = dbassistant["assistant"]
             if assis in assistants:
                 assistantdict[chat_id] = assis
+                assis = assis
             else:
                 assis = await set_calls_assistant(chat_id)
     else:
@@ -405,13 +405,16 @@ async def group_assistant(self, chat_id: int) -> PyTgCalls:
             assis = assistant
         else:
             assis = await set_calls_assistant(chat_id)
-
-    assistant_index = int(assis) - 1
-
-    if 0 <= assistant_index < len(self.calls):
-        return self.calls[assistant_index]
-    else:
-        raise ValueError(f"Assistant index {assistant_index + 1} is out of range.")
+    if int(assis) == 1:
+        return self.one
+    elif int(assis) == 2:
+        return self.two
+    elif int(assis) == 3:
+        return self.three
+    elif int(assis) == 4:
+        return self.four
+    elif int(assis) == 5:
+        return self.five
 
 
 async def is_skipmode(chat_id: int) -> bool:
@@ -1001,68 +1004,3 @@ async def cleanmode_on(chat_id: int):
     except:
         pass
 
-
-# Audio Video Limit
-# Audio Video Limit
-from pytgcalls.types import AudioQuality, VideoQuality
-
-AUDIO_FILE = os.path.join(config.TEMP_DB_FOLDER, "audio.json")
-VIDEO_FILE = os.path.join(config.TEMP_DB_FOLDER, "video.json")
-
-
-def load_data(file_path):
-    if os.path.exists(file_path):
-        with open(file_path, "r") as file:
-            return json.load(file)
-    return {}
-
-
-def save_data(file_path, data):
-    with open(file_path, "w") as file:
-        json.dump(data, file, indent=4)
-
-
-audio = load_data(AUDIO_FILE)
-video = load_data(VIDEO_FILE)
-
-
-async def save_audio_bitrate(chat_id: int, bitrate: str):
-    audio[str(chat_id)] = bitrate
-    save_data(AUDIO_FILE, audio)
-
-
-async def save_video_bitrate(chat_id: int, bitrate: str):
-    video[str(chat_id)] = bitrate
-    save_data(VIDEO_FILE, video)
-
-
-async def get_aud_bit_name(chat_id: int) -> str:
-    return audio.get(str(chat_id), "HIGH")
-
-
-async def get_vid_bit_name(chat_id: int) -> str:
-    return video.get(str(chat_id), "HD_720p")
-
-
-async def get_audio_bitrate(chat_id: int) -> str:
-    mode = audio.get(str(chat_id), "MEDIUM")
-    return {
-        "STUDIO": AudioQuality.STUDIO,
-        "HIGH": AudioQuality.HIGH,
-        "MEDIUM": AudioQuality.MEDIUM,
-        "LOW": AudioQuality.LOW,
-    }.get(mode, AudioQuality.MEDIUM)
-
-
-async def get_video_bitrate(chat_id: int) -> str:
-    mode = video.get(
-        str(chat_id), "SD_480p"
-    )  # Ensure chat_id is a string for JSON compatibility
-    return {
-        "UHD_4K": VideoQuality.UHD_4K,
-        "QHD_2K": VideoQuality.QHD_2K,
-        "FHD_1080p": VideoQuality.FHD_1080p,
-        "HD_720p": VideoQuality.HD_720p,
-        "SD_480p": VideoQuality.SD_480p,
-        "SD_360p": VideoQuality.SD_360p,
-    }.get(mode, VideoQuality.SD_480p)
