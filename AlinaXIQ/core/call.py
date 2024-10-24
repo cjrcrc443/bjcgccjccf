@@ -14,7 +14,7 @@ from pytgcalls.types import (
     StreamAudioEnded,
     StreamVideoEnded,
     AudioQuality,
-    VideoQuality
+    VideoQuality,
     Update,
 )
 
