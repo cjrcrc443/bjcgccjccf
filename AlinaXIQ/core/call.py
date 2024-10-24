@@ -19,7 +19,7 @@ from pytgcalls.types import (
 )
 
 import config
-from AlinaXIQ import LOGGER, YouTube, app
+from AlinaXIQ import LOGGER, YouTube, app, userbot
 from AlinaXIQ.misc import db
 from AlinaXIQ.utils.database import (
     add_active_chat,
@@ -50,59 +50,18 @@ async def _clear_(chat_id):
     await remove_active_chat(chat_id)
 
 
-class Call(PyTgCalls):
+class Call:
     def __init__(self):
-        self.userbot1 = Client(
-            name="AlinaXAss1",
-            api_id=config.API_ID,
-            api_hash=config.API_HASH,
-            session_string=str(config.STRING1),
-        )
-        self.one = PyTgCalls(
-            self.userbot1,
-            cache_duration=100,
-        )
-        self.userbot2 = Client(
-            name="AlinaXAss2",
-            api_id=config.API_ID,
-            api_hash=config.API_HASH,
-            session_string=str(config.STRING2),
-        )
-        self.two = PyTgCalls(
-            self.userbot2,
-            cache_duration=100,
-        )
-        self.userbot3 = Client(
-            name="AlinaXAss3",
-            api_id=config.API_ID,
-            api_hash=config.API_HASH,
-            session_string=str(config.STRING3),
-        )
-        self.three = PyTgCalls(
-            self.userbot3,
-            cache_duration=100,
-        )
-        self.userbot4 = Client(
-            name="AlinaXAss4",
-            api_id=config.API_ID,
-            api_hash=config.API_HASH,
-            session_string=str(config.STRING4),
-        )
-        self.four = PyTgCalls(
-            self.userbot4,
-            cache_duration=100,
-        )
-        self.userbot5 = Client(
-            name="AlinaXAss5",
-            api_id=config.API_ID,
-            api_hash=config.API_HASH,
-            session_string=str(config.STRING5),
-        )
-        self.five = PyTgCalls(
-            self.userbot5,
-            cache_duration=100,
-        )
+        self.calls = []
 
+        for client in userbot.clients:
+            pycall = PyTgCalls(
+                client,
+                cache_duration=100,
+            )
+            self.calls.append(pycall)
+
+    
     async def pause_stream(self, chat_id: int):
         assistant = await group_assistant(self, chat_id)
         await assistant.pause_stream(chat_id)
@@ -242,6 +201,7 @@ class Call(PyTgCalls):
         image: Union[bool, str] = None,
     ):
         assistant = await group_assistant(self, chat_id)
+        call_config = GroupCallConfig(auto_start=False)
         if video:
             stream = MediaStream(
                 link,
@@ -253,10 +213,12 @@ class Call(PyTgCalls):
         await assistant.play(
             chat_id,
             stream,
+            config=call_config
         )
 
     async def seek_stream(self, chat_id, file_path, to_seek, duration, mode):
         assistant = await group_assistant(self, chat_id)
+        call_config = GroupCallConfig(auto_start=False)
         stream = (
             MediaStream(
                 file_path,
@@ -269,16 +231,18 @@ class Call(PyTgCalls):
                 file_path,
                 audio_parameters=AudioQuality.HIGH,
                 additional_ffmpeg_parameters=f"-ss {to_seek} -to {duration}",
+                video_flags=MediaStream.Flags.IGNORE,
             )
         )
-        await assistant.play(chat_id, stream)
+        await assistant.play(chat_id, stream, config=call_config)
 
     async def stream_call(self, link):
         assistant = await group_assistant(self, config.LOGGER_ID)
+        call_config = GroupCallConfig(auto_start=False)
         await assistant.play(
             config.LOGGER_ID,
             MediaStream(link),
-            stream_type=StreamType().pulse_stream,
+            config=call_config,
         )
         await asyncio.sleep(0.2)
         await assistant.leave_call(config.LOGGER_ID)
@@ -292,6 +256,7 @@ class Call(PyTgCalls):
         image: Union[bool, str] = None,
     ):
         assistant = await group_assistant(self, chat_id)
+        call_config = GroupCallConfig(auto_start=False)
         language = await get_lang(chat_id)
         _ = get_string(language)
         if video:
@@ -312,8 +277,9 @@ class Call(PyTgCalls):
             )
         try:
             await assistant.play(
-                chat_id,
-                stream,
+                chat_id=chat_id,
+                stream=stream,
+                config=call_config,
             )
         except NoActiveGroupCall:
             raise AssistantErr(_["call_8"])
@@ -368,6 +334,7 @@ class Call(PyTgCalls):
                 db[chat_id][0]["speed_path"] = None
                 db[chat_id][0]["speed"] = 1.0
             video = True if str(streamtype) == "video" else False
+            call_config = GroupCallConfig(auto_start=False)
             if "live_" in queued:
                 n, link = await YouTube.video(videoid, True)
                 if n == 0:
@@ -387,7 +354,7 @@ class Call(PyTgCalls):
                         audio_parameters=AudioQuality.HIGH,
                     )
                 try:
-                    await client.play(chat_id, stream)
+                    await client.play(chat_id, stream, config=call_config)
                 except Exception:
                     return await app.send_message(
                         original_chat_id,
@@ -433,7 +400,7 @@ class Call(PyTgCalls):
                         audio_parameters=AudioQuality.HIGH,
                     )
                 try:
-                    await client.play(chat_id, stream)
+                    await client.play(chat_id, stream, config=call_config)
                 except:
                     return await app.send_message(
                         original_chat_id,
@@ -466,7 +433,7 @@ class Call(PyTgCalls):
                     else MediaStream(videoid, audio_parameters=AudioQuality.HIGH)
                 )
                 try:
-                    await client.play(chat_id, stream)
+                    await client.play(chat_id, stream, config=call_config)
                 except:
                     return await app.send_message(
                         original_chat_id,
@@ -494,7 +461,7 @@ class Call(PyTgCalls):
                         audio_parameters=AudioQuality.HIGH,
                     )
                 try:
-                    await client.play(chat_id, stream)
+                    await client.play(chat_id, stream, config=call_config)
                 except:
                     return await app.send_message(
                         original_chat_id,
@@ -545,30 +512,18 @@ class Call(PyTgCalls):
 
     async def ping(self):
         pings = []
-        if config.STRING1:
-            pings.append(await self.one.ping)
-        if config.STRING2:
-            pings.append(await self.two.ping)
-        if config.STRING3:
-            pings.append(await self.three.ping)
-        if config.STRING4:
-            pings.append(await self.four.ping)
-        if config.STRING5:
-            pings.append(await self.five.ping)
-        return str(round(sum(pings) / len(pings), 3))
+        for call in self.calls:
+            pings.append(call.ping)
+        if pings:
+            return str(round(sum(pings) / len(pings), 3))
+        else:
+            LOGGER(__name__).error("No active clients for ping calculation.")
+            return "No active clients"
 
     async def start(self):
-        LOGGER(__name__).info("Starting PyTgCalls Client...\n")
-        if config.STRING1:
-            await self.one.start()
-        if config.STRING2:
-            await self.two.start()
-        if config.STRING3:
-            await self.three.start()
-        if config.STRING4:
-            await self.four.start()
-        if config.STRING5:
-            await self.five.start()
+        """Starts all PyTgCalls instances for the existing userbot clients."""
+        LOGGER(__name__).info(f"Starting PyTgCall Clients")
+        await asyncio.gather(*[c.start() for c in self.calls])
 
     async def decorators(self):
         for call in self.calls:
