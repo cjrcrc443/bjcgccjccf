@@ -7,7 +7,7 @@ beautifulsoup4
 daxxhub
 deepai
 python-whois
-dnspython==2.3.0
+dnspython
 ffmpeg-python
 gitpython
 hachoir
@@ -18,14 +18,14 @@ heroku3
 apscheduler
 motor
 numpy
-pillow==9.5.0
+pillow
 psutil
 wget
 pyfiglet
 qrcode
 pytz
 future==0.18.3
-py-tgcalls==0.9.7
+py-tgcalls==2.0.4
 pykeyboard
 pyshorteners
 python-dotenv
@@ -38,10 +38,6 @@ tgcrypto
 telegraph
 unidecode
 uuid==1.30
-git+https://github.com/KurimuzonAkuma/pyrogram@dev
-git+https://github.com/yt-dlp/yt-dlp
-git+https://github.com/alexmercerind/youtube-search-python@main
-git+https://github.com/joetats/youtube_search@master
 gtts
 git+https://github.com/AsmSafone/SafoneAPI
 lexica-api==1.5.1
@@ -57,3 +53,8 @@ opencv-python-headless==4.9.0.80
 mpv
 MukeshAPI
 lexica-api
+youtube-search
+youtube-search-python
+yt-dlp
+git+https://github.com/KurimuzonAkuma/pyrogram@dev
+git+https://github.com/Vivekkumar-IN/yt-dlp-youtube-oauth2
