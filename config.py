@@ -82,6 +82,7 @@ STRING_SESSIONS = list(
 )
 
 BANNED_USERS = filters.user()
+YTDOWNLOADER = 1
 adminlist = {}
 lyrical = {}
 votemode = {}
