@@ -351,7 +351,7 @@ class Call:
                         original_chat_id,
                         text=_["call_6"],
                     )
-                img = await geT_thumb(videoid)
+                img = await get_thumb(videoid)
                 button = telegram_markup(_, chat_id)
                 run = await app.send_photo(
                     original_chat_id,
@@ -409,7 +409,7 @@ class Call:
                         original_chat_id,
                         text=_["call_6"],
                     )
-                img = await geT_thumb(videoid)
+                img = await get_thumb(videoid)
                 button = stream_markup(_, videoid, chat_id)
                 await mystic.delete()
                 run = await app.send_photo(
@@ -528,7 +528,7 @@ class Call:
                     db[chat_id][0]["mystic"] = run
                     db[chat_id][0]["markup"] = "tg"
                 else:
-                    img = await geT_thumb(videoid)
+                    img = await get_thumb(videoid)
                     button = stream_markup(_, videoid, chat_id)
                     run = await app.send_photo(
                         original_chat_id,
