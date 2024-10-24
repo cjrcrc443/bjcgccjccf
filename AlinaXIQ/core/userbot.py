@@ -1,59 +1,63 @@
 from pyrogram import Client
+
 import config
+
 from ..logging import LOGGER
+
 assistants = []
 assistantids = []
+
+
 class Userbot(Client):
     def __init__(self):
         self.one = Client(
-            name="Alinass1",
+            name="AlinaXAss1",
             api_id=config.API_ID,
             api_hash=config.API_HASH,
             session_string=str(config.STRING1),
             no_updates=True,
         )
         self.two = Client(
-            name="Alinass2",
+            name="AlinaXAss2",
             api_id=config.API_ID,
             api_hash=config.API_HASH,
             session_string=str(config.STRING2),
             no_updates=True,
         )
         self.three = Client(
-            name="Alinass3",
+            name="AlinaXAss3",
             api_id=config.API_ID,
             api_hash=config.API_HASH,
             session_string=str(config.STRING3),
             no_updates=True,
         )
         self.four = Client(
-            name="Alinass4",
+            name="AlinaXAss4",
             api_id=config.API_ID,
             api_hash=config.API_HASH,
             session_string=str(config.STRING4),
             no_updates=True,
         )
         self.five = Client(
-            name="Alinass5",
+            name="AlinaXAss5",
             api_id=config.API_ID,
             api_hash=config.API_HASH,
             session_string=str(config.STRING5),
             no_updates=True,
         )
+
     async def start(self):
         LOGGER(__name__).info(f"Starting Assistants...")
         if config.STRING1:
             await self.one.start()
             try:
-                await self.one.join_chat("IQSUPP")
-              
                 await self.one.join_chat("MGIMT")
+                await self.one.join_chat("Haawall")
             except:
                 pass
             assistants.append(1)
             try:
-                await self.one.send_message(config.LOGGER_ID, "Assistant Start.........")
-                                         
+                await self.one.send_message(config.LOGGER_ID, "Assistant Started")
             except:
                 LOGGER(__name__).error(
                     "Assistant Account 1 has failed to access the log Group. Make sure that you have added your assistant to your log group and promoted as admin!"
@@ -64,12 +68,12 @@ class Userbot(Client):
             self.one.username = self.one.me.username
             assistantids.append(self.one.id)
             LOGGER(__name__).info(f"Assistant Started as {self.one.name}")
+
         if config.STRING2:
             await self.two.start()
             try:
-                await self.two.join_chat("IQSUPP")
-                
                 await self.two.join_chat("MGIMT")
+                await self.two.join_chat("Haawall")
             except:
                 pass
             assistants.append(2)
@@ -85,11 +89,11 @@ class Userbot(Client):
             self.two.username = self.two.me.username
             assistantids.append(self.two.id)
             LOGGER(__name__).info(f"Assistant Two Started as {self.two.name}")
+
         if config.STRING3:
             await self.three.start()
             try:
-                await self.three.join_chat("IQSUPP")
-                
+                await self.three.join_chat("Haawall")
                 await self.three.join_chat("MGIMT")
             except:
                 pass
@@ -106,11 +110,11 @@ class Userbot(Client):
             self.three.username = self.three.me.username
             assistantids.append(self.three.id)
             LOGGER(__name__).info(f"Assistant Three Started as {self.three.name}")
+
         if config.STRING4:
             await self.four.start()
             try:
-                await self.four.join_chat("XV7AMO")
-                
+                await self.four.join_chat("Haawall")
                 await self.four.join_chat("MGIMT")
             except:
                 pass
@@ -127,11 +131,11 @@ class Userbot(Client):
             self.four.username = self.four.me.username
             assistantids.append(self.four.id)
             LOGGER(__name__).info(f"Assistant Four Started as {self.four.name}")
+
         if config.STRING5:
             await self.five.start()
             try:
-                await self.five.join_chat("XV7AMO")
-                
+                await self.five.join_chat("Haawall")
                 await self.five.join_chat("MGIMT")
             except:
                 pass
@@ -148,6 +152,7 @@ class Userbot(Client):
             self.five.username = self.five.me.username
             assistantids.append(self.five.id)
             LOGGER(__name__).info(f"Assistant Five Started as {self.five.name}")
+
     async def stop(self):
         LOGGER(__name__).info(f"Stopping Assistants...")
         try:
