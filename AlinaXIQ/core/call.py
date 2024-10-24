@@ -146,16 +146,86 @@ class Call:
         )
         await assistant.play(chat_id, stream, config=call_config)
 
+    async def speedup_stream(self, chat_id: int, file_path, speed, playing):
+        assistant = await group_assistant(self, chat_id)
+        if str(speed) != str("1.0"):
+            base = os.path.basename(file_path)
+            chatdir = os.path.join(os.getcwd(), "playback", str(speed))
+            if not os.path.isdir(chatdir):
+                os.makedirs(chatdir)
+            out = os.path.join(chatdir, base)
+            if not os.path.isfile(out):
+                if str(speed) == str("0.5"):
+                    vs = 2.0
+                if str(speed) == str("0.75"):
+                    vs = 1.35
+                if str(speed) == str("1.5"):
+                    vs = 0.68
+                if str(speed) == str("2.0"):
+                    vs = 0.5
+                proc = await asyncio.create_subprocess_shell(
+                    cmd=(
+                        "ffmpeg "
+                        "-i "
+                        f"{file_path} "
+                        "-filter:v "
+                        f"setpts={vs}*PTS "
+                        "-filter:a "
+                        f"atempo={speed} "
+                        f"{out}"
+                    ),
+                    stdin=asyncio.subprocess.PIPE,
+                    stderr=asyncio.subprocess.PIPE,
+                )
+                await proc.communicate()
+            else:
+                pass
+        else:
+            out = file_path
+        dur = await asyncio.get_event_loop().run_in_executor(None, check_duration, out)
+        dur = int(dur)
+        played, con_seconds = speed_converter(playing[0]["played"], speed)
+        duration = seconds_to_min(dur)
+        stream = (
+            MediaStream(
+                out,
+                audio_parameters=AudioQuality.HIGH,
+                video_parameters=VideoQuality.SD_480p,
+                ffmpeg_parameters=f"-ss {played} -to {duration}",
+            )
+            if playing[0]["streamtype"] == "video"
+            else MediaStream(
+                out,
+                audio_parameters=AudioQuality.HIGH,
+                ffmpeg_parameters=f"-ss {played} -to {duration}",
+                video_flags=MediaStream.IGNORE,
+            )
+        )
+        if str(db[chat_id][0]["file"]) == str(file_path):
+            await assistant.change_stream(chat_id, stream)
+        else:
+            raise AssistantErr("Umm")
+        if str(db[chat_id][0]["file"]) == str(file_path):
+            exis = (playing[0]).get("old_dur")
+            if not exis:
+                db[chat_id][0]["old_dur"] = db[chat_id][0]["dur"]
+                db[chat_id][0]["old_second"] = db[chat_id][0]["seconds"]
+            db[chat_id][0]["played"] = con_seconds
+            db[chat_id][0]["dur"] = duration
+            db[chat_id][0]["seconds"] = dur
+            db[chat_id][0]["speed_path"] = out
+            db[chat_id][0]["speed"] = speed
+            
     async def stream_call(self, link):
-        assistant = await group_assistant(self, config.LOG_GROUP_ID)
+        assistant = await group_assistant(self, config.LOGGER_ID)
         call_config = GroupCallConfig(auto_start=False)
         await assistant.play(
-            config.LOG_GROUP_ID,
+            config.LOGGER_ID,
             MediaStream(link),
             config=call_config,
         )
         await asyncio.sleep(0.5)
-        await assistant.leave_call(config.LOG_GROUP_ID)
+        await assistant.leave_call(config.LOGGER_ID)
 
     async def join_call(
         self,
@@ -192,18 +262,12 @@ class Call:
                 config=call_config,
             )
         except NoActiveGroupCall:
-            raise AssistantErr(
-                "**No active video chat found **\n\nPlease make sure you started the voicechat."
-            )
+            raise AssistantErr(_["call_8"])
 
         except AlreadyJoinedError:
-            raise AssistantErr(
-                "**ASSISTANT IS ALREADY IN VOICECHAT **\n\nMusic bot system detected that assistant is already in the voicechat, if the problem continues restart the videochat and try again."
-            )
+            raise AssistantErr(_["call_9"])
         except TelegramServerError:
-            raise AssistantErr(
-                "**TELEGRAM SERVER ERROR**\n\nPlease restart Your voicechat."
-            )
+            raise AssistantErr(_["call_10"])
         await add_active_chat(chat_id)
         await music_on(chat_id)
         if video:
@@ -255,7 +319,7 @@ class Call:
                 if n == 0:
                     return await app.send_message(
                         original_chat_id,
-                        text=_["call_7"],
+                        text=_["call_6"],
                     )
                 if video:
                     stream = MediaStream(
@@ -285,15 +349,15 @@ class Call:
                 except Exception:
                     return await app.send_message(
                         original_chat_id,
-                        text=_["call_7"],
+                        text=_["call_6"],
                     )
-                img = await gen_thumb(videoid)
+                img = await geT_thumb(videoid)
                 button = telegram_markup(_, chat_id)
                 run = await app.send_photo(
                     original_chat_id,
                     photo=img,
                     caption=_["stream_1"].format(
-                        title[:27],
+                        title[:23],
                         f"https://t.me/{app.username}?start=info_{videoid}",
                         check[0]["dur"],
                         user,
@@ -303,7 +367,7 @@ class Call:
                 db[chat_id][0]["mystic"] = run
                 db[chat_id][0]["markup"] = "tg"
             elif "vid_" in queued:
-                mystic = await app.send_message(original_chat_id, _["call_8"])
+                mystic = await app.send_message(original_chat_id, _["call_7"])
                 try:
                     file_path, direct = await YouTube.download(
                         videoid,
@@ -313,7 +377,7 @@ class Call:
                     )
                 except:
                     return await mystic.edit_text(
-                        _["call_7"], disable_web_page_preview=True
+                        _["call_6"], disable_web_page_preview=True
                     )
                 if video:
                     stream = MediaStream(
@@ -343,16 +407,16 @@ class Call:
                 except:
                     return await app.send_message(
                         original_chat_id,
-                        text=_["call_7"],
+                        text=_["call_6"],
                     )
-                img = await gen_thumb(videoid)
+                img = await geT_thumb(videoid)
                 button = stream_markup(_, videoid, chat_id)
                 await mystic.delete()
                 run = await app.send_photo(
                     original_chat_id,
                     photo=img,
                     caption=_["stream_1"].format(
-                        title[:27],
+                        title[:23],
                         f"https://t.me/{app.username}?start=info_{videoid}",
                         check[0]["dur"],
                         user,
@@ -376,7 +440,7 @@ class Call:
                 except Exception:
                     return await app.send_message(
                         original_chat_id,
-                        text=_["call_7"],
+                        text=_["call_6"],
                     )
                 button = telegram_markup(_, chat_id)
                 run = await app.send_photo(
@@ -421,7 +485,7 @@ class Call:
                 except Exception:
                     return await app.send_message(
                         original_chat_id,
-                        text=_["call_7"],
+                        text=_["call_6"],
                     )
                 if videoid == "telegram":
                     button = telegram_markup(_, chat_id)
@@ -433,7 +497,7 @@ class Call:
                             else config.TELEGRAM_VIDEO_URL
                         ),
                         caption=_["stream_1"].format(
-                            title, config.SUPPORT_GROUP, check[0]["dur"], user
+                            title, config.SUPPORT_CHAT, check[0]["dur"], user
                         ),
                         reply_markup=InlineKeyboardMarkup(button),
                     )
@@ -445,7 +509,7 @@ class Call:
                         original_chat_id,
                         photo=config.SOUNCLOUD_IMG_URL,
                         caption=_["stream_1"].format(
-                            title, config.SUPPORT_GROUP, check[0]["dur"], user
+                            title, config.SUPPORT_CHAT, check[0]["dur"], user
                         ),
                         reply_markup=InlineKeyboardMarkup(button),
                     )
@@ -457,20 +521,20 @@ class Call:
                         original_chat_id,
                         photo=check[0]["thumb"],
                         caption=_["stream_1"].format(
-                            title, config.SUPPORT_GROUP, check[0]["dur"], user
+                            title, config.SUPPORT_CHAT, check[0]["dur"], user
                         ),
                         reply_markup=InlineKeyboardMarkup(button),
                     )
                     db[chat_id][0]["mystic"] = run
                     db[chat_id][0]["markup"] = "tg"
                 else:
-                    img = await gen_thumb(videoid)
+                    img = await geT_thumb(videoid)
                     button = stream_markup(_, videoid, chat_id)
                     run = await app.send_photo(
                         original_chat_id,
                         photo=img,
                         caption=_["stream_1"].format(
-                            title[:27],
+                            title[:23],
                             f"https://t.me/{app.username}?start=info_{videoid}",
                             check[0]["dur"],
                             user,
