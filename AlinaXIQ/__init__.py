@@ -2,6 +2,7 @@ from AlinaXIQ.core.bot import Alina
 from AlinaXIQ.core.dir import dirr
 from AlinaXIQ.core.git import git
 from AlinaXIQ.core.userbot import Userbot
+from AlinaMusic.core.youtube import alinabot
 from AlinaXIQ.misc import dbb, heroku
 
 from SafoneAPI import SafoneAPI
@@ -11,6 +12,7 @@ dirr()
 git()
 dbb()
 heroku()
+alinabot()
 
 app = Alina()
 api = SafoneAPI()
