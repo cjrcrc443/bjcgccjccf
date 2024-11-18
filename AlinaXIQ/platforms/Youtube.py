@@ -1,5 +1,7 @@
 import asyncio
+import glob
 import os
+import random
 import re
 from typing import Union
 
@@ -10,6 +12,15 @@ from youtubesearchpython.__future__ import VideosSearch
 
 from AlinaXIQ.utils.database import is_on_off
 from AlinaXIQ.utils.formatters import time_to_seconds
+
+
+def cookies():
+    folder_path = f"{os.getcwd()}/cookies"
+    txt_files = glob.glob(os.path.join(folder_path, "*.txt"))
+    if not txt_files:
+        raise FileNotFoundError("No .txt files found in the specified folder.")
+    cookie_txt_file = random.choice(txt_files)
+    return f"""cookies/{str(cookie_txt_file).split("/")[-1]}"""
 
 
 async def shell_cmd(cmd):
@@ -125,6 +136,7 @@ class YouTubeAPI:
             "-f",
             "best[height<=?720][width<=?1280]",
             f"{link}",
+            f"--cookies {cookies()}",
             stdout=asyncio.subprocess.PIPE,
             stderr=asyncio.subprocess.PIPE,
         )
@@ -249,6 +261,8 @@ class YouTubeAPI:
                 "nocheckcertificate": True,
                 "quiet": True,
                 "no_warnings": True,
+                "cookiefile": f"{cookies()}",
+                "prefer_ffmpeg": True,
             }
             x = yt_dlp.YoutubeDL(ydl_optssx)
             info = x.extract_info(link, False)
@@ -266,6 +280,8 @@ class YouTubeAPI:
                 "nocheckcertificate": True,
                 "quiet": True,
                 "no_warnings": True,
+                "prefer_ffmpeg": True,
+                "cookiefile": f"{cookies()}",
             }
             x = yt_dlp.YoutubeDL(ydl_optssx)
             info = x.extract_info(link, False)
@@ -287,6 +303,7 @@ class YouTubeAPI:
                 "no_warnings": True,
                 "prefer_ffmpeg": True,
                 "merge_output_format": "mp4",
+                "cookiefile": f"{cookies()}",
             }
             x = yt_dlp.YoutubeDL(ydl_optssx)
             x.download([link])
@@ -308,6 +325,7 @@ class YouTubeAPI:
                         "preferredquality": "192",
                     }
                 ],
+                "cookiefile": f"{cookies()}",
             }
             x = yt_dlp.YoutubeDL(ydl_optssx)
             x.download([link])
@@ -330,6 +348,7 @@ class YouTubeAPI:
                     "-g",
                     "-f",
                     "best[height<=?720][width<=?1280]",
+                    f"--cookies {cookies()}",
                     f"{link}",
                     stdout=asyncio.subprocess.PIPE,
                     stderr=asyncio.subprocess.PIPE,
