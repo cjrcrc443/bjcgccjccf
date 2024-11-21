@@ -1,10 +1,7 @@
 import re
 
 import requests
-from AlinaMusic import app
-from config import SUPPORT_CHANNEL
-from pyrogram import filters
-from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
+from AlinaXIQ import app
 import requests
 from pyrogram import Client, filters
 from pyrogram.types import InlineKeyboardButton as Btn, InlineKeyboardMarkup as Mak
