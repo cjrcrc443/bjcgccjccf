@@ -30,23 +30,6 @@ from AlinaXIQ.utils.inline.song import song_markup
 from config import BANNED_USERS, SONG_DOWNLOAD_DURATION, SONG_DOWNLOAD_DURATION_LIMIT
 
 
-@app.on_message(filters.command(["song","search","گەڕان","گەران","yt","video"], prefixes=["/", "!", "%", ",", "", ".", "@", "#"]) & ~BANNED_USERS)
-@language
-async def song_commad_group(client, message: Message, _):
-
-    upl = InlineKeyboardMarkup(
-        [
-            [
-                InlineKeyboardButton(
-                    text=_["SG_B_1"],
-                    url=f"https://t.me/{app.username}?start=song",
-                ),
-            ]
-        ]
-    )
-
-    await message.reply_text(_["song_1"], reply_markup=upl)
-
 
 # Song Module
 
