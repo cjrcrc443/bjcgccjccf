@@ -3,6 +3,9 @@ import re
 import requests
 from AlinaXIQ import app
 import requests
+from config import SUPPORT_CHANNEL
+from pyrogram import filters
+from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 from pyrogram import Client, filters
 
 # Regex pattern to match Instagram URLs
@@ -20,15 +23,28 @@ async def down(client, message):
         video = response['post_video_url']
 
         # Send thumbnail as a photo
-        await message.reply_photo(thu, caption="*ڤیدیۆکە دابەزاندنی دەستپێدەکات...*\n\n⧉• 𝙎𝙊𝙐𝙍𝘾𝞝 𝙄𝙌 - @MGIMT")
+        await message.reply_photo(thu, caption="**← کەمێک چاوەڕێ بکە .. ڤیدیۆ دادەبەزێت ...\n⧉• لەلایەن : {app.mention}**")
 
         # Send video directly
         caption = (
-            "*بە سەرکەوتوویی داگرترا لەلایەن :\n"
-            "⧉• 𝙎𝙊𝙐𝙍𝘾𝞝 𝙄𝙌 - @MGIMT\n\n"
-            "@xv7amo - جۆینی ئەم کەناڵە شازە بکە♥️⚡️*"
+            "**✅ ꒐ بە سەرکەوتوویی داگرترا\n🎸 ꒐ بۆت {app.mention}**"
+
         )
-        await app.send_video(message.chat.id, video, caption=caption)
+        await app.send_video(
+        message.chat.id,
+        video, 
+        caption=caption,
+            reply_markup=InlineKeyboardMarkup(
+                [
+                    [
+                        InlineKeyboardButton(
+                            text=_["S_B_٦"],
+                            url=f"{SUPPORT_CHANNEL}",
+                        )
+                    ]
+                ]
+            ),
+        )
 
     except Exception as e:
         print(f"Error: {e}")
