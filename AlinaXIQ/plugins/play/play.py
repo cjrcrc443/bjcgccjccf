@@ -4,6 +4,7 @@ import string
 from pyrogram import filters
 from pyrogram.types import InlineKeyboardMarkup, InputMediaPhoto, Message
 from pytgcalls.exceptions import NoActiveGroupCall
+from pyrogram.errors import FloodWait, UserNotParticipant
 
 import config
 from strings.filters import command 
@@ -27,6 +28,36 @@ from AlinaXIQ.utils.logger import play_logs
 from AlinaXIQ.utils.stream.stream import stream
 from config import BANNED_USERS, lyrical
 
+MUST_JOIN2 = "Haawall"
+
+async def joinch(message):
+    if not MUST_JOIN2:
+        return
+    try:
+        await app.get_chat_member(MUST_JOIN2, message.from_user.id)
+    except UserNotParticipant:
+        if MUST_JOIN2.isalpha():
+            link = "https://t.me/" + MUST_JOIN2
+        else:
+            chat_info = await app.get_chat(MUST_JOIN2)
+            link = chat_info.invite_link
+        try:
+            await message.reply(
+                f"**• You must join the group\n• To be able to play songs\n• Bot Group : « @{MUST_JOIN2} »\n\n• پێویستە جۆینی گرووپ بکەیت\n• بۆ ئەوەی بتوانی گۆرانی پەخش بکەیت\n• گرووپی بۆت : « @{MUST_JOIN2} »**",
+                reply_markup=InlineKeyboardMarkup(
+                    [
+                        [
+                            InlineKeyboardButton("• جۆینی کەناڵ بکە •", url=f"{link}"),
+                        ]
+                    ]
+                ),
+                disable_web_page_preview=True,
+            )
+            return True
+        except Exception as e:
+            print(e)
+    except Exception as e:
+        print(e)
 
 @app.on_message(
      command(
