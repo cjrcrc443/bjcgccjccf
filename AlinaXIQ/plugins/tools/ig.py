@@ -8,7 +8,7 @@ from pyrogram import Client, filters
 # Regex pattern to match Instagram URLs
 instagram_url_pattern = r"(https?://(?:www\.)?instagram\.com/[-a-zA-Z0-9@:%._\+~#=]{2,256}/[-a-zA-Z0-9@:%._\+~#=]+)"
 
-@app.on_message(filters.text)
+@app.on_message(filters.regex(instagram_url_pattern))
 async def down(client, message):
     try:
         link = message.text
