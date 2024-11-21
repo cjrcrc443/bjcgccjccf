@@ -101,6 +101,8 @@ async def play_commnd(
     url,
     fplay,
 ):
+    if await joinch(message):
+        return
     await add_served_chat(message.chat.id)
     mystic = await message.reply_text(
         _["play_2"].format(channel) if channel else _["play_1"]
