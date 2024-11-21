@@ -1,40 +1,34 @@
-from pyrogram import Client, filters
-from AlinaXIQ import app
 import requests
+from AlinaXIQ import app
+from pyrogram import filters
 
-# Regex to match only TikTok links
-tiktok_regex = r"(https?://(?:www\.)?tiktok\.com/[\w\-/]+)"
 
-@app.on_message(filters.regex(tiktok_regex))
+@app.on_message(
+    filters.regex(
+        r"(http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\\(\\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+)"
+    )
+)
 async def Start(app, message):
     try:
         msg = message.text
-        url = requests.get(f'https://tikwm.com/api/?url={msg}').json()
-        music = url['data']['music']
-        region = url['data']['region']
-        tit = url['data']['title']
-        vid = url['data']['play']
-        ava = url['data']['author']['avatar']
-        name = url['data']['music_info']['author']
-        time = url['data']['duration']
-        sh = url['data']['share_count']
-        com = url['data']['comment_count']
-        wat = url['data']['play_count']
-        
-        # Send photo with caption
+        url = requests.get(f"https://tikwm.com/api/?url={msg}").json()
+        music = url["data"]["music"]
+        region = url["data"]["region"]
+        tit = url["data"]["title"]
+        vid = url["data"]["play"]
+        ava = url["data"]["author"]["avatar"]
+        ##
+        name = url["data"]["music_info"]["author"]
+        time = url["data"]["duration"]
+        sh = url["data"]["share_count"]
+        com = url["data"]["comment_count"]
+        wat = url["data"]["play_count"]
         await app.send_photo(
-            message.chat.id, ava,
-            caption=(
-                f"**✧ ¦ ناو : {name}\n"
-                f"✧ ¦ وڵات : {region}\n\n"
-                f"✧ ¦ ژمارەی بینەر : {wat}\n"
-                f"✧ ¦ ژمارەی کۆمێنت : {com}\n"
-                f"✧ ¦ ژمارەی شەیرەکان : {sh}\n"
-                f"✧ ¦ درێژی ڤیدیۆ : {time}**"
-            )
+            message.chat.id,
+            ava,
+            caption=f"**✧ ¦ ناو : {name}\n✧ ¦ وڵات : {region}\n\n✧ ¦ ژمارەی بینەر : {wat}\n✧ ¦ ژمارەی کۆمێنت : {com}\n✧ ¦ ژمارەی شەیرەکان : {sh}\n✧ ¦ درێژی ڤیدیۆ : {time}**",
         )
-        
-        # Send video with title
         await app.send_video(message.chat.id, vid, caption=f"{tit}")
-    except Exception as e:
-        print(f"Error: {e}")
+
+    except Exception:
+        pass
