@@ -12,7 +12,7 @@ from pyrogram import Client, filters
 instagram_url_pattern = r"(https?://(?:www\.)?instagram\.com/[-a-zA-Z0-9@:%._\+~#=]{2,256}/[-a-zA-Z0-9@:%._\+~#=]+)"
 
 @app.on_message(filters.regex(instagram_url_pattern))
-async def down(client, message):
+async def down(app, message):
     try:
         link = message.text
         json_data = {'url': link}
@@ -34,11 +34,11 @@ async def down(client, message):
         message.chat.id,
         video, 
         caption=caption,
-            reply_markup=InlineKeyboardMarkup(
+        reply_markup=InlineKeyboardMarkup(
                 [
                     [
                         InlineKeyboardButton(
-                            text=_["S_B_٦"],
+                            text=_["S_B_6"],
                             url=f"{SUPPORT_CHANNEL}",
                         )
                     ]
