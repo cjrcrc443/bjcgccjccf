@@ -27,7 +27,10 @@ async def download_instagram_video(app, message):
         video = response["post_video_url"]
 
         # Send thumbnail as a photo
-        await message.reply_text("**← کەمێک چاوەڕێ بکە .. ڤیدیۆ دادەبەزێت ...**")
+        await message.reply_photo(
+            thu,
+            caption="**← کەمێک چاوەڕێ بکە .. ڤیدیۆ دادەبەزێت ...**"
+        )
 
         # Send video directly
         caption = "**✅ ꒐ بە سەرکەوتوویی داگرترا\n🎸 ꒐ @IQMCBOT**"
