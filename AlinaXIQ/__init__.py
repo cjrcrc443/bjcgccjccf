@@ -1,5 +1,4 @@
 from AlinaXIQ.core.bot import Alina
-from AlinaXIQ.core.cookies import save_cookies
 from AlinaXIQ.core.dir import dirr
 from AlinaXIQ.core.git import git
 from AlinaXIQ.core.userbot import Userbot
@@ -8,7 +7,6 @@ from AlinaXIQ.misc import dbb, heroku
 from SafoneAPI import SafoneAPI
 from .logging import LOGGER
 
-save_cookies()
 dirr()
 git()
 dbb()
