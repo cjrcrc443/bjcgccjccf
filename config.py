@@ -29,7 +29,6 @@ DURATION_LIMIT_MIN = int(getenv("DURATION_LIMIT", "99999999999999999"))
 SONG_DOWNLOAD_DURATION = int(getenv("SONG_DOWNLOAD_DURATION", "99999999999999999"))
 SONG_DOWNLOAD_DURATION_LIMIT = int(getenv("SONG_DOWNLOAD_DURATION_LIMIT", "99999999999"))
 
-COOKIE_LINK = getenv("COOKIE_LINK", "https://batbin.me/platyrrhine")
 
 # Chat id of a group for logging bot's activities
 LOGGER_ID = int(getenv("LOGGER_ID", "-1002105278394"))
