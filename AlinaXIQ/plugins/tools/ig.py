@@ -17,14 +17,14 @@ async def down(app, message):
 
         # Check for response errors
         if response.status_code != 200:
-            await message.reply("**هەڵەیە لەگەڵ وەب سایتی داگرتن. تکایە دواتر هەوڵ بدە.**")
+            await message.reply("**هەڵەیە لەگەڵ وێبسایتی داگرتن. تکایە دواتر هەوڵ بدە.**")
             return
 
         data = response.json()
 
         # Ensure required keys exist
         if "post_video_thumbnail" not in data or "post_video_url" not in data:
-            await message.reply("**نەتوانرا ڤیدیۆ داگرتن بگەیەنرێت. تکایە دڵنیابە لە ڕاستیەتی لینکەکە.**")
+            await message.reply("**نەتوانم ڤیدیۆ دابگرم. تکایە دڵنیابە لە ڕاستیەتی لینکەکە**")
             return
 
         thu = data["post_video_thumbnail"]
@@ -33,7 +33,7 @@ async def down(app, message):
         # Send thumbnail as a photo
         await message.reply_photo(
             thu,
-            caption="**← کەمێک چاوەڕێ بکە .. ڤیدیۆ دادەبەزێت ...\n⧉• لەلایەن : @IQMCBOT**",
+            caption="**← کەمێک چاوەڕێ بکە .. ڤیدیۆ دادەبەزێت ...\n⧉• لەلایەن : @HawalmusicBot**",
         )
 
         # Send video directly
@@ -42,10 +42,10 @@ async def down(app, message):
 
     except requests.exceptions.RequestException as req_err:
         print(f"Request Error: {req_err}")
-        await message.reply("**هەڵەیە لەگەڵ وەب سایتی داگرتن. تکایە دواتر هەوڵ بدە.**")
+        await message.reply("**هەڵەیە لەگەڵ وێب سایتی داگرتن. تکایە دواتر هەوڵ بدە.**")
     except KeyError as key_err:
         print(f"Key Error: {key_err}")
-        await message.reply("**لینکەکە نادروستە یان پەیوەندیدار بە ڤیدیۆ نییە.**")
+        await message.reply("**لینکەکە نادروستە یان پەیوەندی بە ڤیدیۆ نییە.**")
     except Exception as e:
         print(f"Error: {e}")
         await message.reply("**هەڵەیەک ڕوویدا. تکایە دواتر هەوڵ بدە.**")
