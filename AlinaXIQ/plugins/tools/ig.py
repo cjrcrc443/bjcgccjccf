@@ -39,19 +39,25 @@ async def download_instagram_video(client, message):
         video_url = data["post_video_url"]
         thumbnail_url = data.get("post_video_thumbnail")
 
-        # Send a "downloading" message
-        downloading_message = await message.reply_text("⬇ کەمێک چاوەڕێ بکە... ڤیدیۆیەک بەردەستکراوە.")
+        # Verify the video URL
+        video_response = requests.get(video_url, stream=True)
+        if video_response.status_code != 200:
+            await message.reply_text("❌ ڤیدیۆکە ناتوانرێت بگاتە Telegram.")
+            return
 
-        # Send the video to the chat
+        # Download the video locally
+        video_path = "instagram_video.mp4"
+        with open(video_path, "wb") as file:
+            for chunk in video_response.iter_content(chunk_size=1024):
+                file.write(chunk)
+
+        # Send the video to Telegram
         await client.send_video(
             chat_id=message.chat.id,
-            video=video_url,
-            caption="**✅ ڤیدیۆکە بە سەرکەوتوویی داگرترا. 📥\nلەلایەن: @HawalmusicBot**",
+            video=video_path,
+            caption="**✅ ڤیدیۆکەم بە سەرکەوتوویی داگرت. 📥\nلەلایەن: @HawalmusicBot**",
             thumb=thumbnail_url if thumbnail_url else None
         )
-
-        # Delete the downloading message
-        await downloading_message.delete()
 
     except requests.exceptions.RequestException as req_err:
         await message.reply_text(f"❌ هەڵەیە لەگەڵ وێب سایتی داگرتن.\n🔍 وردەکاری: {req_err}")
