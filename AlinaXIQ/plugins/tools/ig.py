@@ -1,51 +1,59 @@
 import requests
+
+from pyrogram import Client, filters
+
 from AlinaXIQ import app
-from pyrogram import filters
+
+
+# API endpoint for Instagram video download
+API_URL = "https://insta.savetube.me/downloadPostVideo"
 
 # Regex pattern to match Instagram URLs
-instagram_url_pattern = r"(https?://(?:www\.)?instagram\.com/[-a-zA-Z0-9@:%._\+~#=]{2,256}/[-a-zA-Z0-9@:%._\+~#=]+)"
+INSTAGRAM_URL_PATTERN = r"(https?://(?:www\.)?instagram\.com/(?:p|reel|tv)/[-a-zA-Z0-9@:%._\+~#=]{2,256})"
 
-
-@app.on_message(filters.regex(instagram_url_pattern))
-async def down(app, message):
+@app.on_message(filters.regex(INSTAGRAM_URL_PATTERN))
+async def download_instagram_video(client, message):
     try:
-        link = message.text
-        json_data = {"url": link}
-        response = requests.post(
-            "https://insta.savetube.me/downloadPostVideo", json=json_data
-        )
+        # Extract the Instagram URL
+        instagram_url = message.text.strip()
 
-        # Check for response errors
+        # Send the request to the API
+        payload = {"url": instagram_url}
+        headers = {"Content-Type": "application/json"}
+        response = requests.post(API_URL, json=payload, headers=headers)
+
+        # Check if the API response is successful
         if response.status_code != 200:
-            await message.reply("**هەڵەیە لەگەڵ وێبسایتی داگرتن. تکایە دواتر هەوڵ بدە.**")
+            await message.reply_text("❌ هەڵەیە لەگەڵ وێب سایتی داگرتن. تکایە دواتر هەوڵ بدە.")
             return
 
+        # Parse the API response
         data = response.json()
 
-        # Ensure required keys exist
-        if "post_video_thumbnail" not in data or "post_video_url" not in data:
-            await message.reply("**نەتوانم ڤیدیۆ دابگرم. تکایە دڵنیابە لە ڕاستیەتی لینکەکە**")
+        # Check if the required fields exist
+        if "post_video_url" not in data:
+            await message.reply_text("❌ نەتوانرا ڤیدیۆیەک بدۆزرێتەوە. تکایە لینکەکە دووبارە پشکنین بکە.")
             return
 
-        thu = data["post_video_thumbnail"]
-        video = data["post_video_url"]
+        # Extract the video URL and optional thumbnail
+        video_url = data["post_video_url"]
+        thumbnail_url = data.get("post_video_thumbnail")
 
-        # Send thumbnail as a photo
-        await message.reply_photo(
-            thu,
-            caption="**← کەمێک چاوەڕێ بکە .. ڤیدیۆ دادەبەزێت ...\n⧉• لەلایەن : @HawalmusicBot**",
+        # Send a "downloading" message
+        downloading_message = await message.reply_text("⬇ کەمێک چاوەڕێ بکە... ڤیدیۆیەک بەردەستکراوە.")
+
+        # Send the video to the chat
+        await client.send_video(
+            chat_id=message.chat.id,
+            video=video_url,
+            caption="**✅ ڤیدیۆکە بە سەرکەوتوویی داگرترا. 📥\nلەلایەن: @HawalmusicBot**",
+            thumb=thumbnail_url if thumbnail_url else None
         )
 
-        # Send video directly
-        caption = "**✅꒐ بە سەرکەوتوویی داگرترا\n🎸꒐ بۆتی @IQMCBOT**"
-        await app.send_video(message.chat.id, video, caption=caption)
+        # Delete the downloading message
+        await downloading_message.delete()
 
     except requests.exceptions.RequestException as req_err:
-        print(f"Request Error: {req_err}")
-        await message.reply("**هەڵەیە لەگەڵ وێب سایتی داگرتن. تکایە دواتر هەوڵ بدە.**")
-    except KeyError as key_err:
-        print(f"Key Error: {key_err}")
-        await message.reply("**لینکەکە نادروستە یان پەیوەندی بە ڤیدیۆ نییە.**")
+        await message.reply_text(f"❌ هەڵەیە لەگەڵ وێب سایتی داگرتن.\n🔍 وردەکاری: {req_err}")
     except Exception as e:
-        print(f"Error: {e}")
-        await message.reply("**هەڵەیەک ڕوویدا. تکایە دواتر هەوڵ بدە.**")
+        await message.reply_text(f"❌ هەڵەیەک ڕوویدا. 🔍 وردەکاری: {e}")
