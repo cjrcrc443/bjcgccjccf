@@ -79,6 +79,8 @@ async def download_reel(instagram_url):
 from pyrogram import Client, filters
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 
+from AlinaXIQ import app
+
 
 @app.on_message(filters.command("reel"))
 async def reel_command_handler(client, message):
