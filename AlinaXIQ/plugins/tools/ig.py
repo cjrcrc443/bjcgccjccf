@@ -1,65 +1,95 @@
-import requests
+import httpx
+from bs4 import BeautifulSoup
+import os
+from pathlib import Path
+import re
+
+# Define headers to mimic the browser request
+HEADERS = {
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:105.0) Gecko/20100101 Firefox/105.0",
+    "Accept": "*/*",
+    "Accept-Language": "en-US,en;q=0.5",
+    "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
+    "X-Requested-With": "XMLHttpRequest",
+    "Connection": "keep-alive",
+    "Referer": "https://saveig.app/en",
+}
+
+async def fetch_content(url):
+    print(f"Attempting to fetch content from URL: {url}")
+    async with httpx.AsyncClient(headers=HEADERS) as client:
+        resp = await client.get(url)
+        if resp.status_code == 200:
+            print("Content fetched successfully")
+            return resp.text
+        else:
+            print(f"Failed to fetch content, status code: {resp.status_code}")
+            return None
+
+async def extract_video_url(html_content):
+    print("Extracting video URL from the HTML content")
+    soup = BeautifulSoup(html_content, 'html.parser')
+    # Your extraction logic might vary, and you might need to adjust the following line:
+    video_tag = soup.find('meta', attrs={'property': 'og:video'})
+    if video_tag and video_tag.get('content'):
+        video_url = video_tag['content']
+        print(f"Extracted video URL: {video_url}")
+        return video_url
+    else:
+        print("Could not find a video URL in the HTML content.")
+        return None
+
+async def download_video(url, destination_folder='/cache'):
+    if not url:
+        print("No URL provided to download.")
+        return None
+    
+    print(f"Downloading video from URL: {url}")
+    async with httpx.AsyncClient(headers=HEADERS) as client:
+        resp = await client.get(url)
+        if resp.status_code == 200:
+            Path(destination_folder).mkdir(parents=True, exist_ok=True)
+            filename = os.path.join(destination_folder, os.path.basename(url))
+            with open(filename, 'wb') as file:
+                file.write(resp.content)
+            print(f"Video saved to: {filename}")
+            return filename
+        else:
+            print(f"Failed to download the video, status code: {resp.status_code}")
+            return None
+
+async def download_reel(instagram_url):
+    print(f"Starting the download process for Instagram URL: {instagram_url}")
+    modified_url = instagram_url.replace("instagram.com", "ddinstagram.com")
+    html_content = await fetch_content(modified_url)
+    
+    if html_content:
+        video_url = await extract_video_url(html_content)
+        if video_url:
+            return await download_video(video_url)
+        else:
+            print("Video URL extraction failed.")
+            return None
+    else:
+        print("Failed to fetch the page for the given Instagram URL.")
+        return None
+
+
 
 from pyrogram import Client, filters
+from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 
-from AlinaXIQ import app
 
+@app.on_message(filters.command("reel"))
+async def reel_command_handler(client, message):
+    if len(message.command) < 2:
+        await message.reply("Please provide a Reel link. Usage: `/reel <link>`")
+        return
 
-# API endpoint for Instagram video download
-API_URL = "https://insta.savetube.me/downloadPostVideo"
+    reel_link = message.command[1]
+    download_path = await download_reel(reel_link)
 
-# Regex pattern to match Instagram URLs
-INSTAGRAM_URL_PATTERN = r"(https?://(?:www\.)?instagram\.com/(?:p|reel|tv)/[-a-zA-Z0-9@:%._\+~#=]{2,256})"
-
-@app.on_message(filters.regex(INSTAGRAM_URL_PATTERN))
-async def download_instagram_video(client, message):
-    try:
-        # Extract the Instagram URL
-        instagram_url = message.text.strip()
-
-        # Send the request to the API
-        payload = {"url": instagram_url}
-        headers = {"Content-Type": "application/json"}
-        response = requests.post(API_URL, json=payload, headers=headers)
-
-        # Check if the API response is successful
-        if response.status_code != 200:
-            await message.reply_text("❌ هەڵەیە لەگەڵ وێب سایتی داگرتن. تکایە دواتر هەوڵ بدە.")
-            return
-
-        # Parse the API response
-        data = response.json()
-
-        # Check if the required fields exist
-        if "post_video_url" not in data:
-            await message.reply_text("❌ نەتوانرا ڤیدیۆیەک بدۆزرێتەوە. تکایە لینکەکە دووبارە پشکنین بکە.")
-            return
-
-        # Extract the video URL and optional thumbnail
-        video_url = data["post_video_url"]
-        thumbnail_url = data.get("post_video_thumbnail")
-
-        # Verify the video URL
-        video_response = requests.get(video_url, stream=True)
-        if video_response.status_code != 200:
-            await message.reply_text("❌ ڤیدیۆکە ناتوانرێت بگاتە Telegram.")
-            return
-
-        # Download the video locally
-        video_path = "instagram_video.mp4"
-        with open(video_path, "wb") as file:
-            for chunk in video_response.iter_content(chunk_size=1024):
-                file.write(chunk)
-
-        # Send the video to Telegram
-        await client.send_video(
-            chat_id=message.chat.id,
-            video=video_path,
-            caption="**✅ ڤیدیۆکەم بە سەرکەوتوویی داگرت. 📥\nلەلایەن: @HawalmusicBot**",
-            thumb=thumbnail_url if thumbnail_url else None
-        )
-
-    except requests.exceptions.RequestException as req_err:
-        await message.reply_text(f"❌ هەڵەیە لەگەڵ وێب سایتی داگرتن.\n🔍 وردەکاری: {req_err}")
-    except Exception as e:
-        await message.reply_text(f"❌ هەڵەیەک ڕوویدا. 🔍 وردەکاری: {e}")
+    if download_path and os.path.exists(download_path):
+        await message.reply_video(video=open(download_path, 'rb'))
+    else:
+        await message.reply("Sorry, I couldn't download the Reel. Please make sure the link is correct.")
