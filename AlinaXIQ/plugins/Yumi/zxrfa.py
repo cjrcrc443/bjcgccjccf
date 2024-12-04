@@ -7,7 +7,7 @@ from pyrogram import Client
 from pyrogram.types import Message
 from AlinaXIQ import app
 
-@app.on_message(command("ز"))
+@app.on_message(command(["ز", "زەخرەفە", "زەخرفە"]))
 async def zahrafa(c: Client, m: Message):
     text_list = m.text.split(None, 1)
     if len(text_list) < 2:
