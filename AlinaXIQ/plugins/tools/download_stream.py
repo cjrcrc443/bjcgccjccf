@@ -1,47 +1,15 @@
-import future
 import asyncio
 import os
 import time
-from urllib.parse import urlparse
-from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, InputMediaPhoto, InputMediaVideo, Message
-import wget
-from pyrogram import filters
-from pyrogram.types import Message
-from youtubesearchpython import SearchVideos
-from yt_dlp import YoutubeDL
-from AlinaXIQ import app
-import asyncio
-import os
-import time
-import wget
-from urllib.parse import urlparse
-from pyrogram import filters
-from pyrogram.types import Message
-from youtubesearchpython import SearchVideos
-from yt_dlp import YoutubeDL
-from AlinaXIQ import app
 from time import time
-import asyncio
-from AlinaXIQ.utils.extraction import extract_user
-import asyncio
-import os
+
 import wget
 from pyrogram import filters
-from pyrogram.types import Message
+from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 from youtubesearchpython import SearchVideos
 from yt_dlp import YoutubeDL
 
 from AlinaXIQ import app
-from AlinaXIQ.utils.extraction import extract_user
-from time import time
-from AlinaXIQ.utils.extraction import extract_user
-from urllib.parse import urlparse
-from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
-from pyrogram import filters
-from youtubesearchpython import SearchVideos
-from yt_dlp import YoutubeDL
-from AlinaXIQ import app
-import wget
 
 # Define a dictionary to track the last query timestamp for each user
 user_last_CallbackQuery_time = {}
@@ -56,6 +24,7 @@ SPAM_AUDIO_WINDOW_SECONDS = 30
 
 BANNED_USERS = []
 
+
 @app.on_callback_query(filters.regex("downloadvideo") & ~filters.user(BANNED_USERS))
 async def download_video(client, CallbackQuery):
     user_id = CallbackQuery.from_user.id
@@ -65,7 +34,10 @@ async def download_video(client, CallbackQuery):
     last_Query_time = user_last_CallbackQuery_time.get(user_id, 0)
     if current_time - last_Query_time < SPAM_WINDOW_SECONDS:
         # If the limit is exceeded, send a response and return
-        await CallbackQuery.answer("● ꒐ تۆ ئەم ڤیدیۆیەت داگرتووە لە چاتی تایبەتی منە\n\n● ꒐ ڤیدیۆیتر دوای 30 چرکە دابگرە", show_alert=True)
+        await CallbackQuery.answer(
+            "● ꒐ تۆ ئەم ڤیدیۆیەت داگرتووە لە چاتی تایبەتی منە\n\n● ꒐ ڤیدیۆیتر دوای 30 چرکە دابگرە",
+            show_alert=True,
+        )
         return
     else:
         # Update the last query time and query count
@@ -78,18 +50,25 @@ async def download_video(client, CallbackQuery):
     user_name = CallbackQuery.from_user.first_name
     chutiya = "[" + user_name + "](tg://user?id=" + str(user_id) + ")"
     await CallbackQuery.answer("کەمێك چاوەڕێ بکە ئەزیزم . . .", show_alert=True)
-    pablo = await client.send_message(CallbackQuery.message.chat.id, f"**● ꒐ {chutiya} دەگەڕێم بۆ ڤیدیۆ چاوەڕێ بکە 🧑🏻‍💻**")
+    pablo = await client.send_message(
+        CallbackQuery.message.chat.id,
+        f"**● ꒐ {chutiya} دەگەڕێم بۆ ڤیدیۆ چاوەڕێ بکە 🧑🏻‍💻**",
+    )
     if not videoid:
         await pablo.edit(
             f"**● ꒐ {chutiya} گۆرانی نەدۆزرایەوە لە یوتوب دووبارە هەوڵدەوە**"
         )
         return
 
-    search = SearchVideos(f"https://youtube.com/{videoid}", offset=1, mode="dict", max_results=1)
+    search = SearchVideos(
+        f"https://youtube.com/{videoid}", offset=1, mode="dict", max_results=1
+    )
     mi = search.result()
     mio = mi.get("search_result", [])
     if not mio:
-        await pablo.edit(f"**● ꒐ {chutiya} گۆرانی نەدۆزرایەوە لە یوتوب دووبارە هەوڵدەوە**")
+        await pablo.edit(
+            f"**● ꒐ {chutiya} گۆرانی نەدۆزرایەوە لە یوتوب دووبارە هەوڵدەوە**"
+        )
         return
 
     mo = mio[0].get("link", "")
@@ -136,9 +115,31 @@ async def download_video(client, CallbackQuery):
                 f"**● ꒐ کەمێك چاوەڕێ بکە {chutiya}\n\n● ꒐ دایدەگرم لە یوتوبەوە**",
                 file_stark,
             ),
-        reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton(f"نوێکارییەکانی بۆت 🍻", url=f"https://t.me/Haawall")]]))
-        
-        await client.send_message(CallbackQuery.message.chat.id, f"**● ꒐ ئەزیزم {chutiya}\n\n✅ ꒐ بە سەرکەوتوویی داگرترا\n● ꒐ ڤیدیۆم ناردە چاتی تایبەتی بۆت\n● ꒐ [ئێرە دابگرە](tg://openmessage?user_id={app.id}) 🎸**", reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton(f"🎸 ئێرە دابگرە 🎸", url=f"tg://openmessage?user_id={app.id}")]]))
+            reply_markup=InlineKeyboardMarkup(
+                [
+                    [
+                        InlineKeyboardButton(
+                            f"نوێکارییەکانی بۆت 🍻", url=f"https://t.me/Haawall"
+                        )
+                    ]
+                ]
+            ),
+        )
+
+        await client.send_message(
+            CallbackQuery.message.chat.id,
+            f"**● ꒐ ئەزیزم {chutiya}\n\n✅ ꒐ بە سەرکەوتوویی داگرترا\n● ꒐ ڤیدیۆم ناردە چاتی تایبەتی بۆت\n● ꒐ [ئێرە دابگرە](tg://openmessage?user_id={app.id}) 🎸**",
+            reply_markup=InlineKeyboardMarkup(
+                [
+                    [
+                        InlineKeyboardButton(
+                            f"🎸 ئێرە دابگرە 🎸",
+                            url=f"tg://openmessage?user_id={app.id}",
+                        )
+                    ]
+                ]
+            ),
+        )
         await pablo.delete()
         for files in (sedlyf, file_stark):
             if files and os.path.exists(files):
@@ -146,10 +147,21 @@ async def download_video(client, CallbackQuery):
 
     except Exception as e:
         await pablo.delete()
-        return await client.send_message(CallbackQuery.message.chat.id, f"**● ꒐ {chutiya} بلۆکم لابدە تا بتوانم ڤیدیۆ دابگرم**", reply_markup=InlineKeyboardMarkup([
-                [InlineKeyboardButton(f"🧑🏻‍💻 بلۆکم لابدە 🧑🏻‍💻", url=f"https://t.me/{app.username}?start=info_{videoid}")]]))
-    
-    
+        return await client.send_message(
+            CallbackQuery.message.chat.id,
+            f"**● ꒐ {chutiya} بلۆکم لابدە تا بتوانم ڤیدیۆ دابگرم**",
+            reply_markup=InlineKeyboardMarkup(
+                [
+                    [
+                        InlineKeyboardButton(
+                            f"🧑🏻‍💻 بلۆکم لابدە 🧑🏻‍💻",
+                            url=f"https://t.me/{app.username}?start=info_{videoid}",
+                        )
+                    ]
+                ]
+            ),
+        )
+
 
 import os
 import time
@@ -157,7 +169,6 @@ import time
 # Dicts to keep track of user query count and last query time
 user_last_CallbackQuery_time = {}
 user_CallbackQuery_count = {}
-
 
 
 @app.on_callback_query(filters.regex("downloadaudio") & ~filters.user(BANNED_USERS))
@@ -169,7 +180,10 @@ async def download_audio(client, CallbackQuery):
     last_Query_time = user_last_CallbackQuery_time.get(user_id, 0)
     if current_time - last_Query_time < SPAM_AUDIO_WINDOW_SECONDS:
         # If the limit is exceeded, send a response and return
-        await CallbackQuery.answer("● ꒐ تۆ ئەم گۆرانییەت داگرتووە لە چاتی تایبەتی منە\n\n● ꒐ گۆرانیتر دوای 30 چرکە دابگرە", show_alert=True)
+        await CallbackQuery.answer(
+            "● ꒐ تۆ ئەم گۆرانییەت داگرتووە لە چاتی تایبەتی منە\n\n● ꒐ گۆرانیتر دوای 30 چرکە دابگرە",
+            show_alert=True,
+        )
         return
     else:
         # Update the last query time and query count
@@ -182,18 +196,25 @@ async def download_audio(client, CallbackQuery):
     user_name = CallbackQuery.from_user.first_name
     chutiya = "[" + user_name + "](tg://user?id=" + str(user_id) + ")"
     await CallbackQuery.answer("کەمێك چاوەڕێ بکە ئەزیزم . . .", show_alert=True)
-    pablo = await client.send_message(CallbackQuery.message.chat.id, f"**● ꒐ {chutiya} دەگەڕێم بۆ گۆرانی چاوەڕێ بکە 🧑🏻‍💻**")
+    pablo = await client.send_message(
+        CallbackQuery.message.chat.id,
+        f"**● ꒐ {chutiya} دەگەڕێم بۆ گۆرانی چاوەڕێ بکە 🧑🏻‍💻**",
+    )
     if not videoid:
         await pablo.edit(
             f"**● ꒐ {chutiya} گۆرانی نەدۆزرایەوە لە یوتوب دووبارە هەوڵدەوە**"
         )
         return
 
-    search = SearchVideos(f"https://youtube.com/{videoid}", offset=1, mode="dict", max_results=1)
+    search = SearchVideos(
+        f"https://youtube.com/{videoid}", offset=1, mode="dict", max_results=1
+    )
     mi = search.result()
     mio = mi.get("search_result", [])
     if not mio:
-        await pablo.edit(f"**● ꒐ {chutiya} گۆرانی نەدۆزرایەوە لە یوتوب دووبارە هەوڵدەوە**")
+        await pablo.edit(
+            f"**● ꒐ {chutiya} گۆرانی نەدۆزرایەوە لە یوتوب دووبارە هەوڵدەوە**"
+        )
         return
 
     mo = mio[0].get("link", "")
@@ -237,10 +258,32 @@ async def download_audio(client, CallbackQuery):
                 f"**● ꒐ کەمێك چاوەڕێ بکە {chutiya}\n\n● ꒐ دایدەگرم لە یوتوبەوە**",
                 file_stark,
             ),
-        reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton(f"نوێکارییەکانی بۆت 🍻", url=f"https://t.me/Haawall")]]))
-            
-        await client.send_message(CallbackQuery.message.chat.id, f"**● ꒐ ئەزیزم {chutiya}\n\n✅ ꒐ بە سەرکەوتوویی داگرترا\n● ꒐ گۆرانیم ناردە چاتی تایبەتی بۆت\n● ꒐ [ئێرە دابگرە](tg://openmessage?user_id={app.id}) 🎸**", reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton(f"🎸 ئێرە دابگرە 🎸", url=f"tg://openmessage?user_id={app.id}")]]))
-        
+            reply_markup=InlineKeyboardMarkup(
+                [
+                    [
+                        InlineKeyboardButton(
+                            f"نوێکارییەکانی بۆت 🍻", url=f"https://t.me/Haawall"
+                        )
+                    ]
+                ]
+            ),
+        )
+
+        await client.send_message(
+            CallbackQuery.message.chat.id,
+            f"**● ꒐ ئەزیزم {chutiya}\n\n✅ ꒐ بە سەرکەوتوویی داگرترا\n● ꒐ گۆرانیم ناردە چاتی تایبەتی بۆت\n● ꒐ [ئێرە دابگرە](tg://openmessage?user_id={app.id}) 🎸**",
+            reply_markup=InlineKeyboardMarkup(
+                [
+                    [
+                        InlineKeyboardButton(
+                            f"🎸 ئێرە دابگرە 🎸",
+                            url=f"tg://openmessage?user_id={app.id}",
+                        )
+                    ]
+                ]
+            ),
+        )
+
         await pablo.delete()
         for files in (sedlyf, file_stark):
             if files and os.path.exists(files):
@@ -248,5 +291,17 @@ async def download_audio(client, CallbackQuery):
 
     except Exception as e:
         await pablo.delete()
-        return await client.send_message(CallbackQuery.message.chat.id, f"**● ꒐ {chutiya} بلۆکم لابدە تا بتوانم ڤیدیۆ دابگرم**", reply_markup=InlineKeyboardMarkup([
-                [InlineKeyboardButton(f"🧑🏻‍💻 بلۆکم لابدە 🧑🏻‍💻", url=f"https://t.me/{app.username}?start=info_{videoid}")]]))
+        return await client.send_message(
+            CallbackQuery.message.chat.id,
+            f"**● ꒐ {chutiya} بلۆکم لابدە تا بتوانم ڤیدیۆ دابگرم**",
+            reply_markup=InlineKeyboardMarkup(
+                [
+                    [
+                        InlineKeyboardButton(
+                            f"🧑🏻‍💻 بلۆکم لابدە 🧑🏻‍💻",
+                            url=f"https://t.me/{app.username}?start=info_{videoid}",
+                        )
+                    ]
+                ]
+            ),
+        )

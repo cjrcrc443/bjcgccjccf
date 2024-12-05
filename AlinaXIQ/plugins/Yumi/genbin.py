@@ -21,23 +21,23 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
 
-#Copyright © [LIFETIME] Team DAXX. All rights reserved
+# Copyright © [LIFETIME] Team DAXX. All rights reserved
 
 
-
-
-from pyrogram import Client, filters
 import random
+
+from pyrogram import filters
+
 from AlinaXIQ import app
 
 # Constants
-VALID_PREFIXES = [4, 5, 6,3]  # VISA starts with 4, MasterCard with 5, Discover with 6
-
+VALID_PREFIXES = [4, 5, 6, 3]  # VISA starts with 4, MasterCard with 5, Discover with 6
 
 
 def luhn_checksum(card_number):
     def digits_of(n):
         return [int(d) for d in str(n)]
+
     digits = digits_of(card_number)
     odd_digits = digits[-1::-2]
     even_digits = digits[-2::-2]
@@ -46,13 +46,13 @@ def luhn_checksum(card_number):
         checksum += sum(digits_of(d * 2))
     return checksum % 10
 
+
 def generate_test_card_number(prefix, length):
     card_number = [random.randint(0, 9) for _ in range(length - len(str(prefix)) - 1)]
     card_number.insert(0, str(prefix))
-    card_number = ''.join(map(str, card_number))
+    card_number = "".join(map(str, card_number))
     checksum = luhn_checksum(int(card_number) * 10)
     return card_number + str((10 - checksum) % 10)
-
 
 
 @app.on_message(filters.command("genbin"))

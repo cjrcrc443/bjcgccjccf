@@ -1,17 +1,16 @@
-import asyncio
+from typing import Optional, Union
+
 from PIL import Image, ImageDraw, ImageFont
-from pyrogram import filters, Client, enums
+from pyrogram import enums
 from pyrogram.types import *
-from typing import Union, Optional
-from AlinaXIQ import app as Hiroko 
+
+from AlinaXIQ import app as Hiroko
 from strings.filters import command
 
 # Function to get font and resize text
 get_font = lambda font_size, font_path: ImageFont.truetype(font_path, font_size)
-resize_text = (
-    lambda text_size, text: (text[:text_size] + "...").upper()
-    if len(text) > text_size
-    else text.upper()
+resize_text = lambda text_size, text: (
+    (text[:text_size] + "...").upper() if len(text) > text_size else text.upper()
 )
 
 
@@ -19,7 +18,7 @@ async def get_userinfo_img(
     bg_path: str,
     font_path: str,
     user_id: Union[int, str],
-    profile_path: Optional[str] = None
+    profile_path: Optional[str] = None,
 ):
     bg = Image.open(bg_path)
 
@@ -47,6 +46,7 @@ async def get_userinfo_img(
     bg.save(path)
     return path
 
+
 # Function to get user status
 # noinspection PyBroadException
 async def userstatus(user_id):
@@ -66,8 +66,9 @@ async def userstatus(user_id):
     except:
         return "**هەندێك هەڵە ڕوویدا!**"
 
+
 # Command handler for /info and /userinfo
-@Hiroko.on_message(command(["/info", "/userinfo","info","id","ا","ئایدی"]))
+@Hiroko.on_message(command(["/info", "/userinfo", "info", "id", "ا", "ئایدی"]))
 async def userinfo(_, message):
     chat_id = message.chat.id
     user_id = message.from_user.id
@@ -95,23 +96,28 @@ async def userinfo(_, message):
                 user_id=user_id,
                 profile_path=photo,
             )
-            await message.reply_photo(photo=welcome_photo, caption=f"""**زانیاری بەڕێزت♥🙇🏻‍♂️\n
+            await message.reply_photo(
+                photo=welcome_photo,
+                caption=f"""**زانیاری بەڕێزت♥🙇🏻‍♂️\n
  ✧ ¦ نـاوت ← {mention}
  ✧ ¦ یـوزەرت ← @{username}
  ✧ ¦ ئـایدی ← `{id}`
  ✧ ¦ ئـەکـتـیـڤـی بـەکـارهـێـنـەر ←\n`{status}`\n
  ✧ ¦ بـایـۆ ← {bio}\n\n
             **""",
-            reply_markup=InlineKeyboardMarkup(
-            [
-                [
-                    InlineKeyboardButton(
-                        name, url=f"https://t.me/{message.from_user.username}")
-                ],
-            ]
-        ),
-    )
+                reply_markup=InlineKeyboardMarkup(
+                    [
+                        [
+                            InlineKeyboardButton(
+                                name, url=f"https://t.me/{message.from_user.username}"
+                            )
+                        ],
+                    ]
+                ),
+            )
         else:
-            await Hiroko.send_message(chat_id, text=f"User {user_info.first_name} has no profile photo.")
+            await Hiroko.send_message(
+                chat_id, text=f"User {user_info.first_name} has no profile photo."
+            )
     except Exception as e:
         await message.reply_text(str(e))

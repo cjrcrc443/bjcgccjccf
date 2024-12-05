@@ -7,7 +7,7 @@ from pyrogram import filters
 from pyrogram.errors import MessageIdInvalid
 from pyrogram.types import InputMediaPhoto, Message
 from pytgcalls.__version__ import __version__ as pytgver
-from strings.filters import command
+
 import config
 from AlinaXIQ import app
 from AlinaXIQ.core.userbot import assistants
@@ -17,6 +17,7 @@ from AlinaXIQ.utils.database import get_served_chats, get_served_users, get_sudo
 from AlinaXIQ.utils.decorators.language import language, languageCB
 from AlinaXIQ.utils.inline.stats import back_stats_buttons, stats_buttons
 from config import BANNED_USERS
+from strings.filters import command
 
 
 @app.on_message(command(["/stats", "/gstats", "ئامار"]) & ~BANNED_USERS)

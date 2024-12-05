@@ -1,15 +1,20 @@
 from pyrogram import filters
 from pyrogram.types import Message
-from strings.filters import command
+
 from AlinaXIQ import app
 from AlinaXIQ.core.call import Alina
 from AlinaXIQ.utils.database import is_music_playing, music_off
 from AlinaXIQ.utils.decorators import AdminRightsCheck
 from AlinaXIQ.utils.inline import close_markup
 from config import BANNED_USERS
+from strings.filters import command
 
 
-@app.on_message(command(["pause", "cpause","/pause","/cpause","وسبە","وەستانی کاتی"]) & ~filters.private & ~BANNED_USERS)
+@app.on_message(
+    command(["pause", "cpause", "/pause", "/cpause", "وسبە", "وەستانی کاتی"])
+    & ~filters.private
+    & ~BANNED_USERS
+)
 @AdminRightsCheck
 async def pause_admin(cli, message: Message, _, chat_id):
     if not await is_music_playing(chat_id):

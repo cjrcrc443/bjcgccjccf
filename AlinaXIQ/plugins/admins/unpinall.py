@@ -1,20 +1,7 @@
-from pyrogram import filters, enums
-from pyrogram.types import (
-    InlineKeyboardButton,
-    InlineKeyboardMarkup,
-    ChatPermissions
-)
-from pyrogram.errors.exceptions.bad_request_400 import (
-    ChatAdminRequired,
-    UserAdminInvalid,
-    BadRequest
-)
+from pyrogram import enums, filters
+from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 
-import datetime
 from AlinaXIQ import app
-
-
-
 
 
 @app.on_callback_query(filters.regex(r"^unpin"))
@@ -23,7 +10,10 @@ async def unpin_callbacc(client, CallbackQuery):
     name = CallbackQuery.from_user.first_name
     chat_id = CallbackQuery.message.chat.id
     member = await app.get_chat_member(chat_id, user_id)
-    if member.status == enums.ChatMemberStatus.ADMINISTRATOR or member.status == enums.ChatMemberStatus.OWNER:
+    if (
+        member.status == enums.ChatMemberStatus.ADMINISTRATOR
+        or member.status == enums.ChatMemberStatus.OWNER
+    ):
         if member.privileges.can_pin_messages:
             pass
         else:
@@ -32,7 +22,7 @@ async def unpin_callbacc(client, CallbackQuery):
     else:
         await CallbackQuery.answer("**تۆ مافت نییە، بەڕێزم🖤•**", show_alert=True)
         return
-    
+
     msg_id = CallbackQuery.data.split("=")[1]
     try:
         msg_id = int(msg_id)
@@ -46,21 +36,17 @@ async def unpin_callbacc(client, CallbackQuery):
         await CallbackQuery.message.edit_caption(
             textt,
             reply_markup=InlineKeyboardMarkup(
-                [
-                    [InlineKeyboardButton(text="سڕینەوەی چات", callback_data="close")]
-                ]
-            )
+                [[InlineKeyboardButton(text="سڕینەوەی چات", callback_data="close")]]
+            ),
         )
         return
-        
+
     await client.unpin_chat_message(chat_id, msg_id)
     await CallbackQuery.message.edit_caption(
-        "unpinned!!", 
+        "unpinned!!",
         reply_markup=InlineKeyboardMarkup(
-            [
-                [InlineKeyboardButton(text="سڕینەوەی چات", callback_data="close")]
-            ]
-        )
+            [[InlineKeyboardButton(text="سڕینەوەی چات", callback_data="close")]]
+        ),
     )
 
 
@@ -71,7 +57,10 @@ async def unpin_command_handler(client, message):
     admin_id = message.from_user.id
     admin_name = message.from_user.first_name
     member = await chat.get_member(admin_id)
-    if member.status == enums.ChatMemberStatus.ADMINISTRATOR or member.status == enums.ChatMemberStatus.OWNER:
+    if (
+        member.status == enums.ChatMemberStatus.ADMINISTRATOR
+        or member.status == enums.ChatMemberStatus.OWNER
+    ):
         if member.privileges.can_pin_messages:
             pass
         else:
@@ -80,17 +69,15 @@ async def unpin_command_handler(client, message):
     else:
         msg_text = "**تۆ ڕۆڵت نییە بۆ لادانی پینی نامەکان🖤•**"
         return await message.reply_text(msg_text)
-    
+
     await message.reply_text(
         "**ئایە تۆ دڵنیایت؟ تۆ دەتەوێت هەموو نامە هەڵواسراوەکان لابدەیت؟🖤•**",
         reply_markup=InlineKeyboardMarkup(
-            [   
+            [
                 [
                     InlineKeyboardButton(text="بەڵێ", callback_data="unpinall=yes"),
                 ],
-                [
-                    InlineKeyboardButton(text="نەخێر", callback_data="unpinall=no")
-                ]
+                [InlineKeyboardButton(text="نەخێر", callback_data="unpinall=no")],
             ]
-        )
+        ),
     )

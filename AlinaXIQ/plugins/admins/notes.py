@@ -1,19 +1,10 @@
+from inspect import getfullargspec
 from re import findall
 
 from pyrogram import filters
-from pyrogram.types import (
-    CallbackQuery,
-    InlineKeyboardButton,
-    InlineKeyboardMarkup,
-    Message,
-)
-from inspect import getfullargspec
-from config import BANNED_USERS
-from AlinaXIQ import app
-from AlinaXIQ.utils.errors import capture_err
-from AlinaXIQ.utils.permissions import adminsOnly, member_permissions
-from AlinaXIQ.utils.keyboard import ikb
+from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, Message
 
+from AlinaXIQ import app
 from AlinaXIQ.utils.database import (
     delete_note,
     deleteall_notes,
@@ -21,11 +12,15 @@ from AlinaXIQ.utils.database import (
     get_note_names,
     save_note,
 )
+from AlinaXIQ.utils.errors import capture_err
 from AlinaXIQ.utils.functions import (
     check_format,
     extract_text_and_keyb,
     get_data_and_name,
 )
+from AlinaXIQ.utils.keyboard import ikb
+from AlinaXIQ.utils.permissions import adminsOnly, member_permissions
+from config import BANNED_USERS
 
 
 def extract_urls(reply_markup):

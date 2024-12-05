@@ -1,12 +1,16 @@
-import os
 import time
 from asyncio import sleep
-from pyrogram import Client, filters
-from pyrogram import enums, filters
-from strings.filters import command
-from AlinaXIQ import app
 
-@app.on_message(~filters.private & command(["/gdata","داتای گرووپ","gdata","پشکنینی گرووپ"]), group=2)
+from pyrogram import enums, filters
+
+from AlinaXIQ import app
+from strings.filters import command
+
+
+@app.on_message(
+    ~filters.private & command(["/gdata", "داتای گرووپ", "gdata", "پشکنینی گرووپ"]),
+    group=2,
+)
 async def instatus(app, message):
     start_time = time.perf_counter()
     user = await app.get_chat_member(message.chat.id, message.from_user.id)
@@ -21,7 +25,9 @@ async def instatus(app, message):
         banned = 0
         bot = 0
         uncached = 0
-        async for ban in app.get_chat_members(message.chat.id, filter=enums.ChatMembersFilter.BANNED):
+        async for ban in app.get_chat_members(
+            message.chat.id, filter=enums.ChatMembersFilter.BANNED
+        ):
             banned += 1
         async for member in app.get_chat_members(message.chat.id):
             user = member.user
@@ -35,7 +41,8 @@ async def instatus(app, message):
                 uncached += 1
         end_time = time.perf_counter()
         timelog = "{:.2f}".format(end_time - start_time)
-        await sent_message.edit(f"""
+        await sent_message.edit(
+            f"""
 **➖➖➖➖➖➖➖
 ➲ ناو : {message.chat.title} ✅
 ➲ ئەندام : [ {count} ]🫂
@@ -45,7 +52,8 @@ async def instatus(app, message):
 ➲ باندکراوەکان : {banned}🚫
 ➲ بەکارهێنەری پریمیوم : {premium_acc}🎁
 ➖➖➖➖➖➖➖
-کاتی خایەنراو : {timelog} S**""")
+کاتی خایەنراو : {timelog} S**"""
+        )
     else:
         sent_message = await message.reply_text("**تەنیا ئەدمینەکان دەتوانن!**")
         await sleep(5)

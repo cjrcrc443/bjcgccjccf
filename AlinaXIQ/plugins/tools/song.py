@@ -29,12 +29,16 @@ from AlinaXIQ.utils.formatters import convert_bytes
 from AlinaXIQ.utils.inline.song import song_markup
 from config import BANNED_USERS, SONG_DOWNLOAD_DURATION, SONG_DOWNLOAD_DURATION_LIMIT
 
-
-
 # Song Module
 
 
-@app.on_message(filters.command(["song","search","گەڕان","گەران","yt","video"], prefixes=["/", "!", "%", ",", "", ".", "@", "#"]) & ~BANNED_USERS)
+@app.on_message(
+    filters.command(
+        ["song", "search", "گەڕان", "گەران", "yt", "video"],
+        prefixes=["/", "!", "%", ",", "", ".", "@", "#"],
+    )
+    & ~BANNED_USERS
+)
 @language
 async def song_commad_private(client, message: Message, _):
 

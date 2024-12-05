@@ -8,7 +8,8 @@ def start_panel(_):
     buttons = [
         [
             InlineKeyboardButton(
-                text=_["S_B_1"], url=f"https://t.me/{app.username}?startchannel=true",
+                text=_["S_B_1"],
+                url=f"https://t.me/{app.username}?startchannel=true",
             )
         ],
         [
@@ -31,13 +32,11 @@ def private_panel(_):
             InlineKeyboardButton(text=_["S_B_2"], url=config.SUPPORT_CHAT),
             InlineKeyboardButton(text=_["S_B_5"], user_id=config.OWNER_ID),
         ],
-        [
-            InlineKeyboardButton(text=_["S_B_6"], url=config.SUPPORT_CHANNEL)
-        ],
+        [InlineKeyboardButton(text=_["S_B_6"], url=config.SUPPORT_CHANNEL)],
         [
             InlineKeyboardButton(
-                text=_["S_B_1"],
-                url=f"https://t.me/{app.username}?startchannel=true"),
+                text=_["S_B_1"], url=f"https://t.me/{app.username}?startchannel=true"
+            ),
         ],
     ]
     return buttons

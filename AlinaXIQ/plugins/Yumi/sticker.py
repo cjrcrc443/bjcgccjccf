@@ -1,4 +1,3 @@
-
 import imghdr
 import os
 from asyncio import gather
@@ -14,22 +13,21 @@ from pyrogram.errors import (
     UserIsBlocked,
 )
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, Message
-from AlinaXIQ import app
-from config import BOT_USERNAME
-from AlinaXIQ.utils.errors import capture_err
 
+from AlinaXIQ import app
+from AlinaXIQ.utils.errors import capture_err
 from AlinaXIQ.utils.files import (
     get_document_from_file_id,
     resize_file_to_sticker_size,
     upload_document,
 )
-
 from AlinaXIQ.utils.stickerset import (
     add_sticker_to_set,
     create_sticker,
     create_sticker_set,
     get_sticker_set_by_name,
 )
+from config import BOT_USERNAME
 
 # -----------
 
@@ -37,6 +35,8 @@ MAX_STICKERS = (
     120  # would be better if we could fetch this limit directly from telegram
 )
 SUPPORTED_TYPES = ["jpeg", "png", "webp"]
+
+
 # ------------------------------------------
 @app.on_message(filters.command("get_sticker"))
 @capture_err
@@ -61,26 +61,23 @@ async def sticker_image(_, message: Message):
 
     await m.delete()
     os.remove(f)
-#----------------
+
+
+# ----------------
 @app.on_message(filters.command("kang"))
 @capture_err
 async def kang(client, message: Message):
     if not message.reply_to_message:
         return await message.reply_text("Reply to a sticker/image to kang it.")
     if not message.from_user:
-        return await message.reply_text(
-            "You are anon admin, kang stickers in my pm."
-        )
+        return await message.reply_text("You are anon admin, kang stickers in my pm.")
     msg = await message.reply_text("Kanging Sticker..")
 
     # Find the proper emoji
     args = message.text.split()
     if len(args) > 1:
         sticker_emoji = str(args[1])
-    elif (
-        message.reply_to_message.sticker
-        and message.reply_to_message.sticker.emoji
-    ):
+    elif message.reply_to_message.sticker and message.reply_to_message.sticker.emoji:
         sticker_emoji = message.reply_to_message.sticker.emoji
     else:
         sticker_emoji = "🤔"
@@ -102,13 +99,9 @@ async def kang(client, message: Message):
             temp_file_path = await app.download_media(doc)
             image_type = imghdr.what(temp_file_path)
             if image_type not in SUPPORTED_TYPES:
-                return await msg.edit(
-                    "Format not supported! ({})".format(image_type)
-                )
+                return await msg.edit("Format not supported! ({})".format(image_type))
             try:
-                temp_file_path = await resize_file_to_sticker_size(
-                    temp_file_path
-                )
+                temp_file_path = await resize_file_to_sticker_size(temp_file_path)
             except OSError as e:
                 await msg.edit_text("Something wrong happened.")
                 raise Exception(
@@ -130,7 +123,7 @@ async def kang(client, message: Message):
         await message.reply_text(str(e))
         e = format_exc()
         return print(e)
-#-------
+    # -------
     packnum = 0
     packname = "f" + str(message.from_user.id) + "_by_" + BOT_USERNAME
     limit = 0

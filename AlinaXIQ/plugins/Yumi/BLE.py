@@ -1,9 +1,9 @@
 import asyncio
-import random
-from pyrogram import Client, filters, idle
+
+from pyrogram import filters
+
 from AlinaXIQ import app
 from strings.filters import command
-
 
 SLEEP = 0.1
 
@@ -19,7 +19,7 @@ async def say(app, message):
         return await message.reply(txt)
 
 
-@app.on_message(command(["heart", "دڵ","دڵم","dlm","دل"]))
+@app.on_message(command(["heart", "دڵ", "دڵم", "dlm", "دل"]))
 async def hearts(app, message):
     await asyncio.sleep(SLEEP * 3)
     await message.edit("**❤️ 𝖨**")

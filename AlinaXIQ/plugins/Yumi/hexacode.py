@@ -1,22 +1,24 @@
-from pyrogram import Client, filters
+from pyrogram import filters
+
 from AlinaXIQ import app
 from config import BOT_USERNAME
 
 
 def hex_to_text(hex_string):
     try:
-        text = bytes.fromhex(hex_string).decode('utf-8')
+        text = bytes.fromhex(hex_string).decode("utf-8")
         return text
     except Exception as e:
         return f"Error decoding hex: {str(e)}"
 
 
 def text_to_hex(text):
-    hex_representation = ' '.join(format(ord(char), 'x') for char in text)
+    hex_representation = " ".join(format(ord(char), "x") for char in text)
     return hex_representation
 
 
 # IAM_DAXX ...........................
+
 
 @app.on_message(filters.command("code"))
 def convert_text(_, message):

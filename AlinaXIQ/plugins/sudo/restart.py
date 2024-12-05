@@ -1,18 +1,17 @@
-
 import asyncio
 import os
 import shutil
 import socket
 from datetime import datetime
-from pyrogram.types import CallbackQuery
+from io import BytesIO
+
+import aiohttp
 import urllib3
 from git import Repo
 from git.exc import GitCommandError, InvalidGitRepositoryError
 from pyrogram import filters
-import aiohttp
-from pyrogram.types import ReplyKeyboardMarkup, InlineKeyboardButton, InlineKeyboardMarkup
-from io import BytesIO
-from pyrogram import filters
+from pyrogram.types import CallbackQuery, InlineKeyboardButton, InlineKeyboardMarkup
+
 import config
 from AlinaXIQ import app
 from AlinaXIQ.misc import HAPP, SUDOERS, XCB
@@ -30,6 +29,7 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 async def is_heroku():
     return "heroku" in socket.getfqdn()
 
+
 async def make_carbon(code):
     url = "https://carbonara.solopov.dev/api/cook"
     async with aiohttp.ClientSession() as session:
@@ -37,6 +37,7 @@ async def make_carbon(code):
             image = BytesIO(await resp.read())
     image.name = "carbon.png"
     return image
+
 
 # Modify the existing code...
 @app.on_callback_query(filters.regex(r"refresh_logs"))
@@ -50,12 +51,21 @@ async def handle_refresh_logs(_, query: CallbackQuery):
         carbon_image = await make_carbon(logs_content)
 
         # Edit the original message with the new carbon image
-        await query.message.edit_photo(carbon_image, caption="**🥀ᴛʜɪs ɪs ɴᴇᴡ ʀᴇғʀᴇsʜᴇᴅ ʟᴏɢs✨**")
+        await query.message.edit_photo(
+            carbon_image, caption="**🥀ᴛʜɪs ɪs ɴᴇᴡ ʀᴇғʀᴇsʜᴇᴅ ʟᴏɢs✨**"
+        )
 
     except Exception as e:
         print(f"An error occurred: {e}")
 
-@app.on_message(filters.command(["clog", "clogs", "carbonlog", "carbonlogs"], prefixes=["/", "!", "%", ",", "", ".", "@", "#"]) & SUDOERS)
+
+@app.on_message(
+    filters.command(
+        ["clog", "clogs", "carbonlog", "carbonlogs"],
+        prefixes=["/", "!", "%", ",", "", ".", "@", "#"],
+    )
+    & SUDOERS
+)
 @language
 async def log_(client, message, _):
     try:
@@ -65,18 +75,29 @@ async def log_(client, message, _):
 
         # Create a carbon image
         carbon_image = await make_carbon(logs_content)
-        
+
         # Create an inline keyboard with a refresh button
-        refresh_button = InlineKeyboardButton("🥀ʀᴇғʀᴇsʜ✨", callback_data="refresh_logs")
+        refresh_button = InlineKeyboardButton(
+            "🥀ʀᴇғʀᴇsʜ✨", callback_data="refresh_logs"
+        )
         keyboard = InlineKeyboardMarkup([[refresh_button]])
 
         # Reply to the message with the carbon image and the inline keyboard
-        await message.reply_photo(carbon_image, caption="**🥀ᴛʜɪs ɪs ʏᴏᴜʀ ʟᴏɢs✨**", reply_markup=keyboard)
+        await message.reply_photo(
+            carbon_image, caption="**🥀ᴛʜɪs ɪs ʏᴏᴜʀ ʟᴏɢs✨**", reply_markup=keyboard
+        )
 
     except Exception as e:
         print(f"An error occurred: {e}")
 
-@app.on_message(filters.command(["getlog", "logs", "getlogs","log"], prefixes=["/", "!", "%", ",", "", ".", "@", "#"]) & SUDOERS)
+
+@app.on_message(
+    filters.command(
+        ["getlog", "logs", "getlogs", "log"],
+        prefixes=["/", "!", "%", ",", "", ".", "@", "#"],
+    )
+    & SUDOERS
+)
 @language
 async def log_(client, message, _):
     try:
@@ -88,7 +109,12 @@ async def log_(client, message, _):
         await message.reply_text(_["server_1"])
 
 
-@app.on_message(filters.command(["update", "up", "نوێکردنەوە"], prefixes=["/", "!", "%", ",", "", ".", "@", "#"]) & SUDOERS)
+@app.on_message(
+    filters.command(
+        ["update", "up", "نوێکردنەوە"], prefixes=["/", "!", "%", ",", "", ".", "@", "#"]
+    )
+    & SUDOERS
+)
 @language
 async def update_(client, message, _):
     if await is_heroku():
@@ -222,7 +248,6 @@ async def updater_(client, message, _):
     os.system("pip3 install --no-cache-dir -U -r requirements.txt")
     os.system(f"kill -9 {os.getpid()} && bash start")
     exit()
-
 
 
 @app.on_message(filters.command(["restart"]) & SUDOERS)

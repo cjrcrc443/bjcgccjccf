@@ -1,10 +1,10 @@
-from pyrogram import Client, filters
-from strings.filters import command
 from AlinaXIQ import app
 from AlinaXIQ.utils.alina_ban import admin_filter
+from strings.filters import command
 
 ahmed = {}
 tom_max = 3
+
 
 @app.on_message(command("ئاگاداربە") & admin_filter)
 async def tom(client, message):
@@ -20,9 +20,8 @@ async def tom(client, message):
     await message.reply_text(f"{ahmed[chat_id][user_id]}")
     if ahmed[chat_id][user_id] >= tom_max:
         try:
-        	del ahmed[chat_id][user_id]
-        	await client.ban_chat_member(chat_id, user_id)
-        	await message.reply("**دەرکرا♥️✅•**")   	
+            del ahmed[chat_id][user_id]
+            await client.ban_chat_member(chat_id, user_id)
+            await message.reply("**دەرکرا♥️✅•**")
         except:
-        	await message.reply("**نەدۆزرایەوە**")
-        
+            await message.reply("**نەدۆزرایەوە**")

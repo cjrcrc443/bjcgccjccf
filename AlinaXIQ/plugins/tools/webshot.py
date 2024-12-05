@@ -1,16 +1,16 @@
 from base64 import b64decode
 from inspect import getfullargspec
 from io import BytesIO
-import requests
+
 from aiohttp import ClientSession
 from pyrogram import filters
 from pyrogram.types import *
+
 from AlinaXIQ import app
 
-button = InlineKeyboardMarkup([[
-            InlineKeyboardButton("⌯ ᴄʟᴏsᴇ ⌯", callback_data="close_data")
-                              ]])
-
+button = InlineKeyboardMarkup(
+    [[InlineKeyboardButton("⌯ ᴄʟᴏsᴇ ⌯", callback_data="close_data")]]
+)
 
 
 aiohttpsession = ClientSession()
@@ -23,7 +23,6 @@ async def post(url: str, *args, **kwargs):
         except Exception:
             data = await resp.text()
     return data
-
 
 
 async def take_screenshot(url: str, full: bool = False):
@@ -94,6 +93,3 @@ async def take_ss(_, message: Message):
         await m.delete()
     except Exception as e:
         await m.edit(str(e))
-
-
-

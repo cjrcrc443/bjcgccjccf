@@ -7,8 +7,12 @@ from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, Voice
 
 import config
 from AlinaXIQ import app
-from AlinaXIQ.utils.formatters import (check_duration, convert_bytes,
-                                       get_readable_time, seconds_to_min)
+from AlinaXIQ.utils.formatters import (
+    check_duration,
+    convert_bytes,
+    get_readable_time,
+    seconds_to_min,
+)
 
 
 class TeleAPI:

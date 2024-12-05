@@ -1,14 +1,13 @@
-from ... import *
 from pyrogram import *
 from pyrogram.types import *
+
+from ... import *
 
 
 @app.on_message(filters.command(["gen", "ccgen"], [".", "!", "/"]))
 async def gen_cc(client, message):
     if len(message.command) < 2:
-        return await message.reply_text(
-            "**Please Give Me a Bin To\nGenerate Cc ...**"
-        )
+        return await message.reply_text("**Please Give Me a Bin To\nGenerate Cc ...**")
     try:
         await message.delete()
     except:
@@ -20,7 +19,8 @@ async def gen_cc(client, message):
     try:
         resp = await api.ccgen(bin, 10)
         cards = resp.liveCC
-        await aux.edit(f"""
+        await aux.edit(
+            f"""
 **💠 Some Live Generated CC:**
 `{cards[0]}`\n`{cards[1]}`\n`{cards[2]}`
 `{cards[3]}`\n`{cards[4]}`\n`{cards[5]}`
@@ -31,5 +31,3 @@ async def gen_cc(client, message):
         )
     except Exception as e:
         return await aux.edit(f"**Error:** `{e}`")
-
-  

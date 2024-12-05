@@ -1,7 +1,4 @@
 import random
-
-from pytgcalls import PyTgCalls
-
 from typing import Dict, List, Union
 
 from AlinaXIQ import userbot
@@ -260,6 +257,7 @@ async def set_welcome(chat_id: int, welcome: str, raw_text: str, file_id: str):
 async def del_welcome(chat_id: int):
     return await welcomedb.delete_one({"chat_id": chat_id})
 
+
 # Total Queries on bot
 async def get_queries() -> int:
     chat_id = 98324
@@ -277,6 +275,7 @@ async def set_queries(mode: int):
     return await queriesdb.update_one(
         {"chat_id": chat_id}, {"$set": {"mode": mode}}, upsert=True
     )
+
 
 # Top Chats DB
 
@@ -319,9 +318,7 @@ async def get_particulars(chat_id: int) -> Dict[str, int]:
     return ids["vidid"]
 
 
-async def get_particular_top(
-    chat_id: int, name: str
-) -> Union[bool, dict]:
+async def get_particular_top(chat_id: int, name: str) -> Union[bool, dict]:
     ids = await get_particulars(chat_id)
     if name in ids:
         return ids[name]
@@ -332,8 +329,9 @@ async def update_particular_top(chat_id: int, name: str, vidid: dict):
     ids[name] = vidid
     await chattopdb.update_one(
         {"chat_id": chat_id}, {"$set": {"vidid": ids}}, upsert=True
-)
-    
+    )
+
+
 # Top User DB
 
 
@@ -353,9 +351,7 @@ async def get_user_top(chat_id: int, name: str) -> Union[bool, dict]:
 async def update_user_top(chat_id: int, name: str, vidid: dict):
     ids = await get_userss(chat_id)
     ids[name] = vidid
-    await userdb.update_one(
-        {"chat_id": chat_id}, {"$set": {"vidid": ids}}, upsert=True
-    )
+    await userdb.update_one({"chat_id": chat_id}, {"$set": {"vidid": ids}}, upsert=True)
 
 
 async def get_topp_users() -> dict:
@@ -369,7 +365,8 @@ async def get_topp_users() -> dict:
                 total += counts_
         results[user_id] = total
     return results
-    
+
+
 # Playlist
 
 
@@ -579,6 +576,7 @@ async def music_on(chat_id: int):
 async def music_off(chat_id: int):
     pause[chat_id] = False
 
+
 # Muted
 async def is_muted(chat_id: int) -> bool:
     mode = mute.get(chat_id)
@@ -770,8 +768,10 @@ async def add_served_chat(chat_id: int):
         return
     return await chatsdb.insert_one({"chat_id": chat_id})
 
+
 async def delete_served_chat(chat_id: int):
     await chatsdb.delete_one({"chat_id": chat_id})
+
 
 async def blacklisted_chats() -> list:
     chats_list = []
@@ -929,6 +929,7 @@ async def remove_banned_user(user_id: int):
         return
     return await blockeddb.delete_one({"user_id": user_id})
 
+
 # Private Served Chats
 
 
@@ -959,6 +960,7 @@ async def remove_private_chat(chat_id: int):
         return
     return await privatedb.delete_one({"chat_id": chat_id})
 
+
 # SUGGESTION
 
 
@@ -987,6 +989,7 @@ async def suggestion_off(chat_id: int):
     if not user:
         return await suggdb.insert_one({"chat_id": chat_id})
 
+
 # Clean Mode
 async def is_cleanmode_on(chat_id: int) -> bool:
     if chat_id not in cleanmode:
@@ -1005,4 +1008,3 @@ async def cleanmode_on(chat_id: int):
         cleanmode.remove(chat_id)
     except:
         pass
-

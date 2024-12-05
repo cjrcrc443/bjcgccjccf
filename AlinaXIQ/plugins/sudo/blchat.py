@@ -8,7 +8,9 @@ from AlinaXIQ.utils.decorators.language import language
 from config import BANNED_USERS
 
 
-@app.on_message(filters.command(["/blchat", "/blacklistchat", "باندکردنی گرووپ"], "") & SUDOERS)
+@app.on_message(
+    filters.command(["/blchat", "/blacklistchat", "باندکردنی گرووپ"], "") & SUDOERS
+)
 @language
 async def blacklist_chat_func(client, message: Message, _):
     if len(message.command) != 2:
@@ -28,7 +30,10 @@ async def blacklist_chat_func(client, message: Message, _):
 
 
 @app.on_message(
-    filters.command(["/whitelistchat", "/unblacklistchat", "/unblchat", "لادانی گرووپ"], "") & SUDOERS
+    filters.command(
+        ["/whitelistchat", "/unblacklistchat", "/unblchat", "لادانی گرووپ"], ""
+    )
+    & SUDOERS
 )
 @language
 async def white_funciton(client, message: Message, _):
@@ -43,7 +48,9 @@ async def white_funciton(client, message: Message, _):
     await message.reply_text(_["black_9"])
 
 
-@app.on_message(filters.command(["/blchats", "/blacklistedchats", "گرووپەکان"], "") & ~BANNED_USERS)
+@app.on_message(
+    filters.command(["/blchats", "/blacklistedchats", "گرووپەکان"], "") & ~BANNED_USERS
+)
 @language
 async def all_chats(client, message: Message, _):
     text = _["black_7"]

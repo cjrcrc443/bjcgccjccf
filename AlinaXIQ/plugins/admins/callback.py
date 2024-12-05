@@ -24,9 +24,9 @@ from AlinaXIQ.utils.stream.autoclear import auto_clean
 from AlinaXIQ.utils.thumbnails import get_thumb
 from config import (
     BANNED_USERS,
-    SUPPORT_CHAT,
     SOUNCLOUD_IMG_URL,
     STREAM_IMG_URL,
+    SUPPORT_CHAT,
     TELEGRAM_AUDIO_URL,
     TELEGRAM_VIDEO_URL,
     adminlist,
@@ -309,9 +309,11 @@ async def del_back_playlist(client, CallbackQuery, _):
             if videoid == "telegram":
                 button = stream_markup(_, chat_id)
                 run = await CallbackQuery.message.reply_photo(
-                    photo=TELEGRAM_AUDIO_URL
-                    if str(streamtype) == "audio"
-                    else TELEGRAM_VIDEO_URL,
+                    photo=(
+                        TELEGRAM_AUDIO_URL
+                        if str(streamtype) == "audio"
+                        else TELEGRAM_VIDEO_URL
+                    ),
                     caption=_["stream_1"].format(
                         SUPPORT_CHAT, title[:23], duration, user
                     ),
@@ -322,9 +324,11 @@ async def del_back_playlist(client, CallbackQuery, _):
             elif videoid == "soundcloud":
                 button = stream_markup(_, chat_id)
                 run = await CallbackQuery.message.reply_photo(
-                    photo=SOUNCLOUD_IMG_URL
-                    if str(streamtype) == "audio"
-                    else TELEGRAM_VIDEO_URL,
+                    photo=(
+                        SOUNCLOUD_IMG_URL
+                        if str(streamtype) == "audio"
+                        else TELEGRAM_VIDEO_URL
+                    ),
                     caption=_["stream_1"].format(
                         SUPPORT_CHAT, title[:23], duration, user
                     ),

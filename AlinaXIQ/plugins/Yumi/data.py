@@ -21,15 +21,13 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
 
-
-from pyrogram import Client, filters
 from faker import Faker
+from pyrogram import filters
+
 from AlinaXIQ import app
 
 # Create a Faker instance
 fake = Faker()
-
-
 
 
 # Generate person info command handler
@@ -48,21 +46,13 @@ def generate_info(client, message):
     # Create a message with the fake data
     info_message = (
         f"**Full Name:** {name}\n"
-        
         f"**Address:** {address}\n"
-        
         f"**Country:** {country}\n"
-        
         f"**Phone Number:** {phone_number}\n"
-        
         f"**Email:** {email}\n"
-        
         f"**City:** {city}\n"
-        
         f"**State:** {state}\n"
-        
         f"**zipcode:** {zipcode}"
-        
     )
 
     # Send the fake data to the user

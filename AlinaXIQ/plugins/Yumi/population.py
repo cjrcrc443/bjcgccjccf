@@ -1,6 +1,7 @@
+import requests
 from pyrogram import Client, filters
 from pyrogram.types import Message
-import requests
+
 from AlinaXIQ import app
 
 
@@ -11,7 +12,7 @@ def country_command_handler(client: Client, message: Message):
 
     # Call the external API for country information
     api_url = f"https://restcountries.com/v3.1/alpha/{country_code}"
-    
+
     try:
         response = requests.get(api_url)
         response.raise_for_status()  # Raise an HTTPError for bad responses

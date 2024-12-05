@@ -1,17 +1,18 @@
-import asyncio
 from typing import Optional
-from random import randint
-from pyrogram.types import Message, ChatPrivileges
+
 from pyrogram import Client, filters
-from strings.filters import command
+from pyrogram.errors import ChatAdminRequired
 from pyrogram.raw.functions.channels import GetFullChannel
 from pyrogram.raw.functions.messages import GetFullChat
-from pyrogram.raw.types import InputGroupCall, InputPeerChannel, InputPeerChat
-from AlinaXIQ.utils.database import *
 from pyrogram.raw.functions.phone import CreateGroupCall, DiscardGroupCall
-from pyrogram.errors import UserAlreadyParticipant, UserNotParticipant, ChatAdminRequired
-from AlinaXIQ import app , Userbot
+from pyrogram.raw.types import InputGroupCall, InputPeerChannel, InputPeerChat
+from pyrogram.types import ChatPrivileges, Message
+
+from AlinaXIQ import app
 from AlinaXIQ.utils.alina_ban import admin_filter
+from AlinaXIQ.utils.database import *
+from strings.filters import command
+
 
 async def get_group_call(
     client: Client, message: Message, err_msg: str = ""
@@ -32,7 +33,10 @@ async def get_group_call(
     await app.send_message(f"**هیچ تێلێك لە گرووپ نەکراوەتەوە** {err_msg}")
     return False
 
-@app.on_message(command(["/open", "کردنەوەی تێل", "کردنەوەی تیل"]) & admin_filter & ~filters.private)
+
+@app.on_message(
+    command(["/open", "کردنەوەی تێل", "کردنەوەی تیل"]) & admin_filter & ~filters.private
+)
 async def start_group_call(c: Client, m: Message):
     chat_id = m.chat.id
     assistant = await get_assistant(chat_id)
@@ -55,40 +59,51 @@ async def start_group_call(c: Client, m: Message):
         )
         await msg.edit_text("•⎆┊**بە سەرکەوتوویی تێل کرایەوە♥️⚡️•**")
     except ChatAdminRequired:
-      try:    
-        await app.promote_chat_member(chat_id, assid, privileges=ChatPrivileges(
-                can_manage_chat=False,
-                can_delete_messages=False,
-                can_manage_video_chats=True,
-                can_change_info=False,
-                can_invite_users=False,
-                can_pin_messages=False,
-            ),
-        )
-        peer = await assistant.resolve_peer(chat_id)
-        await assistant.invoke(
-            CreateGroupCall(
-                peer=InputPeerChannel(
-                    channel_id=peer.channel_id,
-                    access_hash=peer.access_hash,
+        try:
+            await app.promote_chat_member(
+                chat_id,
+                assid,
+                privileges=ChatPrivileges(
+                    can_manage_chat=False,
+                    can_delete_messages=False,
+                    can_manage_video_chats=True,
+                    can_change_info=False,
+                    can_invite_users=False,
+                    can_pin_messages=False,
                 ),
-                random_id=assistant.rnd_id() // 9000000000,
             )
-        )
-        await app.promote_chat_member(chat_id, assid, privileges=ChatPrivileges(
-            can_manage_chat=False,
-            can_delete_messages=False,
-            can_manage_video_chats=False,
-            can_change_info=False,
-            can_invite_users=False,
-            can_pin_messages=False,
-            ),
-        )                              
-        await msg.edit_text("•⎆┊**بە سەرکەوتوویی تێل کرایەوە♥️⚡️•**")
-      except:
-         await msg.edit_text("•⎆┊**با بۆتەکە ڕۆڵی ئەوەی هەبێت کە ئەدمین زیاد بکات و کۆنترۆڵی تێل بکات یان ڕێگە بە یاریدەدەرەکە بدات و هەوڵ بدات🕷•**")
-        
-@app.on_message(command(["/close", "داخستنی تێل", "داخستنی تیل"]) & admin_filter & ~filters.private)
+            peer = await assistant.resolve_peer(chat_id)
+            await assistant.invoke(
+                CreateGroupCall(
+                    peer=InputPeerChannel(
+                        channel_id=peer.channel_id,
+                        access_hash=peer.access_hash,
+                    ),
+                    random_id=assistant.rnd_id() // 9000000000,
+                )
+            )
+            await app.promote_chat_member(
+                chat_id,
+                assid,
+                privileges=ChatPrivileges(
+                    can_manage_chat=False,
+                    can_delete_messages=False,
+                    can_manage_video_chats=False,
+                    can_change_info=False,
+                    can_invite_users=False,
+                    can_pin_messages=False,
+                ),
+            )
+            await msg.edit_text("•⎆┊**بە سەرکەوتوویی تێل کرایەوە♥️⚡️•**")
+        except:
+            await msg.edit_text(
+                "•⎆┊**با بۆتەکە ڕۆڵی ئەوەی هەبێت کە ئەدمین زیاد بکات و کۆنترۆڵی تێل بکات یان ڕێگە بە یاریدەدەرەکە بدات و هەوڵ بدات🕷•**"
+            )
+
+
+@app.on_message(
+    command(["/close", "داخستنی تێل", "داخستنی تیل"]) & admin_filter & ~filters.private
+)
 async def stop_group_call(c: Client, m: Message):
     chat_id = m.chat.id
     assistant = await get_assistant(chat_id)
@@ -100,42 +115,53 @@ async def stop_group_call(c: Client, m: Message):
     msg = await app.send_message(chat_id, "•⎆┊**تێل دادەخرێت .. ♥️•**")
     try:
         if not (
-           group_call := (
-               await get_group_call(assistant, m, err_msg="•⎆┊**تێلی گرووپ کۆتایی پێھاتبوو♥️•**")
-           )
-        ):  
-           return
+            group_call := (
+                await get_group_call(
+                    assistant, m, err_msg="•⎆┊**تێلی گرووپ کۆتایی پێھاتبوو♥️•**"
+                )
+            )
+        ):
+            return
         await assistant.invoke(DiscardGroupCall(call=group_call))
         await msg.edit_text("•⎆┊**بە سەرکەوتوویی تێل داخرا♥️⚡️•**")
     except Exception as e:
-      if "GROUPCALL_FORBIDDEN" in str(e):
-       try:    
-         await app.promote_chat_member(chat_id, assid, privileges=ChatPrivileges(
-                can_manage_chat=False,
-                can_delete_messages=False,
-                can_manage_video_chats=True,
-                can_change_info=False,
-                can_invite_users=False,
-                can_pin_messages=False,
-             ),
-         )
-         if not (
-           group_call := (
-               await get_group_call(assistant, m, err_msg="•⎆┊**تێلی گرووپ کۆتایی پێھاتبوو♥️•**")
-           )
-         ):  
-           return
-         await assistant.invoke(DiscardGroupCall(call=group_call))
-         await app.promote_chat_member(chat_id, assid, privileges=ChatPrivileges(
-            can_manage_chat=False,
-            can_delete_messages=False,
-            can_manage_video_chats=False,
-            can_change_info=False,
-            can_invite_users=False,
-            can_pin_messages=False,
-            ),
-         )                              
-         await msg.edit_text("•⎆┊**بە سەرکەوتوویی تێل داخرا♥️⚡️•**")
-       except:
-         await msg.edit_text("•⎆┊**با بۆتەکە ڕۆڵی ئەوەی هەبێت کە ئەدمین زیاد بکات و کۆنترۆڵی تێل بکات یان ڕێگە بە یاریدەدەرەکە بدات و هەوڵ بدات🕷•**")
-    
+        if "GROUPCALL_FORBIDDEN" in str(e):
+            try:
+                await app.promote_chat_member(
+                    chat_id,
+                    assid,
+                    privileges=ChatPrivileges(
+                        can_manage_chat=False,
+                        can_delete_messages=False,
+                        can_manage_video_chats=True,
+                        can_change_info=False,
+                        can_invite_users=False,
+                        can_pin_messages=False,
+                    ),
+                )
+                if not (
+                    group_call := (
+                        await get_group_call(
+                            assistant, m, err_msg="•⎆┊**تێلی گرووپ کۆتایی پێھاتبوو♥️•**"
+                        )
+                    )
+                ):
+                    return
+                await assistant.invoke(DiscardGroupCall(call=group_call))
+                await app.promote_chat_member(
+                    chat_id,
+                    assid,
+                    privileges=ChatPrivileges(
+                        can_manage_chat=False,
+                        can_delete_messages=False,
+                        can_manage_video_chats=False,
+                        can_change_info=False,
+                        can_invite_users=False,
+                        can_pin_messages=False,
+                    ),
+                )
+                await msg.edit_text("•⎆┊**بە سەرکەوتوویی تێل داخرا♥️⚡️•**")
+            except:
+                await msg.edit_text(
+                    "•⎆┊**با بۆتەکە ڕۆڵی ئەوەی هەبێت کە ئەدمین زیاد بکات و کۆنترۆڵی تێل بکات یان ڕێگە بە یاریدەدەرەکە بدات و هەوڵ بدات🕷•**"
+                )

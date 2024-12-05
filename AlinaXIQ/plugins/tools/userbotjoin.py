@@ -1,30 +1,27 @@
 import asyncio
-from AlinaXIQ.misc import SUDOERS
-from AlinaXIQ.core.userbot import Userbot
-from pyrogram import Client, filters
-from pyrogram.errors import UserAlreadyParticipant
-from AlinaXIQ import app
-import asyncio
-import random
-from pyrogram import Client, filters
+
+from pyrogram import filters
 from pyrogram.enums import ChatMemberStatus
-from pyrogram.errors import (
-    ChatAdminRequired,
-    InviteRequestSent,
-    UserAlreadyParticipant,
-    UserNotParticipant,
-)
+from pyrogram.errors import InviteRequestSent
+
 from AlinaXIQ import app
+from AlinaXIQ.misc import SUDOERS
 from AlinaXIQ.utils.alina_ban import admin_filter
-from AlinaXIQ.utils.decorators.userbotjoin import UserbotWrapper
-from AlinaXIQ.utils.database import get_assistant, is_active_chat
+from AlinaXIQ.utils.database import get_assistant
 from strings.filters import command
 
 links = {}
 
 
 @app.on_message(
-    command(["/userbotjoin", f"userbotjoin@{app.username}", "زیادکردنی یاریدەدەر", f"جۆین@{app.username}"])
+    command(
+        [
+            "/userbotjoin",
+            f"userbotjoin@{app.username}",
+            "زیادکردنی یاریدەدەر",
+            f"جۆین@{app.username}",
+        ]
+    )
     & ~filters.private
 )
 async def join_group(client, message):
@@ -51,7 +48,9 @@ async def join_group(client, message):
             except Exception:
                 pass
         except Exception as e:
-            await done.edit_text("**🧑🏻‍💻┋ پێویستە ئەدمین بم و ڕۆڵم هەبێت بۆ لادانی باندی یاریدەدەرەکەم**")
+            await done.edit_text(
+                "**🧑🏻‍💻┋ پێویستە ئەدمین بم و ڕۆڵم هەبێت بۆ لادانی باندی یاریدەدەرەکەم**"
+            )
 
     # Condition 2: Group username is present, bot is admin, and Userbot is not banned
     if message.chat.username and chat_member.status == ChatMemberStatus.ADMINISTRATOR:
@@ -96,7 +95,9 @@ async def join_group(client, message):
         not message.chat.username
         and not chat_member.status == ChatMemberStatus.ADMINISTRATOR
     ):
-        await done.edit_text("**🧑🏻‍💻┋ پێویستە ئەدمین بم بۆ بانگھێشت کردنی یاریدەدەرەکەم**")
+        await done.edit_text(
+            "**🧑🏻‍💻┋ پێویستە ئەدمین بم بۆ بانگھێشت کردنی یاریدەدەرەکەم**"
+        )
 
     # Condition 5: Group username is not present/group is private, bot is admin
     if (
@@ -110,11 +111,17 @@ async def join_group(client, message):
                     ChatMemberStatus.BANNED,
                     ChatMemberStatus.RESTRICTED,
                 ]:
-                    await done.edit_text("**✅┋ ئەکاونتی یاریدەدەر پێشتر جۆینی کردووە و لە گرووپە**")
+                    await done.edit_text(
+                        "**✅┋ ئەکاونتی یاریدەدەر پێشتر جۆینی کردووە و لە گرووپە**"
+                    )
                     return
             except Exception as e:
-                await done.edit_text("**✅┋ تکایە کەمێك چاوەڕێ بکە بانگھێشت دەکرێت . .**")
-                await done.edit_text("**✅┋ تکایە کەمێك چاوەڕێ بکە بانگھێشت دەکرێت . .**")
+                await done.edit_text(
+                    "**✅┋ تکایە کەمێك چاوەڕێ بکە بانگھێشت دەکرێت . .**"
+                )
+                await done.edit_text(
+                    "**✅┋ تکایە کەمێك چاوەڕێ بکە بانگھێشت دەکرێت . .**"
+                )
                 invite_link = await app.create_chat_invite_link(
                     chat_id, expire_date=None
                 )
@@ -167,7 +174,11 @@ async def join_group(client, message):
         return
 
 
-@app.on_message(command(["/userbotleave", "دەرکردنی یاریدەدەر", "/assleft"]) & ~filters.private & admin_filter)
+@app.on_message(
+    command(["/userbotleave", "دەرکردنی یاریدەدەر", "/assleft"])
+    & ~filters.private
+    & admin_filter
+)
 async def leave_one(client, message):
     try:
         userbot = await get_assistant(message.chat.id)
@@ -179,14 +190,19 @@ async def leave_one(client, message):
         print(e)
 
 
-@app.on_message(command(["لێفتی گشتی", f"/leaveall@{app.username}", f"لێفت@{app.username}"]) & SUDOERS)
+@app.on_message(
+    command(["لێفتی گشتی", f"/leaveall@{app.username}", f"لێفت@{app.username}"])
+    & SUDOERS
+)
 async def leave_all(client, message):
     if message.from_user.id not in SUDOERS:
         return
 
     left = 0
     failed = 0
-    lol = await message.reply("**✅┋ ئەکاونتی یاریدەدەری بۆت لێفت دەکات لە هەموو گرووپەکان**")
+    lol = await message.reply(
+        "**✅┋ ئەکاونتی یاریدەدەری بۆت لێفت دەکات لە هەموو گرووپەکان**"
+    )
     try:
         userbot = await get_assistant(message.chat.id)
         async for dialog in userbot.get_dialogs():

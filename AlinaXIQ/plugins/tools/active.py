@@ -1,7 +1,7 @@
-from pyrogram import filters, Client
-from pyrogram.types import Message, InlineKeyboardMarkup, InlineKeyboardButton
+from pyrogram import Client, filters
+from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, Message
 from unidecode import unidecode
-from strings.filters import command
+
 from AlinaXIQ import app
 from AlinaXIQ.misc import SUDOERS
 from AlinaXIQ.utils.database import (
@@ -10,9 +10,10 @@ from AlinaXIQ.utils.database import (
     remove_active_chat,
     remove_active_video_chat,
 )
+from strings.filters import command
 
 
-@app.on_message(filters.command(["activevc", "activevoice","vc"]) & SUDOERS)
+@app.on_message(filters.command(["activevc", "activevoice", "vc"]) & SUDOERS)
 async def activevc(_, message: Message):
     mystic = await message.reply_text("» ɢᴇᴛᴛɪɴɢ ᴀᴄᴛɪᴠᴇ ᴠᴏɪᴄᴇ ᴄʜᴀᴛs ʟɪsᴛ...")
     served_chats = await get_active_chats()
@@ -29,9 +30,7 @@ async def activevc(_, message: Message):
                 user = (await app.get_chat(x)).username
                 text += f"<b>{j + 1}.</b> <a href=https://t.me/{user}>{unidecode(title).upper()}</a>\n"
             else:
-                text += (
-                    f"<b>{j + 1}.</b> {unidecode(title).upper()}\n"
-                )
+                text += f"<b>{j + 1}.</b> {unidecode(title).upper()}\n"
             j += 1
         except:
             continue
@@ -44,7 +43,7 @@ async def activevc(_, message: Message):
         )
 
 
-@app.on_message(filters.command(["activev", "activevideo","vvc"]) & SUDOERS)
+@app.on_message(filters.command(["activev", "activevideo", "vvc"]) & SUDOERS)
 async def activevi_(_, message: Message):
     mystic = await message.reply_text("» ɢᴇᴛᴛɪɴɢ ᴀᴄᴛɪᴠᴇ ᴠɪᴅᴇᴏ ᴄʜᴀᴛs ʟɪsᴛ...")
     served_chats = await get_active_video_chats()
@@ -75,8 +74,14 @@ async def activevi_(_, message: Message):
             disable_web_page_preview=True,
         )
 
-@app.on_message(command(["/ac","/av","چالاکی پەخش"]) & SUDOERS)
+
+@app.on_message(command(["/ac", "/av", "چالاکی پەخش"]) & SUDOERS)
 async def start(client: Client, message: Message):
     ac_audio = str(len(await get_active_chats()))
     ac_video = str(len(await get_active_video_chats()))
-    await message.reply_text(f"<b>✫ زانیاری چالاکی پەخشکردن :</b>\n\n<b>دەنگی : {ac_audio}\nڤیدیۆ : {ac_video}</b>", reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton('✯ داخستن ✯', callback_data=f"close")]]))
+    await message.reply_text(
+        f"<b>✫ زانیاری چالاکی پەخشکردن :</b>\n\n<b>دەنگی : {ac_audio}\nڤیدیۆ : {ac_video}</b>",
+        reply_markup=InlineKeyboardMarkup(
+            [[InlineKeyboardButton("✯ داخستن ✯", callback_data=f"close")]]
+        ),
+    )

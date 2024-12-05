@@ -1,18 +1,27 @@
 import asyncio
-from pyrogram import Client, filters
-from pyrogram.errors import FloodWait
-from dotenv import load_dotenv
-import config
-from strings.filters import command
-from AlinaXIQ.core.userbot import Userbot
-from AlinaXIQ import app
 from datetime import datetime
+
+from AlinaXIQ import app
 from AlinaXIQ.utils.database import get_assistant
+from strings.filters import command
+
 # Assuming Userbot is defined elsewhere
 
 last_checked_time = None
 
-@app.on_message(command(["/botcheck","/botchk","پشکنینی بوت","چالاکی بوت","پشکنینی بۆت","چالاکی بۆت"]))
+
+@app.on_message(
+    command(
+        [
+            "/botcheck",
+            "/botchk",
+            "پشکنینی بوت",
+            "چالاکی بوت",
+            "پشکنینی بۆت",
+            "چالاکی بۆت",
+        ]
+    )
+)
 async def check_bots_command(client, message):
     global last_checked_time
     try:
@@ -43,10 +52,13 @@ async def check_bots_command(client, message):
                 response += f"**╭⎋ {bot_username}\n l\n⇜ تۆ یوزەری بۆتی هەڵەت پێداوم تکایە دڵنیابەوە لەوەی کە یوزەرەکە ڕاستە**\n\n"
             # Update last checked time
             last_checked_time = start_time.strftime("%Y-%m-%d")
-            await message.reply_text(f"**{response}⏲️ کۆتا پشکنین: {last_checked_time} **")
+            await message.reply_text(
+                f"**{response}⏲️ کۆتا پشکنین: {last_checked_time} **"
+            )
         else:
-            await message.reply_text("**⇜ فەرمانت هەڵە بەکارهێنا\n\n⇜ تکایە بەم شێوازە بیکە /botcheck یوزەری بۆت**\n\n**⇜ نموونە :** `/botcheck @IQM2BOT`")
+            await message.reply_text(
+                "**⇜ فەرمانت هەڵە بەکارهێنا\n\n⇜ تکایە بەم شێوازە بیکە /botcheck یوزەری بۆت**\n\n**⇜ نموونە :** `/botcheck @IQM2BOT`"
+            )
     except Exception as e:
         await message.reply_text(f"**⇜ هەڵەیەك ڕوویدا: {e}**")
         print(f"Error occurred during /botschk command: {e}")
-    

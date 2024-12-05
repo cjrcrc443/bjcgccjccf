@@ -11,23 +11,28 @@ API_ID = int(getenv("API_ID", "28517250"))
 API_HASH = getenv("API_HASH", "b96f3367dbe30a01985807ee7f5d7013")
 # Get your token from @BotFather on Telegram.
 BOT_TOKEN = getenv("BOT_TOKEN", "6749565952:AAGgDYBjwufOuSx3y8agjVBMQGc-nLTLaLk")
-# Add Owner Username without @ 
-OWNER_USERNAME = getenv("OWNER_USERNAME","Hawaallll")
-USER_OWNER = getenv("USER_OWNER","Hawaallll")
+# Add Owner Username without @
+OWNER_USERNAME = getenv("OWNER_USERNAME", "Hawaallll")
+USER_OWNER = getenv("USER_OWNER", "Hawaallll")
 # Get Your bot username
 BOT_USERNAME = getenv("BOT_USERNAME", "HawalmusicBot")
-# Don't Add style font 
+# Don't Add style font
 BOT_NAME = getenv("BOT_NAME", "ᴱᴺᴺᴰﾂ🖇️🖤ᵐᵘˢⁱᶜ")
-#get Your Assistant User name
+# get Your Assistant User name
 ASSUSERNAME = getenv("ASSUSERNAME", "HawallBot")
 EVALOP = list(map(int, getenv("EVALOP", "833360381 1818734394 7210848076").split()))
 # Get your mongo url from cloud.mongodb.com
-MONGO_DB_URI = getenv("MONGO_DB_URI", "mongodb+srv://iqmcbot:vvcOaPIREn3oPQto@cluster0.cwdhy7x.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
+MONGO_DB_URI = getenv(
+    "MONGO_DB_URI",
+    "mongodb+srv://iqmcbot:vvcOaPIREn3oPQto@cluster0.cwdhy7x.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0",
+)
 
 DURATION_LIMIT_MIN = int(getenv("DURATION_LIMIT", "99999999999999999"))
 
 SONG_DOWNLOAD_DURATION = int(getenv("SONG_DOWNLOAD_DURATION", "99999999999999999"))
-SONG_DOWNLOAD_DURATION_LIMIT = int(getenv("SONG_DOWNLOAD_DURATION_LIMIT", "99999999999"))
+SONG_DOWNLOAD_DURATION_LIMIT = int(
+    getenv("SONG_DOWNLOAD_DURATION_LIMIT", "99999999999")
+)
 
 
 # Chat id of a group for logging bot's activities
@@ -35,7 +40,7 @@ LOGGER_ID = int(getenv("LOGGER_ID", "-1002105278394"))
 
 # Get this value from  on Telegram by /id
 OWNER_ID = int(getenv("OWNER_ID", 7210848076))
-## Fill these variables if you're deploying on heroku.
+# Fill these variables if you're deploying on heroku.
 # Your heroku app name
 HEROKU_APP_NAME = getenv("HEROKU_APP_NAME")
 # Get it from http://dashboard.heroku.com/account
@@ -54,19 +59,23 @@ SUPPORT_CHANNEL = getenv("SUPPORT_CHANNEL", "https://t.me/Haawall")
 SUPPORT_CHAT = getenv("SUPPORT_CHAT", "https://t.me/pieceofsad0")
 OWNER_CHANNEL = getenv("OWNER_CHANNEL", "https://t.me/Haawall")
 GROUP_BOT = int(getenv("GROUP_BOT", "-1002120302842"))
-# Set this to True if you want the assistant to automatically leave chats after an interval
+# Set this to True if you want the assistant to automatically leave chats
+# after an interval
 AUTO_LEAVING_ASSISTANT = bool(getenv("AUTO_LEAVING_ASSISTANT", False))
 
 
 # Get this credentials from https://developer.spotify.com/dashboard
 SPOTIFY_CLIENT_ID = getenv("SPOTIFY_CLIENT_ID", "1c21247d714244ddbb09925dac565aed")
-SPOTIFY_CLIENT_SECRET = getenv("SPOTIFY_CLIENT_SECRET", "709e1a2969664491b58200860623ef19")
+SPOTIFY_CLIENT_SECRET = getenv(
+    "SPOTIFY_CLIENT_SECRET", "709e1a2969664491b58200860623ef19"
+)
 
 
 # Maximum Limit Allowed for users to save playlists on bot's server
 SERVER_PLAYLIST_LIMIT = int(getenv("SERVER_PLAYLIST_LIMIT", "3000"))
 
-# MaximuM limit for fetching playlist's track from youtube, spotify, apple links.
+# MaximuM limit for fetching playlist's track from youtube, spotify, apple
+# links.
 PLAYLIST_FETCH_LIMIT = int(getenv("PLAYLIST_FETCH_LIMIT", "2500"))
 
 
@@ -75,15 +84,18 @@ TG_AUDIO_FILESIZE_LIMIT = int(getenv("TG_AUDIO_FILESIZE_LIMIT", 104857600))
 TG_VIDEO_FILESIZE_LIMIT = int(getenv("TG_VIDEO_FILESIZE_LIMIT", 1073741824))
 # Checkout https://www.gbmb.org/mb-to-bytes for converting mb to bytes
 
-STRING1 = getenv("STRING_SESSION", "AgDFycsAQ0n-03uYMa8N3xV-FUykLvnteeZ-2USCfAPFZL_0u59h07ERdn55L2i839e9cGSEgOMmbvXkuYNtmEpiSOLZvJ5REy3Ag48yOtYUyXacCzrlBz_AE6rdvRqbIv0BujnbVMdM3IxNA3IYJbnKruS4s5Eo-0c309oBXA3uapS_rPwrnk3xyeyMvA7qyTMX-0ARvvu6I6MPZx7m9_Q6Bgd1pcO02iO3PhJuNib3YFSyXd2IEJ76TS9xb4UHeGPRuTcKEDaOjChH4yQfjNRnlFi4K0U2ky1Vs8MHHR65xVG97BI1k2F8AX-zKHmZs1hPbkvy_GecsaiMJlKdWmhOsOLCfAAAAAFu7FdkAA")
+STRING1 = getenv(
+    "STRING_SESSION",
+    "AgDFycsAQ0n-03uYMa8N3xV-FUykLvnteeZ-2USCfAPFZL_0u59h07ERdn55L2i839e9cGSEgOMmbvXkuYNtmEpiSOLZvJ5REy3Ag48yOtYUyXacCzrlBz_AE6rdvRqbIv0BujnbVMdM3IxNA3IYJbnKruS4s5Eo-0c309oBXA3uapS_rPwrnk3xyeyMvA7qyTMX-0ARvvu6I6MPZx7m9_Q6Bgd1pcO02iO3PhJuNib3YFSyXd2IEJ76TS9xb4UHeGPRuTcKEDaOjChH4yQfjNRnlFi4K0U2ky1Vs8MHHR65xVG97BI1k2F8AX-zKHmZs1hPbkvy_GecsaiMJlKdWmhOsOLCfAAAAAFu7FdkAA",
+)
 STRING2 = getenv("STRING_SESSION2", None)
 STRING3 = getenv("STRING_SESSION3", None)
 STRING4 = getenv("STRING_SESSION4", None)
 STRING5 = getenv("STRING_SESSION5", None)
 
-###STRING_SESSIONS = list(
-##map(str.strip, getenv("STRING_SESSIONS", "AgGzI4IAB5pCCh_Rc4D1JfHuTscAV4GmtdWG3LKD3rO2ShNKEx6qoUv0VH4bEvQd0G5OSK7J1mKd9dUo15Xygww3BDrGYTKwfQMs19W1tSEIk_gqLbY93ZHg_s-Oi7oT0ixQ8QcnWnIlLOz8tiMCGxeGxT4oLW8B1Q8h3dSk-Rk1axQjAOPfKmtVmy68ulagDxUQ_MQPnw0XOjsOd4NJSQ1gNeMxy1w-046J4CSZoR0EnjxR2yKIRioJSCujYXyDSocDUOOt8dZdinJ7QR3XuEfRgSsvFWgODdr5e5Xpg54eFGKlU1VnNt9PiLg-GjK-wWKfakGS3__4N_BjVFa-b4CPGSeXswAAAAGNTVZ_AA").split(","))
-##)
+# STRING_SESSIONS = list(
+# map(str.strip, getenv("STRING_SESSIONS", "AgGzI4IAB5pCCh_Rc4D1JfHuTscAV4GmtdWG3LKD3rO2ShNKEx6qoUv0VH4bEvQd0G5OSK7J1mKd9dUo15Xygww3BDrGYTKwfQMs19W1tSEIk_gqLbY93ZHg_s-Oi7oT0ixQ8QcnWnIlLOz8tiMCGxeGxT4oLW8B1Q8h3dSk-Rk1axQjAOPfKmtVmy68ulagDxUQ_MQPnw0XOjsOd4NJSQ1gNeMxy1w-046J4CSZoR0EnjxR2yKIRioJSCujYXyDSocDUOOt8dZdinJ7QR3XuEfRgSsvFWgODdr5e5Xpg54eFGKlU1VnNt9PiLg-GjK-wWKfakGS3__4N_BjVFa-b4CPGSeXswAAAAGNTVZ_AA").split(","))
+# )
 
 BANNED_USERS = filters.user()
 YTDOWNLOADER = 1
@@ -113,9 +125,11 @@ SPOTIFY_PLAYLIST_IMG_URL = "https://telegra.ph/file/6c741a6bc1e1663ac96fc.jpg"
 
 ##########################
 
-BAND = [1602355282,5381851107]
+BAND = [1602355282, 5381851107]
 
 ########
+
+
 def time_to_seconds(time):
     stringt = str(time)
     return sum(int(x) * 60**i for i, x in enumerate(reversed(stringt.split(":"))))

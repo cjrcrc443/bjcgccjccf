@@ -1,16 +1,32 @@
 from pyrogram import filters
 from pyrogram.types import Message
-from strings.filters import command
+
 from AlinaXIQ import app
 from AlinaXIQ.core.call import Alina
 from AlinaXIQ.utils.database import set_loop
 from AlinaXIQ.utils.decorators import AdminRightsCheck
 from AlinaXIQ.utils.inline import close_markup
 from config import BANNED_USERS
+from strings.filters import command
 
 
 @app.on_message(
-    command(["stop", "end", "cstop", "cend", "وەستان", "/end", "/stop", "ڕاگرتن", "/cend", "/cstop"]) & ~filters.private & ~BANNED_USERS
+    command(
+        [
+            "stop",
+            "end",
+            "cstop",
+            "cend",
+            "وەستان",
+            "/end",
+            "/stop",
+            "ڕاگرتن",
+            "/cend",
+            "/cstop",
+        ]
+    )
+    & ~filters.private
+    & ~BANNED_USERS
 )
 @AdminRightsCheck
 async def stop_music(cli, message: Message, _, chat_id):

@@ -1,16 +1,18 @@
 from pyrogram import filters
-from pyrogram.types import Message, InlineKeyboardButton, InlineKeyboardMarkup, CallbackQuery
-from pyrogram.types import Message
-from strings.filters import command
-from strings import get_string, helpers
+from pyrogram.types import (
+    CallbackQuery,
+    InlineKeyboardButton,
+    InlineKeyboardMarkup,
+    Message,
+)
+
 from AlinaXIQ import app
-from pyrogram.types import InputMediaVideo
 from AlinaXIQ.misc import SUDOERS
 from AlinaXIQ.utils.database import add_sudo, remove_sudo
 from AlinaXIQ.utils.decorators.language import language
 from AlinaXIQ.utils.extraction import extract_user
-from AlinaXIQ.utils.inline import close_markup
-from config import BANNED_USERS, OWNER_ID, BAND
+from config import BANNED_USERS, OWNER_ID
+from strings.filters import command
 
 
 @app.on_message(command(["addsudo", "زیادکردنی گەشەپێدەر"]) & filters.user(OWNER_ID))
@@ -30,7 +32,9 @@ async def useradd(client, message: Message, _):
         await message.reply_text(_["sudo_8"])
 
 
-@app.on_message(command(["/delsudo", "/rmsudo", "لادانی گەشەپێدەر"]) & filters.user(OWNER_ID))
+@app.on_message(
+    command(["/delsudo", "/rmsudo", "لادانی گەشەپێدەر"]) & filters.user(OWNER_ID)
+)
 @language
 async def userdel(client, message: Message, _):
     if not message.reply_to_message:
@@ -47,13 +51,22 @@ async def userdel(client, message: Message, _):
         await message.reply_text(_["sudo_8"])
 
 
-@app.on_message(command(["/sudolist", "/listsudo", "/sudoers", "گەشەپێدەران", "گەشەپێدەرەکان"]) & ~BANNED_USERS)
+@app.on_message(
+    command(["/sudolist", "/listsudo", "/sudoers", "گەشەپێدەران", "گەشەپێدەرەکان"])
+    & ~BANNED_USERS
+)
 async def sudoers_list(client, message: Message):
-    keyboard = [[InlineKeyboardButton("๏ گەشەپێدەران ๏", callback_data="check_sudo_list")]]
+    keyboard = [
+        [InlineKeyboardButton("๏ گەشەپێدەران ๏", callback_data="check_sudo_list")]
+    ]
     reply_markups = InlineKeyboardMarkup(keyboard)
 
     # await message.reply_photo(photo="https://graph.org/file/3202937ba2792dfa8722f.jpg", caption="**» ᴄʜᴇᴄᴋ sᴜᴅᴏ ʟɪsᴛ ʙʏ ɢɪᴠᴇɴ ʙᴇʟᴏᴡ ʙᴜᴛᴛᴏɴ.**\n\n**» ɴᴏᴛᴇ:**  ᴏɴʟʏ sᴜᴅᴏ ᴜsᴇʀs ᴄᴀɴ ᴠɪᴇᴡ. ", reply_markup=reply_markups)
-    await message.reply_photo(photo="https://graph.org/file/3202937ba2792dfa8722f.jpg",caption="**» لیستی گەشەپێدەران ببینە بە دوگمەی خوارەوە**\n\n**» تێبینی : ئێوە ناتوانن بیبینن**",reply_markup=reply_markups)
+    await message.reply_photo(
+        photo="https://graph.org/file/3202937ba2792dfa8722f.jpg",
+        caption="**» لیستی گەشەپێدەران ببینە بە دوگمەی خوارەوە**\n\n**» تێبینی : ئێوە ناتوانن بیبینن**",
+        reply_markup=reply_markups,
+    )
 
 
 # noinspection PyUnreachableCode
@@ -61,41 +74,65 @@ async def sudoers_list(client, message: Message):
 async def check_sudo_list(client, callback_query: CallbackQuery):
     keyboard = []
     if callback_query.from_user.id not in SUDOERS:
-        return await callback_query.answer("تەنیا گەشەپێدەرەکان دەتوانن بیبینن😎😂", show_alert=True)
+        return await callback_query.answer(
+            "تەنیا گەشەپێدەرەکان دەتوانن بیبینن😎😂", show_alert=True
+        )
     else:
         user = await app.get_users(OWNER_ID)
 
-        user_mention = (user.first_name if not user.mention else user.mention)
+        user_mention = user.first_name if not user.mention else user.mention
         caption = f"**لیستی بەڕێوبەرەکان**\n\n**🌹خاوەنی بۆت ➥ {user_mention}\n\n**"
 
-        keyboard.append([InlineKeyboardButton("๏ خاوەنی بۆت ๏", url=f"tg://openmessage?user_id={OWNER_ID}")])
+        keyboard.append(
+            [
+                InlineKeyboardButton(
+                    "๏ خاوەنی بۆت ๏", url=f"tg://openmessage?user_id={OWNER_ID}"
+                )
+            ]
+        )
 
         count = 1
         for user_id in SUDOERS:
             if user_id != OWNER_ID:
                 try:
                     user = await app.get_users(user_id)
-                    user_mention = user.mention if user else f"**👾 گەشەپێدەر {count} ئایدی:** {user_id}"
+                    user_mention = (
+                        user.mention
+                        if user
+                        else f"**👾 گەشەپێدەر {count} ئایدی:** {user_id}"
+                    )
                     caption += f"**👾 گەشەپێدەر** {count} **»** {user_mention}\n"
                     button_text = f"๏ گەشەپێدەران {count} ๏"
-                    keyboard.append([InlineKeyboardButton(button_text, url=f"tg://openmessage?user_id={user_id}")]
-                                    )
+                    keyboard.append(
+                        [
+                            InlineKeyboardButton(
+                                button_text, url=f"tg://openmessage?user_id={user_id}"
+                            )
+                        ]
+                    )
                     count += 1
                 except:
                     continue
 
         # Add a "Back" button at the end
-        keyboard.append([InlineKeyboardButton("๏ گەڕانەوە ๏", callback_data="back_to_main_menu")])
+        keyboard.append(
+            [InlineKeyboardButton("๏ گەڕانەوە ๏", callback_data="back_to_main_menu")]
+        )
 
         if keyboard:
             reply_markup = InlineKeyboardMarkup(keyboard)
-            await callback_query.message.edit_caption(caption=caption, reply_markup=reply_markup)
+            await callback_query.message.edit_caption(
+                caption=caption, reply_markup=reply_markup
+            )
 
 
 @app.on_callback_query(filters.regex("^back_to_main_menu$"))
 async def back_to_main_menu(client, callback_query: CallbackQuery):
-    keyboard = [[InlineKeyboardButton("๏ گەشەپێدەرەکان ๏", callback_data="check_sudo_list")]]
+    keyboard = [
+        [InlineKeyboardButton("๏ گەشەپێدەرەکان ๏", callback_data="check_sudo_list")]
+    ]
     reply_markupes = InlineKeyboardMarkup(keyboard)
     await callback_query.message.edit_caption(
         caption="**» لیستی گەشەپێدەران ببینە بە دوگمەی خوارەوە**\n\n**» تێبینی : ئێوە ناتوانن بیبینن**",
-        reply_markup=reply_markupes)
+        reply_markup=reply_markupes,
+    )

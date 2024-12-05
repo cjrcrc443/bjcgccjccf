@@ -1,11 +1,16 @@
 from datetime import datetime
+
 from pyrogram import filters
-from strings.filters import command
-from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, Message, CallbackQuery
-from config import OWNER_ID as owner_id
+from pyrogram.types import (
+    CallbackQuery,
+    InlineKeyboardButton,
+    InlineKeyboardMarkup,
+    Message,
+)
+
 from AlinaXIQ import app
-
-
+from config import OWNER_ID as owner_id
+from strings.filters import command
 
 
 def content(msg: Message) -> [None, str]:
@@ -22,7 +27,7 @@ def content(msg: Message) -> [None, str]:
         return None
 
 
-@app.on_message(command(["/bug","/report","ریپۆرت","ڕیپۆرت"]))
+@app.on_message(command(["/bug", "/report", "ریپۆرت", "ڕیپۆرت"]))
 async def bugs(_, msg: Message):
     if msg.chat.username:
         chat_username = f"@{msg.chat.username} / `{msg.chat.id}`"
@@ -36,8 +41,6 @@ async def bugs(_, msg: Message):
     )
     datetimes_fmt = "%d-%m-%Y"
     datetimes = datetime.utcnow().strftime(datetimes_fmt)
-
-    
 
     bug_report = f"""**
 ڕاپۆرت بۆ: [﮼محمد](t.me/IQ7amo)
@@ -92,14 +95,10 @@ async def bugs(_, msg: Message):
             )
 
 
-
-
 @app.on_callback_query(filters.regex("close_send_photo"))
-async def close_send_photo(_,  query :CallbackQuery):
+async def close_send_photo(_, query: CallbackQuery):
     is_admin = await app.get_chat_member(query.message.chat.id, query.from_user.id)
     if not is_admin.privileges.can_delete_messages:
         await query.answer("تۆ مافی داخستنت نییە", show_alert=True)
     else:
         await query.message.delete()
-
-

@@ -1,6 +1,8 @@
 import asyncio
-from AlinaXIQ import app
+
 from pyrogram import filters
+
+from AlinaXIQ import app
 from strings.filters import command
 
 SPAM_CHATS = []
@@ -10,7 +12,9 @@ SPAM_CHATS = []
 async def tag_all_users(_, message):
     replied = message.reply_to_message
     if len(message.command) < 2 and not replied:
-        await message.reply_text("**ڕیپلەی نامەیە یان شتێ بکە یان لەگەڵ فەرمان نامەیە بنووسە**")
+        await message.reply_text(
+            "**ڕیپلەی نامەیە یان شتێ بکە یان لەگەڵ فەرمان نامەیە بنووسە**"
+        )
         return
     if replied:
         SPAM_CHATS.append(message.chat.id)
@@ -42,7 +46,7 @@ async def tag_all_users(_, message):
             usernum += 1
             usertxt += f"\n⊚ [{m.user.first_name}](tg://user?id={m.user.id})\n"
             if usernum == 5:
-                await app.send_message(message.chat.id, f'{text}\n{usertxt}')
+                await app.send_message(message.chat.id, f"{text}\n{usertxt}")
                 await asyncio.sleep(2)
                 usernum = 0
                 usertxt = ""
@@ -64,4 +68,4 @@ async def cancelcmd(_, message):
 
     else:
         await message.reply_text("**پڕۆسەی تاگکردن بوونی نییە**")
-        return       
+        return

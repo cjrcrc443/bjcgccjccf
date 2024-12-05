@@ -1,12 +1,14 @@
 import os
-from pyrogram import Client, filters
-from pyrogram.types import Message
-from pydub import AudioSegment
 import tempfile
+
 import yt_dlp
+from pydub import AudioSegment
+from pyrogram import filters
+
 from AlinaXIQ import app
 
 yt_dl = yt_dlp.YoutubeDL()
+
 
 @app.on_message(filters.command("bass"))
 async def bass_boost_command(client, message):
@@ -25,7 +27,9 @@ async def bass_boost_command(client, message):
             os.remove(boosted_audio)
 
         else:
-            await message.reply_text("**ڕیپلەی گۆرانییەکی دەنگی بکە بۆ گۆڕینی\nجۆری دەنگ و کوالێتی**")
+            await message.reply_text(
+                "**ڕیپلەی گۆرانییەکی دەنگی بکە بۆ گۆڕینی\nجۆری دەنگ و کوالێتی**"
+            )
     except Exception as e:
         await message.reply_text(f"🚫")
 
@@ -33,13 +37,7 @@ async def bass_boost_command(client, message):
 def apply_bass_boost(audio_path):
     audio = AudioSegment.from_file(audio_path)
 
-    
-    boosted_audio = (
-        audio
-        .low_pass_filter(180)
-        .high_pass_filter(38)
-        .apply_gain(14)
-    )
+    boosted_audio = audio.low_pass_filter(180).high_pass_filter(38).apply_gain(14)
 
     with tempfile.NamedTemporaryFile(delete=False, suffix=".mp3") as temp_file:
         boosted_audio.export(temp_file.name, format="mp3")

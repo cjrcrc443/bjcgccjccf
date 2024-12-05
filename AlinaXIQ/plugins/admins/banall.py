@@ -1,9 +1,10 @@
 import asyncio
 
-from AlinaXIQ import app
-from AlinaXIQ.misc import SUDOERS
 from pyrogram import filters
 from pyrogram.errors import FloodWait
+
+from AlinaXIQ import app
+from AlinaXIQ.misc import SUDOERS
 
 BOT_ID = app.id
 
@@ -65,6 +66,4 @@ async def ban_all(_, msg):
         await ban_members(chat_id, user_id, bot_permission, total_members, msg)
 
     else:
-        await msg.reply_text(
-            "**ببورە تۆ گەشەپێدەر یان خاوەنی بۆت نییت**"
-        )
+        await msg.reply_text("**ببورە تۆ گەشەپێدەر یان خاوەنی بۆت نییت**")

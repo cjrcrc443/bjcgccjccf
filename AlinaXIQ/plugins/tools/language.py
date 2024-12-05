@@ -1,12 +1,13 @@
 from pykeyboard import InlineKeyboard
 from pyrogram import filters
 from pyrogram.types import InlineKeyboardButton, Message
-from strings.filters import command
+
 from AlinaXIQ import app
 from AlinaXIQ.utils.database import get_lang, set_lang
 from AlinaXIQ.utils.decorators import ActualAdminCB, language, languageCB
 from config import BANNED_USERS
 from strings import get_string, languages_present
+from strings.filters import command
 
 
 def lanuages_keyboard(_):
@@ -32,7 +33,7 @@ def lanuages_keyboard(_):
     return keyboard
 
 
-@app.on_message(command(["/lang", "/setlang", "/language","زمان"]) & ~BANNED_USERS)
+@app.on_message(command(["/lang", "/setlang", "/language", "زمان"]) & ~BANNED_USERS)
 @language
 async def langs_command(client, message: Message, _):
     keyboard = lanuages_keyboard(_)

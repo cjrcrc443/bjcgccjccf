@@ -1,10 +1,10 @@
-from pyrogram import Client, filters
-from pyrogram.types import Message
-import qrcode
-from AlinaXIQ import app
-from PIL import Image
 import io
 
+import qrcode
+from pyrogram import filters
+from pyrogram.types import Message
+
+from AlinaXIQ import app
 
 
 # Function to create a QR code
@@ -22,7 +22,7 @@ def generate_qr_code(text):
 
     # Save the QR code to a bytes object to send with Pyrogram
     img_bytes = io.BytesIO()
-    img.save(img_bytes, format='PNG')
+    img.save(img_bytes, format="PNG")
     img_bytes.seek(0)  # Go to the start of the bytes object
 
     return img_bytes
@@ -37,4 +37,6 @@ def qr_handler(client, message: Message):
         qr_image = generate_qr_code(input_text)
         message.reply_photo(qr_image, caption="Here's your QR Code")
     else:
-        message.reply_text("Please provide the text for the QR code after the command. Example usage: /qr text")
+        message.reply_text(
+            "Please provide the text for the QR code after the command. Example usage: /qr text"
+        )

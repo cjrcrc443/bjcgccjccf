@@ -1,8 +1,11 @@
 from io import BytesIO
-from pyrogram import Client, filters
-from pyrogram.types import Message
-from AlinaXIQ import app
+
 from httpx import AsyncClient, Timeout
+from pyrogram import filters
+from pyrogram.types import Message
+
+from AlinaXIQ import app
+
 # -----------------------------------------------------------------
 fetch = AsyncClient(
     http2=True,
@@ -13,9 +16,13 @@ fetch = AsyncClient(
     },
     timeout=Timeout(20),
 )
+
+
 # ------------------------------------------------------------------------
 class QuotlyException(Exception):
     pass
+
+
 # --------------------------------------------------------------------------
 async def get_message_sender_id(ctx: Message):
     if ctx.forward_date:
@@ -33,6 +40,8 @@ async def get_message_sender_id(ctx: Message):
         return ctx.sender_chat.id
     else:
         return 1
+
+
 # -----------------------------------------------------------------------------------------
 async def get_message_sender_name(ctx: Message):
     if ctx.forward_date:
@@ -44,7 +53,7 @@ async def get_message_sender_name(ctx: Message):
                 if ctx.forward_from.last_name
                 else ctx.forward_from.first_name
             )
-# ---------------------------------------------------------------------------------------------------
+        # ---------------------------------------------------------------------------------------------------
         elif ctx.forward_from_chat:
             return ctx.forward_from_chat.title
         else:
@@ -58,6 +67,8 @@ async def get_message_sender_name(ctx: Message):
         return ctx.sender_chat.title
     else:
         return ""
+
+
 # ---------------------------------------------------------------------------------------------------
 async def get_custom_emoji(ctx: Message):
     if ctx.forward_date:
@@ -71,6 +82,7 @@ async def get_custom_emoji(ctx: Message):
         )
 
     return ctx.from_user.emoji_status.custom_emoji_id if ctx.from_user else ""
+
 
 # ---------------------------------------------------------------------------------------------------
 async def get_message_sender_username(ctx: Message):
@@ -103,6 +115,8 @@ async def get_message_sender_username(ctx: Message):
         return ""
     else:
         return ctx.sender_chat.username
+
+
 # ------------------------------------------------------------------------
 async def get_message_sender_photo(ctx: Message):
     if ctx.forward_date:
@@ -137,7 +151,7 @@ async def get_message_sender_photo(ctx: Message):
                 if ctx.forward_from.photo
                 else ""
             )
-# ---------------------------------------------------------------------------------
+    # ---------------------------------------------------------------------------------
     elif ctx.from_user and ctx.from_user.photo:
         return {
             "small_file_id": ctx.from_user.photo.small_file_id,
@@ -159,6 +173,8 @@ async def get_message_sender_photo(ctx: Message):
             "big_file_id": ctx.sender_chat.photo.big_file_id,
             "big_photo_unique_id": ctx.sender_chat.photo.big_photo_unique_id,
         }
+
+
 # ---------------------------------------------------------------------------------------------------
 async def get_text_or_caption(ctx: Message):
     if ctx.text:
@@ -167,6 +183,8 @@ async def get_text_or_caption(ctx: Message):
         return ctx.caption
     else:
         return ""
+
+
 # ---------------------------------------------------------------------------------------------------
 async def pyrogram_to_quotly(messages, is_reply):
     if not isinstance(messages, list):
@@ -177,7 +195,7 @@ async def pyrogram_to_quotly(messages, is_reply):
         "backgroundColor": "#1b1429",
         "messages": [],
     }
-# ------------------------------------------------------------------------------------------------------------
+    # ------------------------------------------------------------------------------------------------------------
     for message in messages:
         the_message_dict_to_append = {}
         if message.entities:
@@ -208,9 +226,9 @@ async def pyrogram_to_quotly(messages, is_reply):
         the_message_dict_to_append["from"]["name"] = await get_message_sender_name(
             message
         )
-        the_message_dict_to_append["from"][
-            "username"
-        ] = await get_message_sender_username(message)
+        the_message_dict_to_append["from"]["username"] = (
+            await get_message_sender_username(message)
+        )
         the_message_dict_to_append["from"]["type"] = message.chat.type.name.lower()
         the_message_dict_to_append["from"]["photo"] = await get_message_sender_photo(
             message
@@ -229,7 +247,10 @@ async def pyrogram_to_quotly(messages, is_reply):
         return r.read()
     else:
         raise QuotlyException(r.json())
+
+
 # ------------------------------------------------------------------------------------------
+
 
 def isArgInt(txt) -> list:
     count = txt
@@ -238,6 +259,7 @@ def isArgInt(txt) -> list:
         return [True, count]
     except ValueError:
         return [False, 0]
+
 
 # ---------------------------------------------------------------------------------------------------
 @app.on_message(filters.command(["q", "r"]) & filters.reply)
@@ -286,4 +308,6 @@ async def msg_quotly_cmd(self: app, ctx: Message):
         return await ctx.reply_sticker(bio_sticker)
     except Exception as e:
         return await ctx.reply_msg(f"ERROR: {e}")
+
+
 # ---------------------------------------------------------------------------------

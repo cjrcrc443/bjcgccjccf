@@ -1,4 +1,5 @@
-from pyrogram import Client, filters
+from pyrogram import filters
+
 from AlinaXIQ import app
 
 

@@ -1,8 +1,6 @@
 from pyrogram.enums import ChatType
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 
-from config import SUPPORT_CHAT, adminlist, confirmer
-from strings import get_string
 from AlinaXIQ import app
 from AlinaXIQ.misc import SUDOERS, db
 from AlinaXIQ.utils.database import (
@@ -15,6 +13,8 @@ from AlinaXIQ.utils.database import (
     is_nonadmin_chat,
     is_skipmode,
 )
+from config import SUPPORT_CHAT, adminlist, confirmer
+from strings import get_string
 
 from ..formatters import int_to_alpha
 

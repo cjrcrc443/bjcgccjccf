@@ -1,10 +1,11 @@
-from telegraph import upload_file
 from pyrogram import filters
+from telegraph import upload_file
+
 from AlinaXIQ import app
-from pyrogram.types import InputMediaPhoto
 from strings.filters import command
 
-@app.on_message(command(["/tgm" , "تێلەگراف", "تیلەگراف"]))
+
+@app.on_message(command(["/tgm", "تێلەگراف", "تیلەگراف"]))
 def ul(_, message):
     reply = message.reply_to_message
     if reply.media:
@@ -14,11 +15,13 @@ def ul(_, message):
         for x in fk:
             url = "https://telegra.ph" + x
 
-        i.edit(f'**•⎆┊لینکی میدیا دروست کرا🕷** {url}')
+        i.edit(f"**•⎆┊لینکی میدیا دروست کرا🕷** {url}")
+
 
 ########____________________________________________________________######
 
-@app.on_message(filters.command(["graph" , "grf"]))
+
+@app.on_message(filters.command(["graph", "grf"]))
 def ul(_, message):
     reply = message.reply_to_message
     if reply.media:
@@ -28,4 +31,4 @@ def ul(_, message):
         for x in fk:
             url = "https://graph.org" + x
 
-        i.edit(f'**•⎆┊لینکی میدیا دروست کرا🕷**  {url}')
+        i.edit(f"**•⎆┊لینکی میدیا دروست کرا🕷**  {url}")

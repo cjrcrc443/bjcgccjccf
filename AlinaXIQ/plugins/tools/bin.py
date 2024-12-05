@@ -1,14 +1,13 @@
-from ... import *
 from pyrogram import *
 from pyrogram.types import *
+
+from ... import *
 
 
 @app.on_message(filters.command(["bin", "ccbin", "bininfo"], [".", "!", "/"]))
 async def check_ccbin(client, message):
     if len(message.command) < 2:
-        return await message.reply_text(
-            "<b>تکایە بینم پێبدە\nبۆ هێنانی !</b>"
-        )
+        return await message.reply_text("<b>تکایە بینم پێبدە\nبۆ هێنانی !</b>")
     try:
         await message.delete()
     except:
@@ -19,7 +18,8 @@ async def check_ccbin(client, message):
         return await aux.edit("<b>❌ بین هەڵەیە ❗...</b>")
     try:
         resp = await api.bininfo(bin)
-        await aux.edit(f"""
+        await aux.edit(
+            f"""
 <b> 𝗩𝗔𝗟𝗜𝗗 𝗕𝗜𝗡 ✅</b>
 
 <b>🏦 𝗕𝗔𝗡𝗞➪</b> <tt>{resp.bank}</tt>
@@ -33,5 +33,7 @@ async def check_ccbin(client, message):
 <b>ℹ️ 𝗩𝗘𝗡𝗗𝗢𝗥➪</b> <tt>{resp.vendor}</tt>"""
         )
     except:
-        return await aux.edit(f"""**
-🚫 بین نەدۆزرایەوە تکایە دانەیەکی تر تاقیبکەوە** """)
+        return await aux.edit(
+            f"""**
+🚫 بین نەدۆزرایەوە تکایە دانەیەکی تر تاقیبکەوە** """
+        )

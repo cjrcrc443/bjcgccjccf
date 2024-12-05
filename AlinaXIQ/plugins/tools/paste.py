@@ -1,19 +1,21 @@
-from asyncio import get_running_loop, sleep, TimeoutError
-from functools import partial
-from AlinaXIQ import app
-from pyrogram import filters
-from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
-from aiohttp import ClientSession
-import re
-import os
-import socket
-import aiofiles
-import aiohttp
 import asyncio
+import os
+import re
+import socket
+from asyncio import get_running_loop
+from functools import partial
+
+import aiofiles
+from aiohttp import ClientSession
+from pyrogram import filters
+from pyrogram.types import InlineKeyboardButton
+
+from AlinaXIQ import app
 
 aiohttpsession = ClientSession()
 
 # Rest of your code remains unchanged...
+
 
 def _netcat(host, port, content):
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -27,12 +29,15 @@ def _netcat(host, port, content):
         return data
     s.close()
 
+
 async def paste(content):
     loop = get_running_loop()
     link = await loop.run_in_executor(None, partial(_netcat, "ezup.dev", 9999, content))
     return link
 
+
 pattern = re.compile(r"^text/|json$|yaml$|xml$|toml$|x-sh$|x-shellscript$")
+
 
 async def isPreviewUp(preview: str) -> bool:
     for _ in range(7):
@@ -47,6 +52,7 @@ async def isPreviewUp(preview: str) -> bool:
         else:
             return status == 200
     return False
+
 
 @app.on_message(filters.command("paste"))
 async def paste_func(_, message):

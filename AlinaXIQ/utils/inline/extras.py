@@ -7,7 +7,8 @@ def botplaylist_markup(_):
     buttons = [
         [
             InlineKeyboardButton(text=_["S_B_6"], url=SUPPORT_CHANNEL),
-        ],[
+        ],
+        [
             InlineKeyboardButton(text=_["CLOSE_BUTTON"], callback_data="close"),
         ],
     ]

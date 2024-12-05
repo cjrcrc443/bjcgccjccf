@@ -5,6 +5,7 @@ import subprocess
 
 import requests
 
+
 async def shell_cmd(cmd):
     proc = await asyncio.create_subprocess_shell(
         cmd,
@@ -19,34 +20,32 @@ async def shell_cmd(cmd):
             return errorz.decode("utf-8")
     return out.decode("utf-8")
 
+
 async def st(vidid, video=False):
-    API = 'https://api.cobalt.tools/api/json'
+    API = "https://api.cobalt.tools/api/json"
     headers = {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36'
+        "Accept": "application/json",
+        "Content-Type": "application/json",
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36",
     }
     if video:
         path = os.path.join("downloada", f"{vidid}.mp4")
-        data = {
-            'url': f"https://www.youtube.com/watch?v={vidid}",
-            'vQuality': '480'
-        }
+        data = {"url": f"https://www.youtube.com/watch?v={vidid}", "vQuality": "480"}
     else:
         path = os.path.join("downloada", f"{vidid}.m4a")
         data = {
-            'url': f"https://www.youtube.com/watch?v={vidid}",
-            'isAudioOnly': 'True',
-            'aFormat' : 'opus'
+            "url": f"https://www.youtube.com/watch?v={vidid}",
+            "isAudioOnly": "True",
+            "aFormat": "opus",
         }
     response = requests.post(API, headers=headers, json=data)
-    results = response.json()['url']
-   
+    results = response.json()["url"]
 
     cmd = f"yt-dlp '{results}' -o '{path}'"
     a = await shell_cmd(cmd)
     return path
-    
+
+
 def get_readable_time(seconds: int) -> str:
     count = 0
     ping_time = ""

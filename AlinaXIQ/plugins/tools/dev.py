@@ -11,7 +11,7 @@ from pyrogram import filters
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, Message
 
 from AlinaXIQ import app
-from config import OWNER_ID, EVALOP
+from config import EVALOP
 
 
 async def aexec(code, client, message):
@@ -139,16 +139,10 @@ async def forceclose_command(_, CallbackQuery):
 
 
 @app.on_edited_message(
-    filters.command("sh")
-    & filters.user(EVALOP)
-    & ~filters.forwarded
-    & ~filters.via_bot
+    filters.command("sh") & filters.user(EVALOP) & ~filters.forwarded & ~filters.via_bot
 )
 @app.on_message(
-    filters.command("sh")
-    & filters.user(EVALOP)
-    & ~filters.forwarded
-    & ~filters.via_bot
+    filters.command("sh") & filters.user(EVALOP) & ~filters.forwarded & ~filters.via_bot
 )
 async def shellrunner(_, message: Message):
     if len(message.command) < 2:

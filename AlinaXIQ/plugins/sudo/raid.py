@@ -1,12 +1,13 @@
-import pyrogram
 import time
+
 from pyrogram import filters
-from pyrogram import Client
+
 from AlinaXIQ import app
 from AlinaXIQ.misc import SUDOERS
 
+
 # Define the command handler
-@app.on_message(filters.command("raid", prefixes=".")  & SUDOERS)
+@app.on_message(filters.command("raid", prefixes=".") & SUDOERS)
 def repeat_message(client, message):
     # Get the text following the .raid command
     command_args = message.text.split(".raid", 1)[-1].strip()

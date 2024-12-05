@@ -1,6 +1,6 @@
-from pyrogram import Client, filters
 import requests
-import random
+from pyrogram import filters
+
 from AlinaXIQ import app
 
 # Truth or Dare API URLs
@@ -17,9 +17,14 @@ def get_truth(client, message):
             truth_question = response.json()["question"]
             message.reply_text(f"Truth question:\n\n{truth_question}")
         else:
-            message.reply_text("Failed to fetch a truth question. Please try again later.")
+            message.reply_text(
+                "Failed to fetch a truth question. Please try again later."
+            )
     except Exception as e:
-        message.reply_text("An error occurred while fetching a truth question. Please try again later.")
+        message.reply_text(
+            "An error occurred while fetching a truth question. Please try again later."
+        )
+
 
 @app.on_message(filters.command("dare"))
 def get_dare(client, message):
@@ -30,6 +35,10 @@ def get_dare(client, message):
             dare_question = response.json()["question"]
             message.reply_text(f"Dare question:\n\n{dare_question}")
         else:
-            message.reply_text("Failed to fetch a dare question. Please try again later.")
+            message.reply_text(
+                "Failed to fetch a dare question. Please try again later."
+            )
     except Exception as e:
-        message.reply_text("An error occurred while fetching a dare question. Please try again later.")
+        message.reply_text(
+            "An error occurred while fetching a dare question. Please try again later."
+        )

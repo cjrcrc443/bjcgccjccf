@@ -2,17 +2,21 @@ import random
 import string
 
 from pyrogram import filters
-from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton, InputMediaPhoto, Message
+from pyrogram.errors import UserNotParticipant
+from pyrogram.types import (
+    InlineKeyboardButton,
+    InlineKeyboardMarkup,
+    InputMediaPhoto,
+    Message,
+)
 from pytgcalls.exceptions import NoActiveGroupCall
-from pyrogram.errors import FloodWait, UserNotParticipant
 
 import config
-from strings.filters import command 
-
 from AlinaXIQ import Apple, Resso, SoundCloud, Spotify, Telegram, YouTube, app
 from AlinaXIQ.core.call import Alina
 from AlinaXIQ.utils import seconds_to_min, time_to_seconds
 from AlinaXIQ.utils.channelplay import get_channeplayCB
+from AlinaXIQ.utils.database import add_served_chat
 from AlinaXIQ.utils.decorators.language import languageCB
 from AlinaXIQ.utils.decorators.play import PlayWrapper
 from AlinaXIQ.utils.formatters import formats
@@ -23,12 +27,13 @@ from AlinaXIQ.utils.inline import (
     slider_markup,
     track_markup,
 )
-from AlinaXIQ.utils.database import add_served_chat, add_served_user
 from AlinaXIQ.utils.logger import play_logs
 from AlinaXIQ.utils.stream.stream import stream
 from config import BANNED_USERS, lyrical
+from strings.filters import command
 
 MUST_JOIN2 = "Haawall"
+
 
 async def joinch(message):
     if not MUST_JOIN2:
@@ -59,8 +64,9 @@ async def joinch(message):
     except Exception as e:
         print(e)
 
+
 @app.on_message(
-     command(
+    command(
         [
             "play",
             "vplay",
@@ -71,10 +77,10 @@ async def joinch(message):
             "cplayforce",
             "cvplayforce",
             "/play",
-            "/vplay", 
-            "cplay", 
-            "g", 
-            "پلەی", 
+            "/vplay",
+            "cplay",
+            "g",
+            "پلەی",
             "video",
             "پ کەناڵ",
             "gorani",

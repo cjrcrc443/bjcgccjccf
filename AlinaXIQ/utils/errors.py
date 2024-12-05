@@ -3,6 +3,7 @@ import traceback
 from functools import wraps
 
 from pyrogram.errors.exceptions.forbidden_403 import ChatWriteForbidden
+
 from AlinaXIQ import app
 from AlinaXIQ.logging import LOGGER
 

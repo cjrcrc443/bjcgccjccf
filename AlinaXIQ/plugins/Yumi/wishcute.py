@@ -1,38 +1,59 @@
-from pyrogram import Client, filters
-from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 import random
+
 import requests
-from AlinaXIQ import app 
+from pyrogram import filters
+from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
+
+from AlinaXIQ import app
 
 SUPPORT_CHAT = "MGIMT"
 
-@app.on_message(filters.command(["wish","حەز","هیوا","خۆزگە"], prefixes=["/", "!", "%", ",", "", ".", "@", "#"]))
+
+@app.on_message(
+    filters.command(
+        ["wish", "حەز", "هیوا", "خۆزگە"],
+        prefixes=["/", "!", "%", ",", "", ".", "@", "#"],
+    )
+)
 async def wish(_, m):
     if len(m.command) < 2:
         await m.reply("**لەگەڵ فەرمانەکە خۆزگە یان حەزەکانت بنووسە 🥺🫶🏻**")
-        return 
+        return
 
     api = requests.get("https://nekos.best/api/v2/happy").json()
-    url = api["results"][0]['url']
+    url = api["results"][0]["url"]
     text = m.text.split(None, 1)[1]
     wish_count = random.randint(1, 100)
     wish = f"**🍓 سڵاو {m.from_user.first_name}!**\n"
     wish += f"**🍓 حەزی تۆ: {text} **\n\n"
     wish += f"**🍓 ڕێژەی ڕوودانی: {wish_count}% **"
-    
+
     await app.send_animation(
         chat_id=m.chat.id,
         animation=url,
         caption=wish,
         reply_markup=InlineKeyboardMarkup(
-            [[InlineKeyboardButton("نوێکارییەکانی بۆت 🍻", url=f"https://t.me/Haawall")]])
+            [
+                [
+                    InlineKeyboardButton(
+                        "نوێکارییەکانی بۆت 🍻", url=f"https://t.me/Haawall"
+                    )
+                ]
+            ]
+        ),
     )
-            
-    
+
+
 BUTTON = [[InlineKeyboardButton("نوێکارییەکانی بۆت 🍻", url=f"https://t.me/Haawall")]]
 CUTIE = "https://64.media.tumblr.com/d701f53eb5681e87a957a547980371d2/tumblr_nbjmdrQyje1qa94xto1_500.gif"
 
-@app.on_message(filters.command(["cute","کیوت","كیوت","قشت","قشتی"], prefixes=["/", "!", "%", ",", "", ".", "@", "#"]))
+
+@app.on_message(
+    filters.command(
+        ["cute", "کیوت", "كیوت", "قشت", "قشتی"],
+        prefixes=["/", "!", "%", ",", "", ".", "@", "#"],
+    )
+)
 async def cute(_, message):
     if not message.reply_to_message:
         user_id = message.from_user.id
@@ -50,9 +71,12 @@ async def cute(_, message):
         document=CUTIE,
         caption=CUTE,
         reply_markup=InlineKeyboardMarkup(BUTTON),
-        reply_to_message_id=message.reply_to_message.message_id if message.reply_to_message else None,
+        reply_to_message_id=(
+            message.reply_to_message.message_id if message.reply_to_message else None
+        ),
     )
-    
+
+
 help_text = """
 » ᴡʜᴀᴛ ɪꜱ ᴛʜɪꜱ (ᴡɪꜱʜ):
 ʏᴏᴜ ʜᴀᴠɪɴɢ ᴀɴʏ ᴋɪɴᴅ ᴏꜰ 
