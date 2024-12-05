@@ -153,7 +153,6 @@ async def cancel_clear_chats(client, callback_query):
 
 
 @app.on_message(filters.regex("^سڕینەوەی چات$") & admin_filter, group=122)
-@adminsOnly("can_change_info")
 async def delete_chat(client, m):
     cid = str(m.chat.id)
     data = await get_chat_data(cid)  # Use await for the async function
