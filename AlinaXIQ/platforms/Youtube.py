@@ -1,12 +1,3 @@
-#
-# Copyright (C) 2024 by TheTeamVivek@Github, < https://github.com/TheTeamVivek >.
-#
-# This file is part of < https://github.com/TheTeamVivek/YukkiMusic > project,
-# and is released under the MIT License.
-# Please see < https://github.com/TheTeamVivek/YukkiMusic/blob/master/LICENSE >
-#
-# All rights reserved.
-#
 import asyncio
 import glob
 import os
@@ -19,9 +10,12 @@ from pyrogram.types import Message
 from youtubesearchpython.__future__ import VideosSearch
 from yt_dlp import YoutubeDL
 
+import config
 from AlinaXIQ.utils.database import is_on_off
 from AlinaXIQ.utils.decorators import asyncify
 from AlinaXIQ.utils.formatters import seconds_to_min, time_to_seconds
+
+USE_COOKIES_ONLY = True
 
 
 def cookies():
@@ -303,9 +297,14 @@ class YouTubeAPI:
         title: Union[bool, str] = None,
     ) -> str:
         if videoid:
+            vidid = link
             link = self.base + link
-        loop = asyncio.get_running_loop()
+        else:
+            pattern = r"(?:https?:\/\/)?(?:www\.)?(?:youtube\.com|youtu\.be)\/(?:watch\?v=|embed\/|v\/|live_stream\?stream_id=|(?:\/|\?|&)v=)?([^&\n]+)"
+            match = re.search(pattern, link)
+            vidid = match.group(1)
 
+        @asyncify
         def audio_dl():
             ydl_optssx = {
                 "format": "bestaudio/best",
@@ -327,6 +326,7 @@ class YouTubeAPI:
             x.download([link])
             return xyz
 
+        @asyncify
         def video_dl():
             ydl_optssx = {
                 "format": "(bestvideo[height<=?720][width<=?1280][ext=mp4])+(bestaudio[ext=m4a])",
@@ -348,6 +348,7 @@ class YouTubeAPI:
             x.download([link])
             return xyz
 
+        @asyncify
         def song_video_dl():
             formats = f"{format_id}+140"
             fpath = f"downloads/{title}"
@@ -365,8 +366,11 @@ class YouTubeAPI:
             }
 
             x = YoutubeDL(ydl_optssx)
-            x.download([link])
+            info = x.extract_info(link)
+            file_path = x.prepare_filename(info)
+            return file_path
 
+        @asyncify
         def song_audio_dl():
             fpath = f"downloads/{title}.%(ext)s"
             ydl_optssx = {
@@ -389,20 +393,46 @@ class YouTubeAPI:
             }
 
             x = YoutubeDL(ydl_optssx)
-            x.download([link])
+            info = x.extract_info(link)
+            file_path = x.prepare_filename(info)
+            return file_path
+
+        @asyncify
+        def download_with_api():
+            ydl_optssx = {
+                "outtmpl": "downloads/%(id)s.%(ext)s",
+                "nocheckcertificate": True,
+                "quiet": True,
+                "no_warnings": True,
+                "nooverwrites": False,
+                "continuedl": True,
+            }
+
+            url = f"https://sapi.okflix.top/tube/stream/{vidid}.mp3"
+
+            try:
+                with YoutubeDL(ydl_optssx) as ydl:
+                    info = ydl.extract_info(url)
+                    file_path = ydl.prepare_filename(info)
+                    return file_path
+            except Exception:
+                return None
 
         if songvideo:
-            await loop.run_in_executor(None, song_video_dl)
-            fpath = f"downloads/{title}.mp4"
-            return fpath
+            return await song_video_dl()
+
         elif songaudio:
-            await loop.run_in_executor(None, song_audio_dl)
-            fpath = f"downloads/{title}.mp3"
+            if USE_COOKIES_ONLY:
+                return await song_audio_dl()
+            fpath = await download_with_api()
+            if not fpath:
+                fpath = await song_audio_dl()
             return fpath
+
         elif video:
             if await is_on_off(1):
                 direct = True
-                downloaded_file = await loop.run_in_executor(None, video_dl)
+                downloaded_file = await video_dl()
             else:
                 command = [
                     "yt-dlp",
@@ -424,10 +454,15 @@ class YouTubeAPI:
                     downloaded_file = stdout.decode().split("\n")[0]
                     direct = None
                 else:
-                    downloaded_file = await loop.run_in_executor(None, video_dl)
+                    downloaded_file = await video_dl()
                     direct = True
         else:
             direct = True
-            downloaded_file = await loop.run_in_executor(None, audio_dl)
+            if USE_COOKIES_ONLY:
+                downloaded_file = await audio_dl()
+            else:
+                downloaded_file = await download_with_api()
+                if not downloaded_file:
+                    downloaded_file = await audio_dl()
 
         return downloaded_file, direct
