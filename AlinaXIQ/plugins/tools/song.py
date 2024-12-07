@@ -23,7 +23,7 @@ from pyrogram.types import (
 )
 
 from AlinaXIQ import YouTube, app
-from AlinaXIQ.platforms.Youtube import cookies
+from AlinaXIQ.platforms.Youtube import cookiefile
 from AlinaXIQ.utils.decorators.language import language, languageCB
 from AlinaXIQ.utils.formatters import convert_bytes
 from AlinaXIQ.utils.inline.song import song_markup
@@ -296,7 +296,7 @@ async def song_download_cb(client, CallbackQuery, _):
 
     yturl = f"https://www.youtube.com/watch?v={vidid}"
 
-    with yt_dlp.YoutubeDL({"quiet": True, "cookiefile": f"{cookies()}"}) as ytdl:
+    with yt_dlp.YoutubeDL({"quiet": True, "cookiefile": f"{cookiefile()}"}) as ytdl:
 
         x = ytdl.extract_info(yturl, download=False)
 
