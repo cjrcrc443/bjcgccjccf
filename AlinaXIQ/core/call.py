@@ -11,26 +11,6 @@ import asyncio
 import os
 from typing import Union
 
-from ntgcalls import TelegramServerError
-from pyrogram.errors import (
-    ChannelsTooMuch,
-    ChatAdminRequired,
-    FloodWait,
-    InviteRequestSent,
-    UserAlreadyParticipant,
-)
-from pyrogram.types import InlineKeyboardMarkup
-from pytgcalls import PyTgCalls, filters
-from pytgcalls.exceptions import AlreadyJoinedError
-from pytgcalls.types import (
-    ChatUpdate,
-    GroupCallConfig,
-    MediaStream,
-    StreamAudioEnded,
-    Update,
-)
-
-import config
 from AlinaMusic import LOGGER, Platform, app, userbot
 from AlinaMusic.core.userbot import assistants
 from AlinaMusic.misc import db
@@ -53,6 +33,26 @@ from AlinaMusic.utils.formatters import check_duration, seconds_to_min, speed_co
 from AlinaMusic.utils.inline.play import stream_markup, telegram_markup
 from AlinaMusic.utils.stream.autoclear import auto_clean
 from AlinaMusic.utils.thumbnails import gen_thumb
+from ntgcalls import TelegramServerError
+from pyrogram.errors import (
+    ChannelsTooMuch,
+    ChatAdminRequired,
+    FloodWait,
+    InviteRequestSent,
+    UserAlreadyParticipant,
+)
+from pyrogram.types import InlineKeyboardMarkup
+from pytgcalls import PyTgCalls, filters
+from pytgcalls.exceptions import AlreadyJoinedError
+from pytgcalls.types import (
+    ChatUpdate,
+    GroupCallConfig,
+    MediaStream,
+    StreamAudioEnded,
+    Update,
+)
+
+import config
 from strings import get_string
 
 links = {}
