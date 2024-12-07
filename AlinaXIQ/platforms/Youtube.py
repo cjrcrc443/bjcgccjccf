@@ -10,7 +10,6 @@ from pyrogram.types import Message
 from youtubesearchpython.__future__ import VideosSearch
 from yt_dlp import YoutubeDL
 
-import config
 from AlinaXIQ.utils.database import is_on_off
 from AlinaXIQ.utils.decorators import asyncify
 from AlinaXIQ.utils.formatters import seconds_to_min, time_to_seconds
